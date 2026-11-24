@@ -11,6 +11,7 @@ And across the dataset (PLAN.md §4.6):
   5. UNASSIGNED concern types appear only where the story says so.
   6. @ids and record identifiers are unique.
   7. Targets in data/annotations.yaml and data/ui.yaml exist.
+  8. Every step in data/journeys.yaml opens a real page and traces a real value.
 
 Writes site/data/validation.json for the badge. Exits non-zero on any failure.
 
@@ -316,6 +317,81 @@ def check_targets(records) -> list[str]:
     return problems
 
 
+ROUTE_RE = re.compile(
+    r"^#/(?:"
+    r"(?P<page>front-door|map|gaps|about)?"
+    r"|person/(?P<person>[\w-]+)"
+    r"|record/(?P<kind>[\w-]+)/(?P<local>[\w-]+)"
+    r"|system/camhs(?:/(?P<camhs>[\w-]+))?"
+    r")$"
+)
+VIEWS = {"screen", "split", "data"}
+TABS = {"data", "explained", "map"}
+
+
+def pointer_exists(data, pointer: str) -> bool:
+    node = data
+    for seg in [s for s in pointer.split("/") if s]:
+        if isinstance(node, list) and seg.isdigit() and int(seg) < len(node):
+            node = node[int(seg)]
+        elif isinstance(node, dict) and seg in node:
+            node = node[seg]
+        else:
+            return False
+    return True
+
+
+def check_journeys(records) -> list[str]:
+    """Every step of every guided journey must open a real page and trace a real value."""
+    journeys = load_yaml("journeys.yaml")
+    if not journeys:
+        return []
+    by_id = {r["@id"]: r for _, r in records}
+    gaps = {a.get("id") for a in as_list(load_yaml("annotations.yaml"))}
+    base = "https://anytown.example/records"
+    problems = []
+    seen = set()
+    for j in journeys:
+        jid = j.get("id")
+        if jid in seen:
+            problems.append(f"data/journeys.yaml: duplicate journey id {jid}")
+        seen.add(jid)
+        for n, step in enumerate(as_list(j.get("steps")), 1):
+            where = f"data/journeys.yaml: {jid} step {n} ({step.get('title', '?')})"
+            for key in ("title", "route", "text"):
+                if not step.get(key):
+                    problems.append(f"{where}: missing {key}")
+            m = ROUTE_RE.match(step.get("route", ""))
+            page_record = None
+            if not m:
+                problems.append(f"{where}: route {step.get('route')!r} is not a page in the demo")
+            elif m.group("person"):
+                page_record = f"{base}/person/{m.group('person')}"
+            elif m.group("kind"):
+                page_record = f"{base}/{m.group('kind')}/{m.group('local')}"
+            elif m.group("camhs"):
+                page_record = f"{base}/request/{m.group('camhs')}"
+            if page_record and page_record not in by_id:
+                problems.append(f"{where}: route points at {page_record}, which is not a record")
+            if step.get("view", "split") not in VIEWS:
+                problems.append(f"{where}: view must be one of {sorted(VIEWS)}")
+            if step.get("tab", "data") not in TABS:
+                problems.append(f"{where}: tab must be one of {sorted(TABS)}")
+            if step.get("gap") and step["gap"] not in gaps:
+                problems.append(f"{where}: no open question {step['gap']}")
+            trace = step.get("trace")
+            if trace:
+                target = step.get("record") or page_record
+                if target not in by_id:
+                    problems.append(f"{where}: trace needs a record, but the page has none")
+                elif not pointer_exists(by_id[target], trace):
+                    problems.append(f"{where}: {trace} is not in {target}")
+            scope = step.get("map")
+            if scope and scope.get("id") and scope["id"] not in by_id:
+                problems.append(f"{where}: map scope {scope['id']} is not a record")
+    return problems
+
+
 def rel(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
 
@@ -332,7 +408,7 @@ def main() -> int:
 
     per_record = check_shacl(records, shapes_dir)
     dataset = check_dataset(records, load_yaml("external-refs.yaml"))
-    targets = check_targets(records)
+    targets = check_targets(records) + check_journeys(records)
 
     failures = 0
     counts: dict[str, int] = defaultdict(int)

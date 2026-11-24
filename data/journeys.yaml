@@ -1,0 +1,360 @@
+# Guided journeys: the tour (for the live walkthrough) and one story per person.
+# Each step opens a page and sets it up:
+#   route   the page, as a link inside the demo (#/record/..., #/person/..., #/system/camhs/..., #/map, #/gaps)
+#   view    screen | split | data            (default split)
+#   tab     data | explained | map           (back pane tab; default data)
+#   xray    true to label values with their field names
+#   trace   JSON pointer to highlight, in the page's record (or give record: <@id>)
+#   gap     open question to open on the page
+#   map     scope for the map tab: { scope: person | record | all, id: <@id> }
+#   title, text   what to notice: two or three plain sentences
+# validate.py checks every route, record, path and gap here.
+
+- id: tour
+  title: Guided tour
+  start: Take the guided tour
+  minutes: 10
+  summary: The walkthrough from the session. Three people, two systems, and the questions the standards haven't settled yet.
+  steps:
+    - title: The front door
+      route: "#/front-door"
+      tab: map
+      text: >
+        The council's front door: referrals and concerns coming in, newest first. On the right is the same
+        data as the standards see it, here as a map of every record and how they link. The concern at the top
+        hasn't been triaged yet. We'll come back to it.
+
+    - title: A school's referral about Riley
+      route: "#/record/referral/REF-2026-0412"
+      xray: true
+      trace: /concern/0/concernType
+      text: >
+        Riley's school is worried he is hungry, unwashed and often absent. With Show the standard switched on,
+        each value on the screen is labelled with its field in the record. The concern is marked on both sides:
+        the screen says Neglect, the record says child.neglect.
+
+    - title: Matched at triage
+      route: "#/record/referral/REF-2026-0412"
+      tab: explained
+      trace: /subject/0/matchedPersonRef/0
+      gap: G9
+      text: >
+        The school gave Riley's name, date of birth and address, but no NHS number. The front door matched
+        those details to Riley's existing record and added a reference to it. The Explained tab says what each
+        field means, in the order the screen shows them.
+
+    - title: Riley's chronology
+      route: "#/person/P-100231"
+      view: screen
+      gap: G4
+      text: >
+        Everything the council holds about Riley, oldest first: the A&E visit, the referral, responses,
+        requests and episodes. Each line comes from a record that points to Riley by an identifier. The grey
+        rows are case notes and visits, which the standards don't cover.
+
+    - title: A Child in Need plan
+      route: "#/record/episode/EP-2026-0117"
+      trace: /type/0
+      gap: G1
+      text: >
+        Riley now has a Child in Need plan. In the standard it's an episode of type "Child in Need plan", with
+        dates, people and services. Many systems think of a service episode as the status period itself, so
+        which reading matches yours is our first open question.
+
+    - title: A request to CAMHS
+      route: "#/record/request/REQ-2026-0301"
+      trace: /subject
+      text: >
+        Riley's social worker asks CAMHS for help with his anxiety and school refusal. The request identifies
+        Riley by his NHS number, so CAMHS can find him without knowing the council's own ID.
+
+    - title: The same request, in another system
+      route: "#/system/camhs/REQ-2026-0301"
+      trace: /subject/value
+      text: >
+        This is CAMHS's own system, from a different supplier, with its own layout and its own words:
+        patient, referring agency. The record on the right is exactly the one the council's screen showed.
+        Only the screen differs.
+
+    - title: Redirected, and held elsewhere
+      route: "#/record/response/RES-2026-1104"
+      tab: map
+      map: { scope: record, id: "https://anytown.example/records/response/RES-2026-1104" }
+      text: >
+        CAMHS decides the School Mental Health Support Team is the right service, and says so in a response.
+        Its link to the new referral points at a record held by the NHS trust, not the council. On the map
+        it's the dim star at the edge: held elsewhere.
+
+    - title: "Jordan: a police referral"
+      route: "#/record/referral/REF-2026-0518"
+      trace: /subject/0/identifier/0
+      text: >
+        Jordan, 15, has gone missing three times since September. After the third time, a police officer
+        refers him with worries about exploitation. The officer gave Jordan's NHS number, so the referral links
+        straight to his record without any matching.
+
+    - title: Escalation to a section 47 enquiry
+      route: "#/record/request/REQ-2026-0322"
+      trace: /linkedRecord/0
+      gap: G2
+      text: >
+        The front door asks the assessment team to start a section 47 enquiry, linked to the police referral.
+        It should also say this escalates Jordan's Early Help plan, but a linked record can't point to an
+        episode. The council's own note of it is shown in grey.
+
+    - title: Margaret's Care Act assessment
+      route: "#/record/assessment/CNA-2026-0031"
+      xray: true
+      trace: /assessmentQuestion/7/questionText
+      text: >
+        Margaret, 82, lives alone with Parkinson's disease. Most questions in her assessment carry a national
+        question ID, so any system reads the answers the same way. The pen picture is the council's own
+        question, with no ID: shared, but understood locally.
+
+    - title: Who does what, and when
+      route: "#/record/plan/PLAN-2026-0027"
+      view: screen
+      gap: G15
+      text: >
+        Margaret's care plan: home carers four times a day, her daughter Sarah on Sundays, and a pendant alarm.
+        Each part says who, when and what, and which Care Act outcome it meets. One visit meets three outcomes,
+        so it has to be split into three parts.
+
+    - title: A district nurse raises the alarm
+      route: "#/record/referral/REF-2026-0561"
+      trace: /involvement/actorId/0
+      gap: G10
+      text: >
+        On 24 November, Margaret's district nurse finds a pressure ulcer and missed evening medication. Her
+        safeguarding referral names the home care provider as involved, but it can't say whether the provider
+        knows about the referral.
+
+    - title: Sarah's concern, not yet triaged
+      route: "#/record/qoc/QOC-2026-0019"
+      trace: /concern/0/concernType
+      text: >
+        The next day, Sarah raises a concern about the care, sent to the council and the regulator. It's linked
+        to the nurse's referral as concurrent. Its type is still Unassigned: nobody has triaged it yet, and the
+        standard allows for that.
+
+    - title: Every record, linked
+      route: "#/map"
+      text: >
+        Each star is a record. Each line is an identifier in one record pointing at another, across the
+        council, the NHS trust and the police. The dim stars at the edge are held elsewhere. Select any star to
+        open its record.
+
+    - title: What we'd like your help with
+      route: "#/gaps"
+      text: >
+        These are the places where the standards are still open, awkward or silent. Each is marked with ◆
+        where it comes up. Over Christmas, we'd like your views on any of them.
+
+- id: riley
+  title: Riley's story
+  start: Riley Hart, 9
+  summary: A school worries about neglect. A Child in Need plan follows, and a request to CAMHS is redirected.
+  steps:
+    - title: Before anything else
+      route: "#/record/life-event/LE-2026-0101"
+      trace: /type/0
+      gap: G14
+      text: >
+        In July, Riley goes to A&E with a burn to his hand. The hospital shares it as a life event: what
+        happened, when and where. Nothing else is known about the family yet.
+
+    - title: The school's referral
+      route: "#/record/referral/REF-2026-0412"
+      xray: true
+      trace: /concern/0/description
+      text: >
+        In September, the school's safeguarding lead writes in. Riley is hungry most mornings, often absent,
+        and was left at school late. The referral carries the school's own words, and who knows about it.
+
+    - title: The front door looks into it
+      route: "#/record/episode/EP-2026-0088"
+      trace: /type/0
+      gap: G6
+      text: >
+        The front door reviews the referral over two days. That review is an episode of type "MASH review",
+        linked to the referral. Its decision can only be written as text, because there are no children's
+        outcome codes.
+
+    - title: A child and family assessment
+      route: "#/record/episode/EP-2026-0095"
+      trace: /finding/0/measurement/0/value
+      gap: G5
+      text: >
+        Riley's social worker assesses the family over a month. The findings are shared as coded observations,
+        such as persistent absence and free school meals, and a measurement of attendance.
+
+    - title: A Child in Need plan
+      route: "#/record/episode/EP-2026-0117"
+      trace: /type/0
+      gap: G1
+      text: >
+        The assessment leads to a Child in Need plan, still open today. The council's own case status is shown
+        in grey beside the standard's episode.
+
+    - title: Riley's chronology
+      route: "#/person/P-100231"
+      view: screen
+      text: >
+        Everything so far, in date order. Each line is a record pointing at Riley. The grey rows are case notes
+        that stay in the council's system.
+
+    - title: A request to CAMHS
+      route: "#/record/request/REQ-2026-0301"
+      trace: /subject
+      gap: G12
+      text: >
+        In November, Riley starts refusing school and can't sleep. His social worker asks CAMHS for help. The
+        request names Riley by his NHS number, so CAMHS can find him in its own system.
+
+    - title: The same request at CAMHS
+      route: "#/system/camhs/REQ-2026-0301"
+      trace: /subject/value
+      text: >
+        CAMHS's own system shows the same request differently. The record on the right is identical: only the
+        screen differs.
+
+    - title: Redirected
+      route: "#/record/response/RES-2026-1104"
+      trace: /linkedRecord/0
+      text: >
+        CAMHS decides the School Mental Health Support Team is the right service. Its response links to the new
+        referral, which is held by the NHS trust rather than the council.
+
+- id: jordan
+  title: Jordan's story
+  start: Jordan Pike, 15
+  summary: Three missing episodes, a police referral about exploitation, and a section 47 enquiry.
+  steps:
+    - title: Jordan
+      route: "#/person/P-100311"
+      view: screen
+      text: >
+        Jordan lives with his mum, Carla. Since June he has had support from Early Help. His record shows who
+        he is; his chronology shows what has happened.
+
+    - title: An Early Help plan
+      route: "#/record/episode/EP-2026-0061"
+      trace: /type/0
+      gap: G5
+      text: >
+        The Early Help plan is an episode with his school and the Family Hub involved. There's a code for an
+        early help assessment, but not for an early help plan, so it's recorded as "other plan".
+
+    - title: Missing overnight
+      route: "#/record/life-event/LE-2026-0231"
+      trace: /timeInformation/0/startDateTime
+      gap: G14
+      text: >
+        Jordan goes missing three times. The third time, on 7 November, he's away overnight. Each time is a
+        life event with its own start and end.
+
+    - title: The police refer
+      route: "#/record/referral/REF-2026-0518"
+      trace: /concern/0/concernType
+      text: >
+        The next day, a police officer refers Jordan. He was found in another town with older men, a new phone
+        and cash. The officer chose the concern type: extra-familial harm.
+
+    - title: Acknowledged
+      route: "#/record/response/RES-2026-1131"
+      trace: /status
+      text: >
+        The front door acknowledges the referral the next morning. The response points back at the referral by
+        its identifier.
+
+    - title: A section 47 enquiry
+      route: "#/record/request/REQ-2026-0322"
+      trace: /purpose
+      gap: G2
+      text: >
+        The front door asks the assessment team to start a section 47 enquiry. It links to the police referral,
+        but it can't link to the Early Help plan it escalates.
+
+    - title: The enquiry begins
+      route: "#/record/episode/EP-2026-0129"
+      trace: /finding/0/observation/0/type
+      text: >
+        Jordan's social worker opens the enquiry. Persistent school absence is recorded as an observation. The
+        council's own case status and sign-off step stay local.
+
+- id: margaret
+  title: Margaret's story
+  start: Margaret Ellis, 82
+  summary: A Care Act assessment and care plan at home, then a safeguarding referral and a concern about her care.
+  steps:
+    - title: A fall at home
+      route: "#/record/life-event/LE-2026-0098"
+      trace: /type/0
+      text: >
+        In July, Margaret falls at home and goes to A&E. She lives alone and has Parkinson's disease. Her
+        daughter Sarah lives 40 minutes away.
+
+    - title: Sarah asks for help
+      route: "#/record/referral/REF-2026-0365"
+      trace: /concern/0/concernType
+      gap: G3
+      text: >
+        Sarah asks the council for a Care Act assessment. The standard needs a concern on every referral, and
+        the list is about abuse and neglect, so this one is recorded as "other".
+
+    - title: Accepted
+      route: "#/record/response/RES-2026-0702"
+      trace: /status
+      text: >
+        The adult front door accepts the referral the next day. The response points back at it by identifier.
+
+    - title: The assessment
+      route: "#/record/episode/EP-2026-0071"
+      trace: /finding/0/observation/0/type
+      text: >
+        A social worker assesses Margaret at home over two weeks. Findings such as having an unpaid carer and a
+        risk of falls are shared as coded observations.
+
+    - title: Questions with national IDs
+      route: "#/record/assessment/CNA-2026-0031"
+      xray: true
+      trace: /assessmentQuestion/6/questionId
+      gap: G11
+      text: >
+        The assessment's questions carry national IDs, so every system asks and reads them the same way. The
+        eligibility answer is a code, but the record doesn't say which list it comes from.
+
+    - title: The care plan
+      route: "#/record/plan/PLAN-2026-0027"
+      view: screen
+      gap: G16
+      text: >
+        Carers four times a day, Sarah on Sundays, a pendant alarm. Help with medication is central to
+        Margaret's care, but there's no Care Act outcome for it.
+
+    - title: Care at home
+      route: "#/record/episode/EP-2026-0083"
+      trace: /timeInformation/0/frequency
+      text: >
+        The home care itself is an episode of direct provision, with its frequency recorded: four visits a day.
+
+    - title: A district nurse's referral
+      route: "#/record/referral/REF-2026-0561"
+      trace: /concern/0/description
+      text: >
+        In November, the district nurse finds a pressure ulcer, missed evening medication and late or missed
+        calls. She refers Margaret for safeguarding, with concern type neglect.
+
+    - title: Sarah's concern
+      route: "#/record/qoc/QOC-2026-0019"
+      trace: /linkedRecord/0
+      text: >
+        Sarah raises a concern about the care provider with the council and the regulator. It's linked to the
+        nurse's referral as concurrent, and its type is still to be assigned at triage.
+
+    - title: Margaret's chronology
+      route: "#/person/P-100457"
+      view: screen
+      text: >
+        Everything in order, from the fall in July to the safeguarding enquiry opened today. The grey rows are
+        the council's own notes and calls.

@@ -4,6 +4,7 @@
 //    JSON lines and Explained rows. Selecting a JSON line or Explained row does the reverse.
 
 import { backState, setBack, setTab } from "./back/pane.js";
+import { getView, setView, isTyping } from "./view.js";
 
 let selected = null; // { rec, path }
 
@@ -14,9 +15,7 @@ export function initTrace() {
     setXray(on);
     toggle.addEventListener("click", () => setXray(!document.body.classList.contains("xray")));
     document.addEventListener("keydown", (ev) => {
-        if (ev.key.toLowerCase() !== "s" || ev.ctrlKey || ev.metaKey || ev.altKey) return;
-        const t = ev.target;
-        if (t && (t.isContentEditable || ["INPUT", "SELECT", "TEXTAREA"].includes(t.tagName))) return;
+        if (ev.key.toLowerCase() !== "s" || ev.ctrlKey || ev.metaKey || ev.altKey || isTyping(ev.target)) return;
         setXray(!document.body.classList.contains("xray"));
     });
 
@@ -60,10 +59,26 @@ export function initTrace() {
     });
 }
 
-function setXray(on) {
+export function setXray(on, { persist = true } = {}) {
     document.body.classList.toggle("xray", on);
     document.getElementById("xray").setAttribute("aria-pressed", String(on));
-    try { localStorage.setItem("xray", on ? "1" : "0"); } catch { /* storage unavailable */ }
+    if (persist) {
+        try { localStorage.setItem("xray", on ? "1" : "0"); } catch { /* storage unavailable */ }
+    }
+}
+
+/** Highlight one value programmatically (used by stories), on the screen and in the record. */
+export function selectPath(recId, path) {
+    if (!recId || !path) return;
+    selected = { rec: recId, path, from: "story" };
+    const st = backState();
+    if (st.recordId !== recId) setBack(recId);
+    else apply(true);
+    const el = document.querySelector("#front .v.traced");
+    if (el) {
+        const r = el.getBoundingClientRect();
+        if (r.top < 80 || r.bottom > window.innerHeight * 0.6) el.scrollIntoView({ block: "center" });
+    }
 }
 
 export function clearTrace() {
@@ -76,6 +91,7 @@ function selectFromFront(el) {
     const recId = el.getAttribute("data-rec");
     const path = el.getAttribute("data-path");
     selected = { rec: recId, path, from: "front" };
+    if (getView() === "screen") setView("split");
     const st = backState();
     if (st.recordId !== recId) {
         setBack(recId, { callout: st.callout && st.recordId === recId ? st.callout : null });
@@ -118,8 +134,8 @@ function apply(scrollBack, quiet = false) {
 
     const target = row || rows[0];
     const narrow = window.matchMedia("(max-width: 999px)").matches;
-    jump.hidden = !(narrow && selected.from === "front" && target);
-    if (target && !narrow && (scrollBack || (quiet && selected.from === "front"))) {
+    jump.hidden = !(narrow && selected.from !== "back" && target && getView() === "split");
+    if (target && !narrow && (scrollBack || (quiet && selected.from !== "back"))) {
         target.scrollIntoView({ block: "center", behavior: "auto" });
     }
     if (selected.from === "back" && fronts[0]) {

@@ -39,17 +39,21 @@ function frontPaths() {
 
 export function render() {
     const back = document.getElementById("back");
+    const sameRecord = back.dataset.rec === (state.recordId || "") && back.dataset.tab === state.tab;
     back.replaceChildren();
+    back.dataset.rec = state.recordId || "";
+    back.dataset.tab = state.tab;
+    if (!sameRecord) back.scrollTop = 0;
     const r = state.recordId ? rec(state.recordId) : null;
     const tabs = r ? ["data", "explained", "map"] : ["map"];
     const names = { data: "Data", explained: "Explained", map: "Map" };
 
     const head = h("div.back-head",
-        h("h2", r ? `In the standard: ${title(r)}` : "In the standard: the whole dataset"),
+        h("h2", r ? `The record: ${title(r)}` : "All the records"),
         r ? h("div.sub",
-            `${KIND_LABEL[r.kind] || r.kind} · ${store.bundle.meta.standards[r.module]?.name || r.module}`,
-            r.profile !== "standard" ? ` (${r.profile.replace(/-/g, " ")} profile)` : "",
-            h("br"), h("code", r.id)) : h("div.sub", "Every record and every identifier link between them."),
+            `${KIND_LABEL[r.kind] || r.kind}, from the ${store.bundle.meta.standards[r.module]?.name || r.module}`,
+            r.profile !== "standard" ? `, ${r.profile.replace(/-/g, " ")} profile` : "",
+            h("br"), h("code", r.id)) : h("div.sub", "Every record, and every identifier that links one to another."),
         h("div.tabs", { role: "tablist", "aria-label": "Back-end views" },
             tabs.map((t) => h("button", {
                 role: "tab", id: `tab-${t}`, "aria-selected": String(state.tab === t), "aria-controls": "tabpanel",
@@ -59,7 +63,7 @@ export function render() {
     const panel = h("div.tabpanel#tabpanel", { role: "tabpanel", "aria-labelledby": `tab-${state.tab}` });
     if (state.callout) panel.append(h("div.callout", state.callout));
     if (state.tab === "data" && r) {
-        panel.append(h("p.small.muted", "The record exactly as it is stored and shared: JSON-LD, using the field names the standard defines. Select a line to find it on the left."));
+        panel.append(h("p.small.muted", "The record exactly as it's stored and shared: JSON-LD, with the field names the standard defines. Select a line to find it on the screen."));
         panel.append(jsonView(r.data));
     } else if (state.tab === "explained" && r) {
         panel.append(explainedView(r, frontPaths()));

@@ -120,10 +120,13 @@ export function fielder(r) {
     function v(path, content, opts = {}) {
         const raw = get(path);
         const key = opts.key || path.split("/").filter((s) => s && !/^\d+$/.test(s)).pop() || "@id";
+        // The chip reads like the JSON it stands for: concernType: "child.neglect"
         let chip = key;
         if (opts.code !== false && raw !== undefined && raw !== null && typeof raw !== "object") {
             const s = String(raw);
-            if (opts.code || typeof raw === "boolean" || (s.length < 34 && s !== String(content))) chip += ` · ${s}`;
+            if (opts.code || typeof raw === "boolean" || (s.length < 34 && s !== String(content))) {
+                chip += `: ${typeof raw === "string" ? JSON.stringify(raw) : s}`;
+            }
         }
         const tag = opts.block ? "div" : "span";
         return h(`${tag}.v`, {
@@ -169,25 +172,25 @@ export function identLink(ident, opts = {}) {
 
 export function notStd(content, opts = {}) {
     return h(opts.inline ? "span.not-std-inline" : "div.not-std",
-        opts.inline ? null : h("span.label", "Not part of the standard: local to your system"),
+        opts.inline ? null : h("span.label", "Local to your system, not in the standard"),
         content);
 }
 
 export function gapMarker(a, opts = {}) {
     return h("details.gap", { class: opts.inline ? "inline" : undefined, "data-gap": a.id },
-        h("summary", `Open question ${a.id}: ${a.title}`),
+        h("summary", { title: `Open question ${a.id}` }, `${a.id} ${a.title}`),
         h("div.gap-body",
             h("p", a.body),
             h("p.gap-q", `We'd like your view: ${a.question}`),
             h("p.small",
-                a.issue ? h("a", { href: a.issue, target: "_blank", rel: "noopener" }, "Discussion on GitHub") : null,
-                a.issue ? " · " : null,
-                h("a", { href: "#/gaps" }, "All open questions"))));
+                a.issue ? h("a", { href: a.issue, target: "_blank", rel: "noopener" }, "Discuss it on GitHub") : null,
+                a.issue ? ", or see " : "See ",
+                h("a", { href: "#/gaps" }, "all the open questions"), ".")));
 }
 
 export function card(titleText, ...body) {
     const head = typeof titleText === "string" ? h("h2", titleText) : h("header", titleText);
-    return h("section.card", head, h("div.body", body));
+    return h("section.sec", head, h("div.body", body));
 }
 
 export function fields(rows) {

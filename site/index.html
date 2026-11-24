@@ -3,38 +3,46 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Example CMS (fictional demo): Social Care Interoperability Standards</title>
+    <title>Example CMS: a fictional demo of the Social Care Interoperability Standards</title>
     <meta name="description" content="A fictional case management system built on synthetic data that conforms to the Social Care Interoperability Standards. Every screen sits beside the same data according to the standard.">
     <meta name="robots" content="noindex">
+    <link rel="preload" href="lib/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/standard-tokens.css">
     <link rel="stylesheet" href="css/app.css">
 </head>
-<body>
+<body data-view="split">
     <a class="skip" href="#front">Skip to content</a>
-    <header class="banner">
-        <div class="brand">
-            <strong>Example CMS</strong>
-            <span>A fictional demonstration. All people, organisations and records are synthetic.</span>
-        </div>
-        <div class="meta">
-            <span>As at Thursday 26 November 2026</span>
-            <a id="badge" class="badge-valid" href="#/about">Checking…</a>
-            <button id="xray" class="xray-toggle" type="button" aria-pressed="false" title="Label every value with its field in the standard (S)">Show the standard <kbd>S</kbd></button>
+    <div class="ribbon">
+        <span>Example CMS is fictional. All people, organisations and records are synthetic.</span>
+        <span>Snapshot: Thursday 26 November 2026</span>
+        <a id="badge" class="badge-valid" href="#/about">Checking the records…</a>
+    </div>
+    <header class="site-head">
+        <a class="wordmark" href="#/"><strong>Example CMS</strong><span>Anytown Borough Council</span></a>
+        <nav class="appnav" aria-label="Main">
+            <a href="#/" data-nav="welcome">Start here</a>
+            <a href="#/front-door" data-nav="home">Front door</a>
+            <a href="#/map" data-nav="map">Map</a>
+            <a href="#/gaps" data-nav="gaps">Open questions</a>
+            <a href="#/about" data-nav="about">About</a>
+            <a href="#/system/camhs" data-nav="camhs" class="sys">Anytown CAMHS</a>
+        </nav>
+        <div class="head-tools">
+            <fieldset class="viewswitch" id="viewswitch">
+                <legend>Show</legend>
+                <label><input type="radio" name="view" value="screen"> Screen</label>
+                <label><input type="radio" name="view" value="split" checked> Side by side</label>
+                <label><input type="radio" name="view" value="data"> Data</label>
+            </fieldset>
+            <button id="xray" class="xray-toggle" type="button" aria-pressed="false" title="Label every value on the screen with its field in the standard (S)">Show the standard <kbd>S</kbd></button>
         </div>
     </header>
-    <nav class="appnav" aria-label="Main">
-        <a href="#/" data-nav="home">Front door</a>
-        <a href="#/map" data-nav="map">Map</a>
-        <a href="#/gaps" data-nav="gaps">Open questions</a>
-        <a href="#/about" data-nav="about">About</a>
-        <a href="#/system/camhs" data-nav="camhs" class="sys">Switch system: Anytown CAMHS</a>
-    </nav>
     <div class="panes">
         <main id="front" tabindex="-1"><p>Loading…</p></main>
-        <aside id="back" aria-label="Back end: the same data according to the standard"></aside>
+        <aside id="back" aria-label="The same data according to the standard"></aside>
     </div>
-    <button id="jump-data" class="xray-toggle jump-data" type="button" hidden
-        style="position:fixed;right:1rem;bottom:1rem;z-index:30;background:var(--background)">Show in data ↓</button>
+    <button id="jump-data" class="jump-data" type="button" hidden>Show in the record</button>
+    <section id="story" aria-label="Story" hidden></section>
     <script src="lib/d3.v7.min.js"></script>
     <script type="module" src="js/main.js"></script>
 </body>

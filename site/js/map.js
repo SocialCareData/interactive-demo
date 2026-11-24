@@ -96,7 +96,7 @@ export function renderMap(container, opts = {}) {
         [["Person standard", "person"], ["Safeguarding", "safeguarding"], ["Referrals and Requests", "referrals"],
             ["Assessments and Plans", "assessments-and-plans"], ["Held elsewhere", "external"]]
             .map(([label, m]) => h("span", h("i", { style: `background:${MODULE_COLOUR[m]}` }), label)),
-        h("span", "● person  ▲ referral / request / response  ■ episode / event  ◆ assessment / plan  · directory"));
+        h("span", "Shapes: ● person, ▲ referral, request or response, ■ episode or event, ◆ assessment or plan, small dots for the directory"));
     const listing = h("details.map-list", { style: "padding:.4rem .6rem" });
     wrap.append(controls, svgBox, tip, legend);
     container.replaceChildren(wrap, listing);
@@ -130,7 +130,7 @@ export function renderMap(container, opts = {}) {
         controls.replaceChildren(
             h("label", "Show ", sel),
             h("label", ref, "Directory (organisations, services, professionals)"),
-            opts.full ? null : h("a", { href: "#/map", style: "color:#cfe" }, "Full screen"));
+            opts.full ? null : h("a", { href: "#/map" }, "Open the full map"));
     }
 
     function draw() {
@@ -189,7 +189,7 @@ export function renderMap(container, opts = {}) {
             .attr("stroke-width", (n) => (n.id === focusId ? 3 : 1));
         node.filter((n) => n.kind === "person" || n.kind === "external" || n.id === focusId)
             .append("text").attr("class", "map-label").attr("x", (n) => radius(n) + 4).attr("y", 3)
-            .text((n) => (n.kind === "external" ? `Held elsewhere: ${n.label}` : n.label));
+            .text((n) => (n.kind === "external" ? `Held elsewhere: ${n.label.length > 26 ? `${n.label.slice(0, 25)}…` : n.label}` : n.label));
 
         node.on("click", (_, n) => go(n))
             .on("keydown", (ev, n) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); go(n); } })
@@ -220,9 +220,9 @@ export function renderMap(container, opts = {}) {
     }
 
     function tipText(n) {
-        if (n.kind === "external") return `Held elsewhere · ${n.label} · ${n.ext?.heldBy || ""}`;
+        if (n.kind === "external") return `Held elsewhere: ${n.label}, held by ${n.ext?.heldBy || "another organisation"}`;
         const date = recDate(n.r);
-        return `${KIND_LABEL[n.kind]} · ${n.label}${date ? ` · ${fmtDate(date)}` : ""}`;
+        return `${KIND_LABEL[n.kind]}: ${n.label}${date ? `, ${fmtDate(date)}` : ""}`;
     }
     function showTip(ev, text, atNode) {
         const box = wrap.getBoundingClientRect();

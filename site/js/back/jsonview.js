@@ -34,8 +34,8 @@ function row(key, value, path, isLast) {
         if (!isArr && value["@type"] === "Identifier") {
             const res = resolve(value);
             if (res && !(res.record && res.record.data === rootData)) {
-                const label = res.record ? `→ ${title(res.record)}` : `→ held elsewhere: ${res.external.label}`;
-                close.append(" ", h("span.j-null", { title: "Not part of the data: the demo's resolved link" }, label));
+                const label = res.record ? `// ${title(res.record)}` : `// held elsewhere: ${res.external.label}`;
+                close.append(" ", h("span.j-note", { title: "Added by this demo: the record this identifier points to. Not part of the data." }, label));
             }
         }
         el.append(close);

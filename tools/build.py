@@ -231,6 +231,7 @@ def main() -> int:
         "external": {f"{e['system']}|{e['value']}": e for e in as_list(load_yaml("external-refs.yaml"))},
         "annotations": load_yaml("annotations.yaml") or [],
         "ui": load_yaml("ui.yaml") or {},
+        "journeys": load_yaml("journeys.yaml") or [],
     }
 
     SITE_DATA.mkdir(parents=True, exist_ok=True)

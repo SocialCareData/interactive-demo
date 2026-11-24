@@ -22,16 +22,16 @@ function header(r, f, opts = {}) {
     const people = peopleFor(r);
     const local = uiRecord(r.id);
     return frag(
-        h("div.crumbs", h("a", { href: "#/" }, "Home"), " › ",
-            people.length ? frag(recLink(people[0], null, { noTag: true }), " › ") : null,
-            `${KIND_LABEL[r.kind]} ${r.localId}`),
         h("div.cms-head",
+            h("div.crumbs", h("a", { href: "#/front-door" }, "Front door"), " › ",
+                people.length ? frag(h("a", { href: route(people[0]) }, title(people[0])), " › ") : null,
+                `${KIND_LABEL[r.kind]} ${r.localId}`),
             h("div",
-                h("h1", tag(r.kind), " ", opts.title || title(r)),
-                h("div.sub", opts.sub || null)),
-            h("div", opts.right || null,
-                local && local.rag ? notStd(`RAG rating: ${local.rag}`, { inline: true }) : null)),
-        local && local.workflow ? notStd(h("span", h("strong", "Workflow: "), local.workflow)) : null,
+                h("h1", tag(r.kind), h("span", opts.title || title(r))),
+                opts.sub ? h("div.sub", opts.sub) : null),
+            h("div.aside", opts.right || null,
+                local && local.rag ? h("div", notStd(`RAG rating: ${local.rag}`, { inline: true })) : null)),
+        local && local.workflow ? notStd(h("span", "Workflow: ", local.workflow)) : null,
         gaps(r));
 }
 
@@ -60,7 +60,7 @@ function intakePerson(r, f, base, p) {
             ["Name", name ? f.v(`${base}/name/0`, name) : h("em.muted", "Name not known")],
             ["Date of birth", dob ? f.v(`${base}/dateOfBirth/date`, `${fmtDate(dob)} (age ${age(dob)})`) : null],
             ["Address", asList(p.address).map((a, i) => f.v(`${base}/address/${i}`, [a.line1, a.line2, a.city, a.postcode].filter(Boolean).join(", "), { block: true }))],
-            ["Contact", asList(p.contact).map((c, i) => f.v(`${base}/contact/${i}`, [c.name, ...asList(c.telephone), ...asList(c.email)].filter(Boolean).join(" · "), { block: true }))],
+            ["Contact", asList(p.contact).map((c, i) => f.v(`${base}/contact/${i}`, [c.name, ...asList(c.telephone), ...asList(c.email)].filter(Boolean).join(", "), { block: true }))],
             ["Identifiers given", ids.map((id, i) => f.v(`${base}/identifier/${i}`, h("span", identLabel(id), " ", identLink(id)), { key: "identifier" }))],
             ["Knows about this", f.v(`${base}/isAwareOfReferral`, yesNo(p.isAwareOfReferral))],
             ["Notes", p.notes || p.intakeNotes ? f.v(`${base}/${p.notes ? "notes" : "intakeNotes"}`, p.notes || p.intakeNotes) : null],
@@ -88,14 +88,14 @@ function referrerBlock(r, f) {
         const p = ref.professional;
         rows.push(["Name", f.v(`${base}/professional/name`, formalName([p.name]))]);
         rows.push(["Role", f.v(`${base}/professional/role`, asList(p.role).join(", "))]);
-        if (p.contact) rows.push(["Contact", f.v(`${base}/professional/contact`, [...asList(p.contact.telephone), ...asList(p.contact.email)].join(" · "))]);
+        if (p.contact) rows.push(["Contact", f.v(`${base}/professional/contact`, [...asList(p.contact.telephone), ...asList(p.contact.email)].join(", "))]);
         rows.push(["Works for", asList(p.relatedService).map((s, i) => f.v(`${base}/professional/relatedService/${i}`, identLink(s), { key: "relatedService" }))]);
         rows.push(["In the directory", asList(p.identifier).map((s, i) => f.v(`${base}/professional/identifier/${i}`, identLink(s), { key: "identifier" }))]);
     }
     if (ref.professionalId) rows.push(["Professional", f.v(`${base}/professionalId`, identLink(ref.professionalId), { key: "professionalId" })]);
     if (ref.person) {
         rows.push(["Name", f.v(`${base}/person/name/0`, personName(ref.person.name) || "Not given")]);
-        if (ref.person.contact) rows.push(["Contact", asList(ref.person.contact).map((c, i) => f.v(`${base}/person/contact/${i}`, [...asList(c.telephone), ...asList(c.email)].join(" · "), { block: true }))]);
+        if (ref.person.contact) rows.push(["Contact", asList(ref.person.contact).map((c, i) => f.v(`${base}/person/contact/${i}`, [...asList(c.telephone), ...asList(c.email)].join(", "), { block: true }))]);
     }
     if (ref.relationship) rows.push(["Relationship to the person", f.v(`${base}/relationship`, enumLabel("PersonRelationshipCode", ref.relationship), { code: true })]);
     if (ref.relationshipDescription) rows.push(["Relationship", f.v(`${base}/relationshipDescription`, ref.relationshipDescription)]);
@@ -182,7 +182,7 @@ function attachmentsCard(r, f) {
     const list = asList(r.data.attachment);
     if (!list.length) return null;
     return card("Attachments", h("ul.links-list", list.map((d, i) => h("li",
-        f.v(`/attachment/${i}`, h("span", "📄 ", h("strong", d.title || d.documentTitle || "Document"),
+        f.v(`/attachment/${i}`, h("span", h("strong", d.title || d.documentTitle || "Document"),
             d.mimeType ? h("span.muted", ` (${d.mimeType})`) : null,
             h("br"), h("code.small", d.url || d.documentUrl || "")), { key: "attachment" })))),
     h("p.small.muted", "The document itself is held by the sender; the record carries a reference to it."));
@@ -242,7 +242,7 @@ function referral(r) {
     return frag(
         header(r, f, {
             title: h("span", "Referral ", f.v("/identifier/value", d.identifier && d.identifier.value)),
-            sub: h("span", f.v("/type", enumLabel("ReferralTypeCode", d.type), { code: true }), " · received ",
+            sub: h("span", f.v("/type", enumLabel("ReferralTypeCode", d.type), { code: true }), ", received ",
                 f.v("/dateCompleted", fmtDateTime(d.dateCompleted))),
             right: derivedStatus(r),
         }),
@@ -274,7 +274,7 @@ function request(r) {
         header(r, f, {
             title: h("span", "Request ", f.v("/identifier/value", d.identifier && d.identifier.value)),
             sub: h("span", "Purpose: ", f.v("/purpose", enumLabel("RequestPurposeCode", d.purpose), { code: true }),
-                " · sent ", f.v("/dateCompleted", fmtDateTime(d.dateCompleted))),
+                ". Sent ", f.v("/dateCompleted", fmtDateTime(d.dateCompleted)), "."),
             right: derivedStatus(r),
         }),
         isCamhs ? systemSwitch(r, "council") : null,
@@ -296,7 +296,7 @@ export function systemSwitch(r, current) {
         h("div.system-switch", { role: "group", "aria-label": "View this record in" },
             h("a", { href: route(r), "aria-current": String(current === "council") }, "Example CMS (council)"),
             h("a", { href: `#/system/camhs/${r.localId}`, "aria-current": String(current === "camhs") }, "Anytown CAMHS")),
-        h("span.small.muted", " Same record, two systems."));
+        h("span.switch-note", "The same record in two systems."));
 }
 
 // ------------------------------------------------------------------ Quality-of-care concern
@@ -389,7 +389,7 @@ function episode(r) {
     return frag(
         header(r, f, {
             title: h("span", asList(d.type).map((t, i) => f.v(`/type/${i}`, enumLabel("EpisodeCode", t), { code: true }))),
-            sub: h("span", "Episode ", f.v("/identifier/0/value", r.localId), " · ", period(f, asList(d.timeInformation)[0], "/timeInformation/0")),
+            sub: h("span", "Episode ", f.v("/identifier/0/value", r.localId), ": ", period(f, asList(d.timeInformation)[0], "/timeInformation/0")),
         }),
         local && local.localStatus ? notStd(h("span", h("strong", "Case status: "), local.localStatus)) : null,
         gaps(r, "type"),
@@ -419,7 +419,7 @@ function lifeEvent(r) {
     return frag(
         header(r, f, {
             title: h("span", asList(d.type).map((t, i) => f.v(`/type/${i}`, enumLabel("EventCode", t), { code: true }))),
-            sub: h("span", "Life event ", f.v("/identifier/0/value", r.localId), " · ", period(f, asList(d.timeInformation)[0], "/timeInformation/0")),
+            sub: h("span", "Life event ", f.v("/identifier/0/value", r.localId), ": ", period(f, asList(d.timeInformation)[0], "/timeInformation/0")),
         }),
         card("What happened, when, where and who", whoAndWhere(r, f)),
         linksCard(r, f));
@@ -502,14 +502,14 @@ function directory(r) {
     if (kind === "professional") {
         rows.push(["Name", f.v("/name", formalName([d.name]))]);
         rows.push(["Role", asList(d.role).map((x, i) => f.v(`/role/${i}`, x, { block: true }))]);
-        rows.push(["Contact", d.contact ? f.v("/contact", [...asList(d.contact.telephone), ...asList(d.contact.email)].join(" · ")) : null]);
+        rows.push(["Contact", d.contact ? f.v("/contact", [...asList(d.contact.telephone), ...asList(d.contact.email)].join(", ")) : null]);
         rows.push(["Working", d.workingStatus !== undefined ? f.v("/workingStatus", yesNo(d.workingStatus)) : null]);
     } else {
         rows.push(["Name", f.v("/name", d.name)]);
         rows.push(["Also known as", asList(d.alias).map((x, i) => f.v(`/alias/${i}`, x, { block: true }))]);
         rows.push(["Type", asList(d.type).map((x, i) => f.v(`/type/${i}`, enumLabel(enumName, x), { code: true }))]);
         rows.push(["Address", asList(d.address).map((a, i) => f.v(`/address/${i}`, [a.line1, a.line2, a.city, a.postcode].filter(Boolean).join(", "), { block: true }))]);
-        rows.push(["Contact", asList(d.contact).map((c, i) => f.v(`/contact/${i}`, [c.name, ...asList(c.telephone), ...asList(c.email)].filter(Boolean).join(" · "), { block: true }))]);
+        rows.push(["Contact", asList(d.contact).map((c, i) => f.v(`/contact/${i}`, [c.name, ...asList(c.telephone), ...asList(c.email)].filter(Boolean).join(", "), { block: true }))]);
         if (kind === "service") rows.push(["Charged", f.v("/costFrequency", enumLabel("ServiceCostFrequency", d.costFrequency), { code: true })]);
     }
     rows.push(["Identifier", asList(d.identifier).map((x, i) => f.v(`/identifier/${i}/value`, x.value))]);

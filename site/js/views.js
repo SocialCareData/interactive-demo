@@ -27,10 +27,10 @@ export function summary(r) {
                 : d.referrer.professionalId ? nameOf(d.referrer.professionalId)
                     : d.referrer.person ? personName(d.referrer.person.name) : "");
             const concerns = asList(d.concern).map((c) => enumLabel("ConcernCode", c.concernType)).join(", ");
-            return `${enumLabel("ReferralTypeCode", d.type)} referral from ${from || "unknown"} · ${concerns}`;
+            return `${enumLabel("ReferralTypeCode", d.type)} referral from ${from || "unknown"}: ${concerns}`;
         }
         case "qoc":
-            return `Quality-of-care concern about ${d.service && d.service.name} · concern type ${asList(d.concern).map((c) => enumLabel("QocConcernCode", c.concernType)).join(", ")}`;
+            return `Quality-of-care concern about ${d.service && d.service.name}, concern type ${asList(d.concern).map((c) => enumLabel("QocConcernCode", c.concernType)).join(", ")}`;
         case "request":
             return `Request to ${asList(d.recipient).map(nameOf).join(", ")}: ${enumLabel("RequestPurposeCode", d.purpose)}`;
         case "response":
@@ -40,7 +40,7 @@ export function summary(r) {
             return `${asList(d.type).map((t) => enumLabel("EpisodeCode", t)).join(", ")} (${end ? `to ${fmtDate(end)}` : "open"})`;
         }
         case "life-event":
-            return `${asList(d.type).map((t) => enumLabel("EventCode", t)).join(", ")}${d.location ? ` · ${asList(d.location)[0]}` : ""}`;
+            return `${asList(d.type).map((t) => enumLabel("EventCode", t)).join(", ")}${d.location ? `, ${asList(d.location)[0]}` : ""}`;
         case "assessment":
             return `Care needs assessment (${enumLabel("DocumentStatus", d.status)}) by ${nameOf(d.professionalId)}`;
         case "plan":
@@ -52,7 +52,7 @@ export function summary(r) {
 
 // ------------------------------------------------------------------ home
 
-export function homeView() {
+export function frontDoorView() {
     const intake = sortByDate(allRecords().filter((r) => r.kind === "referral" || r.kind === "qoc"), recDate, true);
     const people = allRecords().filter((r) => r.kind === "person" && r.profile === "subject-of-care");
 
@@ -101,10 +101,7 @@ export function homeView() {
     return frag(
         h("div.cms-head",
             h("div", h("h1", "Front door and caseload"),
-                h("div.sub", "Anytown Borough Council · ", fmtLong(SNAPSHOT))),
-            h("p.small.muted", { style: "max-width:28rem" },
-                "This is Example CMS, a fictional case management system. On the right is what the standards see. ",
-                "Press ", h("kbd", "S"), " or use “Show the standard” to label every value with its field in the standard.")),
+                h("div.sub", `Anytown Borough Council, ${fmtLong(SNAPSHOT)}`))),
         card("Front door: referrals and concerns received", h("div.table-wrap", queue),
             h("p.small.muted", "Status comes from the latest Response record for each referral or concern.")),
         card("People: subjects of care", h("div.table-wrap", caseload)),
@@ -144,15 +141,15 @@ export function personView(p) {
     }
 
     return frag(
-        h("div.crumbs", h("a", { href: "#/" }, "Home"), " › ", isSubject ? "Subject of care" : "Connected person"),
         h("div.cms-head",
+            h("div.crumbs", h("a", { href: "#/front-door" }, "Front door"), " › ", isSubject ? "Subject of care" : "Connected person"),
             h("div",
                 h("h1", tag("person"), " ", f.v("/name/0", personName(d.name))),
                 h("div.sub",
-                    asList(d.identifier).map((id, i) => h("span", i ? " · " : "",
+                    asList(d.identifier).map((id, i) => h("span", i ? ", " : "",
                         f.v(`/identifier/${i}/value`, id.system.includes("nhs-number") ? `NHS ${formatNhs(id.value)}` : `Council ID ${id.value}`))))),
             local.allocatedWorker || local.localStatus || local.lastViewed || asList(local.flags).length
-                ? h("div", { style: "max-width:30rem" }, notStd(h("div",
+                ? h("div.aside", notStd(h("div",
                     local.allocatedWorker ? h("div", h("strong", "Allocated: "), `${local.allocatedWorker}, ${local.team}`) : null,
                     local.localStatus ? h("div", h("strong", "Case status: "), local.localStatus) : null,
                     asList(local.flags).length ? h("div", h("strong", "Flags: "), asList(local.flags).map((fl) => h(`span.flag.${fl.level || "neutral"}`, { style: "margin-right:.3rem" }, fl.text))) : null,
@@ -167,7 +164,7 @@ export function personView(p) {
                 ["Gender", d.genderCode ? f.v("/genderCode", enumLabel("GenderCode", d.genderCode), { code: true }) : null],
                 ["Ethnicity", d.ethnicityCode ? f.v("/ethnicityCode", enumLabel("EthnicityCode", d.ethnicityCode), { code: true }) : null],
                 ["Address", asList(d.address).map((a, i) => f.v(`/address/${i}`, [a.line1, a.line2, a.city, a.postcode].filter(Boolean).join(", "), { block: true }))],
-                ["Contact", asList(d.contact).map((c, i) => f.v(`/contact/${i}`, [c.name, ...asList(c.telephone), ...asList(c.email)].filter(Boolean).join(" · "), { block: true }))],
+                ["Contact", asList(d.contact).map((c, i) => f.v(`/contact/${i}`, [c.name, ...asList(c.telephone), ...asList(c.email)].filter(Boolean).join(", "), { block: true }))],
                 ["Communication needs", asList(d.communication).map((c, i) => f.v(`/communication/${i}/specialCommunicationNeeds`, c.specialCommunicationNeeds, { block: true }))],
                 ["Deceased", d.isDeceased !== undefined ? f.v("/isDeceased", d.isDeceased ? "Yes" : "No") : null],
             ]), isSubject ? null : h("p.small.muted", "A connected person: the standard requires only a name.")),
@@ -203,7 +200,7 @@ function chronology(p, records, local) {
         tbody.replaceChildren(...rows.filter((x) => active.has(x.kind)).map((x) => x.note
             ? h("tr.not-std-row",
                 h("td", fmtDate(x.date)), h("td", tag("local", x.note.type)),
-                h("td", h("strong", `${x.note.type} (${x.note.by}): `), x.note.text, h("span.not-std-label", "Not part of the standard: local to your system")))
+                h("td", h("strong", `${x.note.type} (${x.note.by}): `), x.note.text, h("span.not-std-label", "Local to your system, not in the standard")))
             : h("tr",
                 h("td", fmtDate(x.date)), h("td", tag(x.kind)),
                 h("td", h("a", { href: route(x.r) }, summary(x.r)),
@@ -238,7 +235,7 @@ function camhsShell(main) {
     const n = camhsRequests().length;
     return h("div.theme-camhs",
         h("div.camhs-shell",
-            h("div.camhs-bar", h("strong", "Anytown CAMHS · Referral Management"), h("span", "Signed in: Dr P. Nair, Intake clinician")),
+            h("div.camhs-bar", h("strong", "Anytown CAMHS Referral Management"), h("span", "Signed in: Dr P. Nair, Intake clinician")),
             h("div.camhs-body",
                 h("nav.camhs-side", { "aria-label": "CAMHS system menu" },
                     h("ul",
@@ -263,7 +260,7 @@ export function camhsListView() {
             return h("div.tile",
                 h("a", { href: `#/system/camhs/${r.localId}` }, person ? `${title(person)}` : r.data.subject.value),
                 h("div", { style: "font-family:var(--font);font-size:.9rem" },
-                    `NHS ${formatNhs(r.data.subject.value)} · received ${fmtDate(r.data.dateCompleted)} · from ${nameOf(r.data.referrer)}, Anytown Borough Council `,
+                    `NHS ${formatNhs(r.data.subject.value)}, received ${fmtDate(r.data.dateCompleted)} from ${nameOf(r.data.referrer)}, Anytown Borough Council `,
                     last ? h("span.pill", enumLabel("ResponseStatusCode", last.data.status)) : h("span.pill.soft", "New")));
         })));
 }
@@ -317,17 +314,16 @@ export function camhsDetailView(r) {
 
 export function gapsView() {
     return frag(
-        h("div.cms-head", h("div", h("h1", "Open questions"),
-            h("div.sub", "Where the standards are still open, awkward or silent. This is where we'd like your help."))),
-        h("div.prose",
-            h("p", "Each question is also marked with ◆ on the screens where it comes up. Tell us what you think by email or on GitHub (see ",
-                h("a", { href: "#/about" }, "About"), ")."),
-            h("ol.gap-list", annotations().map((a) => h("li", { id: `gap-${a.id}` },
-                h("h2", `${a.id}: ${a.title}`),
-                h("p.small.muted", "Where: ", h("a", { href: a.route }, a.where)),
-                h("p", a.body),
-                h("p", h("strong", "We'd like your view: "), a.question),
-                a.issue ? h("p.small", h("a", { href: a.issue, target: "_blank", rel: "noopener" }, "Discussion on GitHub")) : null)))));
+        h("div.page-head",
+            h("h1", "Open questions"),
+            h("p", "Where the standards are still open, awkward or silent. Each one is also marked with ◆ on the screens where it comes up. Tell us what you think by email or on GitHub (see ",
+                h("a", { href: "#/about" }, "About"), ").")),
+        h("ol.gap-list", annotations().map((a) => h("li", { id: `gap-${a.id}` },
+            h("h2", h("span.gid", a.id), h("span", a.title)),
+            h("p.where", "Where: ", h("a", { href: a.route }, a.where)),
+            h("p", a.body),
+            h("p", h("strong", "We'd like your view: "), a.question),
+            a.issue ? h("p.small", h("a", { href: a.issue, target: "_blank", rel: "noopener" }, "Discuss it on GitHub")) : null))));
 }
 
 export function aboutView() {
@@ -335,7 +331,7 @@ export function aboutView() {
     const v = store.bundle.validation;
     const std = meta.standards;
     return frag(
-        h("div.cms-head", h("div", h("h1", "About this demo"), h("div.sub", `A snapshot as at ${fmtLong(SNAPSHOT)}`))),
+        h("div.page-head", h("h1", "About this demo"), h("p", `A snapshot as at ${fmtLong(SNAPSHOT)}.`)),
         h("div.prose",
             h("p", "Example CMS is a fictional case management system, made to show what the ",
                 h("a", { href: "https://standard.socialcaredata.io", target: "_blank", rel: "noopener" }, "Social Care Interoperability Standards"),
@@ -345,9 +341,11 @@ export function aboutView() {
             h("h2", "How to read it"),
             h("ul",
                 h("li", h("strong", "Left: "), "what a case management system might show. ", h("strong", "Right: "), "the same record according to the standard: the data itself, an explanation of each field, and a map of how records link."),
-                h("li", h("strong", "Show the standard "), "(button at the top, or press ", h("kbd", "S"), ") labels each value on the left with its field name in the standard."),
+                h("li", h("strong", "Screen, Side by side, Data "), "(top right, or press ", h("kbd", "1"), " ", h("kbd", "2"), " ", h("kbd", "3"), ") choose what you see: the system's screen, both, or the record alone."),
+                h("li", h("strong", "Show the standard "), "(top right, or press ", h("kbd", "S"), ") labels each value on the screen with its field name in the standard."),
+                h("li", h("strong", "Stories "), "step through with Next and Previous, or the ", h("kbd", "←"), " ", h("kbd", "→"), " keys. ", h("kbd", "Esc"), " leaves a story."),
                 h("li", h("strong", "Select any value "), "on the left to highlight it in the data on the right, or select a line on the right to find it on the left."),
-                h("li", notStd("Greyed, dashed boxes are things a real system shows that the standards don't cover, such as allocated workers, case notes and tasks.", { inline: true })),
+                h("li", notStd("Grey italic text with a dashed line shows things a real system holds that the standards don't cover, such as allocated workers, case notes and tasks.", { inline: true })),
                 h("li", h("span", { style: "color:var(--gap);font-weight:600" }, "◆ Open questions "), "mark where the standards are still open. ", h("a", { href: "#/gaps" }, "See them all.")),
                 h("li", h("strong", "Anytown CAMHS "), "is a second fictional system. It shows the same request as the council's system, with a different screen. ", h("a", { href: "#/system/camhs" }, "Open it."))),
             h("h2", "Data and validation"),
@@ -362,4 +360,78 @@ export function aboutView() {
                 h("li", "Email: ", h("a", { href: "mailto:DataStandards-SocialCare@socialfinance.org.uk" }, "DataStandards-SocialCare@socialfinance.org.uk")),
                 h("li", "GitHub: ", h("a", { href: "https://github.com/SocialCareData/standard/issues", target: "_blank", rel: "noopener" }, "raise an issue on the standard"))),
             h("p.small.muted", `Site built ${fmtDateTime(meta.builtAt)}${meta.demoCommit ? ` from demo commit ${meta.demoCommit.slice(0, 7)}` : ""}.`)));
+}
+
+// ------------------------------------------------------------------ welcome
+
+export function journeys() {
+    return store.bundle.journeys || [];
+}
+
+/** One real value shown three ways: the council's screen, CAMHS's screen, and the record. */
+function specimen() {
+    const r = allRecords().find((x) => x.kind === "request" && asList(x.data.recipient).some((y) => y.value === "SVC-CAMHS"));
+    if (!r) return null;
+    const subj = r.data.subject;
+    const person = resolve(subj)?.record;
+    const name = person ? title(person) : subj.value;
+    const json = JSON.stringify({ subject: subj }, null, 2).split("\n").slice(1, -1).map((l) => l.slice(2));
+    const mark = (text) => h("span.hl-mark", text);
+    return h("figure.specimen",
+        h("div.specimen-row",
+            h("div.frame",
+                h("div.frame-head", h("span", "Example CMS, at the council"), h("a", { href: route(r) }, "Open")),
+                fields([["Request", "To Anytown CAMHS"], ["About", h("span", name, h("br"), "NHS number ", mark(formatNhs(subj.value)))]])),
+            h("div.frame.camhs",
+                h("div.frame-head", h("span", "Anytown CAMHS, another supplier"), h("a", { href: `#/system/camhs/${r.localId}` }, "Open")),
+                h("div", { style: "font-variant:small-caps;color:#6f2d78" }, "NHS number"),
+                h("div", mark(formatNhs(subj.value))),
+                h("div", { style: "font-variant:small-caps;color:#6f2d78;margin-top:.4rem" }, "Patient"),
+                h("div", name)),
+            h("div.frame.record",
+                h("div.frame-head", h("span", "The record both systems read")),
+                json.map((line) => h("div", line.includes(`"value"`) ? mark(line) : line)))),
+        h("figcaption",
+            "Riley's NHS number in a request from the council to CAMHS. Each system shows it its own way, on its own screen. ",
+            "Underneath, both read the same record, written to the standard."));
+}
+
+export function welcomeView() {
+    const list = journeys();
+    const tour = list.find((j) => j.id === "tour");
+    const stories = list.filter((j) => j.id !== "tour");
+    const startLink = (j) => `#/story/${j.id}/1`;
+    return h("div.welcome",
+        h("h1", "Same data, different screens"),
+        h("p.lede",
+            "Example CMS is a made-up case management system for a made-up council, Anytown. ",
+            "It holds the records of three people, written to the Social Care Interoperability Standards. ",
+            "Wherever you go, you can see a system's screen and the record underneath it."),
+        specimen(),
+        h("div.starts",
+            h("div",
+                h("h2", "Where to start"),
+                h("ul.route-list",
+                    [tour, ...stories].filter(Boolean).map((j) => h("li",
+                        h("div.what", h("a", { href: startLink(j) }, j.start || j.title), h("p", j.summary)),
+                        h("span.count", j.minutes ? `${j.steps.length} steps, about ${j.minutes} minutes` : `${j.steps.length} steps`)))),
+                h("p.explore",
+                    h("span.muted", "Or look around:"),
+                    h("a", { href: "#/front-door" }, "the front door"),
+                    h("a", { href: "#/map" }, "the map of every record"),
+                    h("a", { href: "#/gaps" }, "the open questions"),
+                    h("a", { href: "#/about" }, "about this demo"))),
+            h("aside.reading",
+                h("h2", "Reading the screens"),
+                h("dl",
+                    h("dt", "Screen, Side by side, Data"),
+                    h("dd", "Top right. Choose the system's screen, the record underneath it, or both."),
+                    h("dt", "Show the standard"),
+                    h("dd", "Labels every value on the screen with its field name in the record. Press S to switch it on or off."),
+                    h("dt", "Select a value"),
+                    h("dd", "Marks it, and the same value in the record, like a highlighter. It works the other way too."),
+                    h("dt", notStd("Grey italic with a dashed line", { inline: true })),
+                    h("dd", "Things a real system holds that the standards don't cover, such as case notes and tasks."),
+                    h("dt", h("span", { style: "color:var(--gap)" }, "◆ Open questions")),
+                    h("dd", "Places where the standards are still undecided. We'd like your view on them.")))));
 }
