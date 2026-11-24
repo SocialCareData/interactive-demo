@@ -43,6 +43,7 @@ export function initTrace() {
         if (!st.recordId) return;
         selected = { rec: st.recordId, path: row.getAttribute("data-path"), from: "back" };
         apply(false);
+        announce();
     };
     back.addEventListener("click", fromBack);
     back.addEventListener("keydown", (ev) => {
@@ -71,6 +72,7 @@ export function setXray(on, { persist = true } = {}) {
 export function selectPath(recId, path) {
     if (!recId || !path) return;
     selected = { rec: recId, path, from: "story" };
+    announce();
     const st = backState();
     if (st.recordId !== recId) setBack(recId);
     else apply(true);
@@ -79,6 +81,11 @@ export function selectPath(recId, path) {
         const r = el.getBoundingClientRect();
         if (r.top < 80 || r.bottom > window.innerHeight * 0.6) el.scrollIntoView({ block: "center" });
     }
+}
+
+/** Tell anyone listening (stories) that a value has been selected. */
+function announce() {
+    document.dispatchEvent(new CustomEvent("trace:selected", { detail: { ...selected } }));
 }
 
 export function clearTrace() {
@@ -91,6 +98,7 @@ function selectFromFront(el) {
     const recId = el.getAttribute("data-rec");
     const path = el.getAttribute("data-path");
     selected = { rec: recId, path, from: "front" };
+    announce();
     if (getView() === "screen") setView("split");
     const st = backState();
     if (st.recordId !== recId) {

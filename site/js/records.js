@@ -10,6 +10,7 @@ import {
     rec, resolve, title, recDate, responsesTo, edgesFrom, edgesTo, enumLabel, uiRecord,
     annotationsFor, asList, personName, formalName, KIND_LABEL, route, peopleFor, store, REFERENCE_KINDS,
 } from "./store.js";
+import { timelineStrip } from "./strip.js";
 
 // ------------------------------------------------------------------ shared pieces
 
@@ -30,7 +31,8 @@ function header(r, f, opts = {}) {
             h("div",
                 h("h1", tag(r.kind), h("span", opts.title || title(r))),
                 opts.sub ? h("div.sub", opts.sub) : null),
-            opts.right ? h("div.aside", opts.right) : null),
+            opts.right ? h("div.aside", opts.right) : null,
+            timelineStrip(r)),
         gaps(r));
 }
 

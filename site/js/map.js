@@ -86,7 +86,10 @@ function symbolPath(n) {
 export function renderMap(container, opts = {}) {
     let scope = opts.scope || { type: "all" };
     let showRef = scope.type !== "all";
-    const height = opts.full ? Math.max(480, window.innerHeight - 190) : 440;
+    const storyH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--story-h"), 10) || 0;
+    // A full-page map fills the space between where it starts and the story bar (if there is one).
+    const top = container.getBoundingClientRect().top + 90;
+    const height = opts.full ? Math.max(340, window.innerHeight - top - storyH) : 440;
 
     const wrap = h("div.map-wrap");
     const controls = h("div.map-controls");
@@ -146,9 +149,9 @@ export function renderMap(container, opts = {}) {
             .randomSource(seeded(7))
             .force("link", d3.forceLink(links).id((d) => d.id).distance((l) => (REFERENCE_KINDS.has(l.target.kind) ? 70 : 45)).strength(0.5))
             .force("charge", d3.forceManyBody().strength((n) => (n.kind === "person" ? -260 : -90)))
-            .force("x", d3.forceX(0).strength(0.04))
-            .force("y", d3.forceY(0).strength(0.06))
-            .force("collide", d3.forceCollide((n) => radius(n) + 3))
+            .force("x", d3.forceX(0).strength(0.025 * Math.min(1, height / width)))
+            .force("y", d3.forceY(0).strength(0.09))
+            .force("collide", d3.forceCollide((n) => radius(n) + (n.kind === "person" || n.kind === "external" ? 26 : 4)))
             .force("ext", d3.forceRadial((n) => (n.kind === "external" ? Math.min(width, height) * 0.48 : 0)).strength((n) => (n.kind === "external" ? 0.3 : 0)))
             .stop();
         for (let i = 0; i < 360; i++) sim.tick();

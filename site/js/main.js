@@ -2,13 +2,14 @@
 //   #/                       welcome: where to start
 //   #/people                 the people the council supports (the CMS home)
 //   #/directory              services, professionals and organisations
-//   #/person/<council id>    person record and chronology
+//   #/person/<council id>    person record and timeline (add /timeline to open at the timeline)
 //   #/record/<kind>/<id>     any record
 //   #/system/camhs[/<id>]    the second system: Anytown CAMHS
 //   #/story/<journey>/<n>    a step in a guided journey (opens one of the pages above)
-//   #/map  #/gaps  #/about
+//   #/map[/<council id>]     every record, or one person's, as a map
+//   #/gaps  #/about
 
-import { loadBundle, recByLocal, store } from "./store.js";
+import { loadBundle, recByLocal, store, title } from "./store.js";
 import { h } from "./ui.js";
 import { renderRecord } from "./records.js";
 import {
@@ -34,6 +35,8 @@ function renderPage(path) {
     let view;
     let nav = "people";
     let full = false;
+    let focus = null;
+    let mapScope = { type: "all" };
 
     if (!section) {
         view = welcomeView();
@@ -55,6 +58,7 @@ function renderPage(path) {
         if (p) {
             view = personView(p);
             setBack(p.id, { mapScope: { type: "person", id: p.id } });
+            if (b === "timeline") focus = ".timeline-sec";
         } else view = notFound(`person ${a}`);
     } else if (section === "record") {
         const r = recByLocal(a, b);
@@ -78,8 +82,10 @@ function renderPage(path) {
         nav = "map";
         full = true;
         setBack(null);
+        const person = a ? recByLocal("person", a) : null;
+        mapScope = person ? { type: "person", id: person.id } : { type: "all" };
         view = h("div",
-            h("div.page-head", h("h1", "Every record, and how they link"),
+            h("div.page-head", h("h1", person ? `${person.data.name ? title(person) : a}: records and how they link` : "Every record, and how they link"),
                 h("p", "Each point is a record. Each line is an identifier in one record pointing at another, across organisations. Select a point to open its record.")),
             h("div#fullmap"));
     } else if (section === "gaps") {
@@ -99,15 +105,14 @@ function renderPage(path) {
     document.body.classList.toggle("page-full", full);
     front.replaceChildren(view);
     const fullmap = front.querySelector("#fullmap");
-    if (fullmap) renderMap(fullmap, { scope: { type: "all" }, full: true });
+    if (fullmap) renderMap(fullmap, { scope: mapScope, full: true });
     // The Explained tab orders rows by what the screen shows, so re-render it once the screen exists.
     renderBack();
-    return nav;
+    return { nav, focus };
 }
 
 function route() {
     const hash = location.hash.replace(/^#\/?/, "");
-    let nav;
     if (hash.startsWith("story/")) {
         const [, jid, n] = hash.split("/");
         const step = enterStep(jid, Number(n));
@@ -115,22 +120,22 @@ function route() {
             front.replaceChildren(notFound(`step ${n} in “${jid}”`));
             return;
         }
-        nav = renderPage(step.route.replace(/^#\/?/, ""));
-        afterRender(nav);
+        afterRender(renderPage(step.route.replace(/^#\/?/, "")));
         applyStep(step);
         return;
     }
-    nav = renderPage(hash);
-    afterRender(nav);
+    afterRender(renderPage(hash));
     leftStory();
 }
 
-function afterRender(nav) {
+function afterRender({ nav, focus }) {
     for (const a of document.querySelectorAll(".appnav a")) {
         if (a.dataset.nav === nav) a.setAttribute("aria-current", "page");
         else a.removeAttribute("aria-current");
     }
     window.scrollTo(0, 0);
+    const focusEl = focus && front.querySelector(focus);
+    if (focusEl) focusEl.scrollIntoView({ block: "start" });
     const heading = front.querySelector("h1, h2");
     let t = "Example CMS";
     if (heading) {

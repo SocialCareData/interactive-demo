@@ -426,34 +426,6 @@ export function journeys() {
     return store.bundle.journeys || [];
 }
 
-/** One real value shown three ways: the council's screen, CAMHS's screen, and the record. */
-function specimen() {
-    const r = allRecords().find((x) => x.kind === "request" && asList(x.data.recipient).some((y) => y.value === "SVC-CAMHS"));
-    if (!r) return null;
-    const subj = r.data.subject;
-    const person = resolve(subj)?.record;
-    const name = person ? title(person) : subj.value;
-    const json = JSON.stringify({ subject: subj }, null, 2).split("\n").slice(1, -1).map((l) => l.slice(2));
-    const mark = (text) => h("span.hl-mark", text);
-    return h("figure.specimen",
-        h("div.specimen-row",
-            h("div.frame",
-                h("div.frame-head", h("span", "Example CMS, at the council"), h("a", { href: route(r) }, "Open")),
-                fields([["Request", "To Anytown CAMHS"], ["About", h("span", name, h("br"), "NHS number ", mark(formatNhs(subj.value)))]])),
-            h("div.frame.camhs",
-                h("div.frame-head", h("span", "Anytown CAMHS, another supplier"), h("a", { href: `#/system/camhs/${r.localId}` }, "Open")),
-                h("div", { style: "font-variant:small-caps;color:#6f2d78" }, "NHS number"),
-                h("div", mark(formatNhs(subj.value))),
-                h("div", { style: "font-variant:small-caps;color:#6f2d78;margin-top:.4rem" }, "Patient"),
-                h("div", name)),
-            h("div.frame.record",
-                h("div.frame-head", h("span", "The record both systems read")),
-                json.map((line) => h("div", line.includes(`"value"`) ? mark(line) : line)))),
-        h("figcaption",
-            "Riley's NHS number in a request from the council to CAMHS. Each system shows it its own way, on its own screen. ",
-            "Underneath, both read the same record, written to the standard."));
-}
-
 export function welcomeView() {
     const list = journeys();
     const tour = list.find((j) => j.id === "tour");
@@ -465,7 +437,6 @@ export function welcomeView() {
             "Example CMS is a made-up case management system for a made-up council, Anytown. ",
             "It holds the records of three people, written to the Social Care Interoperability Standards. ",
             "Wherever you go, you can see a system's screen and the record underneath it."),
-        specimen(),
         h("div.starts",
             h("div",
                 h("h2", "Where to start"),

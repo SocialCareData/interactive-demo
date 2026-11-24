@@ -45,13 +45,18 @@ Add a step to `data/journeys.yaml`:
   view: split                               # screen | split | data
   tab: data                                 # data | explained | map
   xray: false                               # label values with their field names
-  trace: /subject                           # JSON pointer to highlight in the page's record
+  task: Select who the request is about.    # optional: the viewer selects the value at `trace`
+  trace: /subject                           # JSON pointer in the page's record
   gap: G12                                  # open question to open on the page
   text: >
     Two or three plain sentences on what to notice.
 ```
 
 Then run `python tools/validate.py && python tools/build.py`. Steps are shared as links like `#/story/tour/6`.
+
+Stories follow a person's timeline. On each step, the link to the next step (a timeline entry, a point in
+the timeline strip at the top of a record, or the other system's view) is marked "Next". A step with a
+`task` asks the viewer to select a value; "Show me", or the → key, does it for them.
 
 ## Updating the standard
 

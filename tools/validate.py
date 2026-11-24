@@ -320,7 +320,8 @@ def check_targets(records) -> list[str]:
 ROUTE_RE = re.compile(
     r"^#/(?:"
     r"(?P<page>people|directory|front-door|map|gaps|about)?"
-    r"|person/(?P<person>[\w-]+)"
+    r"|person/(?P<person>[\w-]+)(?:/timeline)?"
+    r"|map/(?P<mapperson>[\w-]+)"
     r"|record/(?P<kind>[\w-]+)/(?P<local>[\w-]+)"
     r"|system/camhs(?:/(?P<camhs>[\w-]+))?"
     r")$"
@@ -367,6 +368,9 @@ def check_journeys(records) -> list[str]:
                 problems.append(f"{where}: route {step.get('route')!r} is not a page in the demo")
             elif m.group("person"):
                 page_record = f"{base}/person/{m.group('person')}"
+            elif m.group("mapperson"):
+                if f"{base}/person/{m.group('mapperson')}" not in by_id:
+                    problems.append(f"{where}: no person {m.group('mapperson')} to map")
             elif m.group("kind"):
                 page_record = f"{base}/{m.group('kind')}/{m.group('local')}"
             elif m.group("camhs"):
@@ -379,6 +383,8 @@ def check_journeys(records) -> list[str]:
                 problems.append(f"{where}: tab must be one of {sorted(TABS)}")
             if step.get("gap") and step["gap"] not in gaps:
                 problems.append(f"{where}: no open question {step['gap']}")
+            if step.get("task") and not step.get("trace"):
+                problems.append(f"{where}: a task needs a trace: the value the viewer is asked to select")
             trace = step.get("trace")
             if trace:
                 target = step.get("record") or page_record
