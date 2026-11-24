@@ -45,4 +45,4 @@ If a record stops validating because the standard changed, fix the record. If th
 
 ## Deployment
 
-`.github/workflows/pages.yml` validates, builds and deploys `site/` to GitHub Pages on every push to `main`. All asset paths are relative, so the site works under `/socialcare-demo/`.
+`.github/workflows/pages.yml` validates, builds and deploys `site/` to GitHub Pages on every push to `main`. All asset paths are relative, so the site works under `/interactive-demo/` (https://socialcaredata.github.io/interactive-demo/).

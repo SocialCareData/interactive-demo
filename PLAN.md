@@ -49,12 +49,6 @@ PUB06 is being changed in PR #110 (branch `referrals_iteration`), which will mer
 
 ## 2. Working rules for the implementer
 
-**Starting point:** `C:\dev\socialcare-demo` contains only this `PLAN.md`. It isn't yet a git repository, and nothing from the standard has been copied in. The first steps are:
-1. `git init`;
-2. write `tools/sync_standard.py` (§6.1) and run it, which fetches the schemas from GitHub, so no local checkout of the standard is needed;
-3. set up the venv;
-4. get `tools/validate.py` building the shapes before writing any data.
-
 - Everything happens in **one directory**: `C:\dev\socialcare-demo` (this repo). It is outside OneDrive on purpose, because OneDrive and Docker bind mounts have caused painfully slow builds. Don't work in the standard repo's checkout. Everything needed from it is vendored by `tools/sync_standard.py` (§6.1).
 - **Never edit `vendor/`.** If the standard looks wrong or awkward, *don't work around it silently*. Record it as a gap annotation (§8) and tell Neil.
 - No server-side code. The output is a static site in `site/`.
