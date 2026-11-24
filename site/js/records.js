@@ -8,7 +8,7 @@ import {
 } from "./ui.js";
 import {
     rec, resolve, title, recDate, responsesTo, edgesFrom, edgesTo, enumLabel, uiRecord,
-    annotationsFor, asList, personName, formalName, KIND_LABEL, route, peopleFor, store,
+    annotationsFor, asList, personName, formalName, KIND_LABEL, route, peopleFor, store, REFERENCE_KINDS,
 } from "./store.js";
 
 // ------------------------------------------------------------------ shared pieces
@@ -23,7 +23,8 @@ function header(r, f, opts = {}) {
     const local = uiRecord(r.id);
     return frag(
         h("div.cms-head",
-            h("div.crumbs", h("a", { href: "#/front-door" }, "Front door"), " › ",
+            h("div.crumbs",
+                REFERENCE_KINDS.has(r.kind) ? h("a", { href: "#/directory" }, "Directory") : h("a", { href: "#/people" }, "People"), " › ",
                 people.length ? frag(h("a", { href: route(people[0]) }, title(people[0])), " › ") : null,
                 `${KIND_LABEL[r.kind]} ${r.localId}`),
             h("div",

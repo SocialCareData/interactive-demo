@@ -319,7 +319,7 @@ def check_targets(records) -> list[str]:
 
 ROUTE_RE = re.compile(
     r"^#/(?:"
-    r"(?P<page>front-door|map|gaps|about)?"
+    r"(?P<page>people|directory|front-door|map|gaps|about)?"
     r"|person/(?P<person>[\w-]+)"
     r"|record/(?P<kind>[\w-]+)/(?P<local>[\w-]+)"
     r"|system/camhs(?:/(?P<camhs>[\w-]+))?"

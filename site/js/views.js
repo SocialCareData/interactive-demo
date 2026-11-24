@@ -1,4 +1,4 @@
-// Page-level views: home (front door + caseload), person, CAMHS second system, gaps, about.
+// Page-level views: welcome, people (the CMS home), directory, person and timeline, CAMHS second system, gaps, about.
 
 import {
     h, frag, fielder, fmtDate, fmtDateTime, fmtLong, age, tag, recLink, identLink, notStd, gapMarker, card, fields,
@@ -50,67 +50,104 @@ export function summary(r) {
     }
 }
 
-// ------------------------------------------------------------------ home
+// ------------------------------------------------------------------ people (the CMS home)
 
-export function frontDoorView() {
-    const intake = sortByDate(allRecords().filter((r) => r.kind === "referral" || r.kind === "qoc"), recDate, true);
-    const people = allRecords().filter((r) => r.kind === "person" && r.profile === "subject-of-care");
+function openEpisodes(p) {
+    return sortByDate(recordsAboutPerson(p.id).filter((r) => r.kind === "episode" && !recEnd(r)), recDate);
+}
 
-    const queue = h("table.list",
-        h("thead", h("tr", h("th", "Received"), h("th", "Type"), h("th", "About"), h("th", "From"), h("th", "Concern"), h("th", "Status"))),
-        h("tbody", intake.map((r) => {
-            const f = fielder(r);
-            const d = r.data;
-            const responses = responsesTo(r);
-            const last = responses[responses.length - 1];
-            const subj = asList(d.subject)[0];
-            const about = peopleFor(r);
-            const isQoc = r.kind === "qoc";
-            const from = d.referrer ? (d.referrer.professional ? formalName([d.referrer.professional.name])
-                : d.referrer.professionalId ? nameOf(d.referrer.professionalId)
-                    : d.referrer.person ? personName(d.referrer.person.name) : "") : "Anonymous";
-            return h("tr",
-                h("td", f.v("/dateCompleted", fmtDate(d.dateCompleted))),
-                h("td", h("a", { href: route(r) }, isQoc ? "Quality-of-care concern" : enumLabel("ReferralTypeCode", d.type))),
-                h("td", about.length ? about.map((p) => recLink(p, null, { noTag: true }))
-                    : subj ? personName(subj.name) || "Name not known" : ""),
-                h("td", from, d.referrer ? h("div.small.muted", enumLabel("ReferrerTypeCode", d.referrer.referrerType)) : null),
-                h("td", asList(d.concern).map((c, i) => c.concernType === "UNASSIGNED"
-                    ? h("span.flag.warn", f.v(`/concern/${i}/concernType`, "Concern type: Unassigned, awaiting triage", { code: true }))
-                    : h("div", f.v(`/concern/${i}/concernType`, enumLabel(isQoc ? "QocConcernCode" : "ConcernCode", c.concernType), { code: true })))),
-                h("td", last ? h("span", enumLabel("ResponseStatusCode", last.data.status), h("div.small.muted", fmtDate(recDate(last))))
-                    : h("span.flag.warn", isQoc ? "Awaiting triage" : "New")));
-        })));
+/** "Mother of Riley Hart": how a connected person relates to the subjects of care who list them. */
+function connectedTo(c) {
+    const out = [];
+    for (const e of edgesTo(c.id)) {
+        const from = rec(e.from);
+        if (!from || from.kind !== "person" || from.profile !== "subject-of-care") continue;
+        for (const rp of asList(from.data.relatedPerson)) {
+            const res = resolve(rp.identifier);
+            if (res && res.record && res.record.id === c.id) {
+                out.push(h("span", asList(rp.relationship).map((code) => enumLabel("PersonRelationshipCode", code)).join(", "),
+                    " of ", recLink(from, null, { noTag: true })));
+            }
+        }
+    }
+    return out;
+}
 
-    const caseload = h("table.list",
-        h("thead", h("tr", h("th", "Name"), h("th", "Age"), h("th", "NHS number"), h("th", "Open episodes"), h("th", "Allocated worker"))),
-        h("tbody", people.map((p) => {
-            const open = recordsAboutPerson(p.id).filter((r) => r.kind === "episode" && !recEnd(r));
-            const local = uiPerson(councilId(p));
-            return h("tr",
-                h("td", recLink(p, null, { noTag: true })),
-                h("td", age(p.data.dateOfBirth && p.data.dateOfBirth.date)),
-                h("td", formatNhs(nhsNumber(p))),
-                h("td", open.length ? open.map((e) => h("div", recLink(e))) : h("span.muted", "None")),
-                h("td", local && local.allocatedWorker ? notStd(`${local.allocatedWorker} (${local.team})`, { inline: true }) : ""));
-        })));
-
-    const dir = (kind) => allRecords().filter((r) => r.kind === kind).sort((a, b) => title(a).localeCompare(title(b)));
-    const dirGaps = annotations().filter((a) => asList(a.views).includes("directory"));
+export function peopleView() {
+    // People with a timeline first, then youngest first: Riley, Jordan, Margaret, then Mia.
+    const dobOf = (r) => (r.data.dateOfBirth && r.data.dateOfBirth.date) || "";
+    const people = allRecords().filter((r) => r.kind === "person" && r.profile === "subject-of-care")
+        .sort((a, b) => (recordsAboutPerson(b.id).length > 0) - (recordsAboutPerson(a.id).length > 0)
+            || dobOf(b).localeCompare(dobOf(a)));
+    const connected = allRecords().filter((r) => r.kind === "person" && r.profile === "connected")
+        .sort((a, b) => title(a).localeCompare(title(b)));
 
     return frag(
-        h("div.cms-head",
-            h("div", h("h1", "Front door and caseload"),
-                h("div.sub", `Anytown Borough Council, ${fmtLong(SNAPSHOT)}`))),
-        card("Front door: referrals and concerns received", h("div.table-wrap", queue),
-            h("p.small.muted", "Status comes from the latest Response record for each referral or concern.")),
-        card("People: subjects of care", h("div.table-wrap", caseload)),
-        card("Directory",
-            h("div.grid-2",
-                h("div", h("h3", "Organisations"), h("ul.links-list", dir("organisation").map((r) => h("li", recLink(r)))),
-                    h("h3", "Professionals"), h("ul.links-list", dir("professional").map((r) => h("li", recLink(r))))),
-                h("div", h("h3", "Services"), h("ul.links-list", dir("service").map((r) => h("li", recLink(r)))))),
-            dirGaps.map((a) => gapMarker(a))));
+        h("div.page-head",
+            h("h1", "People"),
+            h("p", `The people Anytown Borough Council is supporting, as at ${fmtLong(SNAPSHOT)}. Open a person to see their record, and everything that has happened to them in order.`)),
+        h("ul.people-list", people.map((p) => {
+            const d = p.data;
+            const dob = d.dateOfBirth && d.dateOfBirth.date;
+            const addr = asList(d.address)[0];
+            const open = openEpisodes(p);
+            const latest = sortByDate(recordsAboutPerson(p.id).filter((r) => !open.includes(r)), recDate, true)[0];
+            const family = asList(d.relatedPerson).map((rp) => {
+                const res = resolve(rp.identifier);
+                return res && res.record ? h("span", recLink(res.record, null, { noTag: true }),
+                    h("span.muted", `(${asList(rp.relationship).map((c) => enumLabel("PersonRelationshipCode", c).toLowerCase()).join(", ")})`)) : null;
+            }).filter(Boolean);
+            const local = uiPerson(councilId(p));
+            return h("li",
+                h("h2", h("a", { href: route(p) }, title(p)), h("span.age", `age ${age(dob)}`)),
+                h("p.facts",
+                    `Born ${fmtDate(dob)}. NHS number ${formatNhs(nhsNumber(p))}.`,
+                    addr ? ` ${addr.line1}, ${addr.city}.` : ""),
+                open.length ? h("p", h("span.muted", "Open now: "),
+                    open.map((e, i) => h("span", i ? "; " : "", h("a", { href: route(e) }, enumLabel("EpisodeCode", asList(e.data.type)[0])),
+                        ` since ${fmtDate(recDate(e))}`))) : null,
+                family.length ? h("p", h("span.muted", "Family: "), family) : null,
+                latest ? h("p", h("span.muted", "Latest: "), h("a", { href: route(latest) }, summary(latest)), `, ${fmtDate(recDate(latest))}`) : null,
+                local && local.allocatedWorker ? notStd(`Allocated to ${local.allocatedWorker}, ${local.team}`, { inline: true }) : null);
+        })),
+        h("section.sec",
+            h("h2", "Family and other connected people"),
+            h("p.muted", "Connected people have thinner records: the standard needs only a name."),
+            h("ul.links-list", connected.map((c) => h("li", recLink(c, null, { noTag: true }), h("span.muted", " "), connectedTo(c))))),
+        h("p", "Services, professionals and organisations are in the ", h("a", { href: "#/directory" }, "directory"), "."));
+}
+
+// ------------------------------------------------------------------ directory
+
+export function directoryView() {
+    const of = (kind) => allRecords().filter((r) => r.kind === kind).sort((a, b) => title(a).localeCompare(title(b)));
+    const partOf = (r) => asList(r.data.relatedOrganisation).map((x) => h("div", identLink(x, { noTag: true })));
+    const dirGaps = annotations().filter((a) => asList(a.views).includes("directory"));
+    return frag(
+        h("div.page-head",
+            h("h1", "Directory"),
+            h("p", "The services, professionals and organisations that appear in people's records. Records point at these by identifier, so each one is written down once.")),
+        card("Services",
+            h("div.table-wrap", h("table.list",
+                h("thead", h("tr", h("th", "Service"), h("th", "Type"), h("th", "Part of"))),
+                h("tbody", of("service").map((r) => h("tr",
+                    h("td", h("a", { href: route(r) }, r.data.name)),
+                    h("td", asList(r.data.type).map((t) => enumLabel("ServiceCode", t)).join(", ")),
+                    h("td", partOf(r).length ? partOf(r) : h("span.muted", "No organisation"))))))),
+            dirGaps.map((a) => gapMarker(a))),
+        card("Professionals",
+            h("div.table-wrap", h("table.list",
+                h("thead", h("tr", h("th", "Name"), h("th", "Role"), h("th", "Service"))),
+                h("tbody", of("professional").map((r) => h("tr",
+                    h("td", h("a", { href: route(r) }, title(r))),
+                    h("td", asList(r.data.role).join(", ")),
+                    h("td", asList(r.data.relatedService).map((x) => h("div", identLink(x, { noTag: true })))))))))),
+        card("Organisations",
+            h("div.table-wrap", h("table.list",
+                h("thead", h("tr", h("th", "Organisation"), h("th", "Type"))),
+                h("tbody", of("organisation").map((r) => h("tr",
+                    h("td", h("a", { href: route(r) }, r.data.name)),
+                    h("td", asList(r.data.type).map((t) => enumLabel("OrganisationCode", t)).join(", ")))))))));
 }
 
 // ------------------------------------------------------------------ person
@@ -123,31 +160,33 @@ export function personView(p) {
     const dob = d.dateOfBirth && d.dateOfBirth.date;
     const isSubject = p.profile === "subject-of-care";
     const records = isSubject ? recordsAboutPerson(p.id) : [];
+    const first = (personName(d.name) || "").split(" ")[0];
 
-    // Relationships: outgoing relatedPerson, plus people who list this person.
     const rels = asList(d.relatedPerson).map((rp, i) => h("li",
         f.v(`/relatedPerson/${i}/identifier`, identLink(rp.identifier), { key: "identifier" }), " ",
         asList(rp.relationship).map((c, j) => f.v(`/relatedPerson/${i}/relationship/${j}`, h("span.small.muted", enumLabel("PersonRelationshipCode", c)), { code: true }))));
 
-    // Involved professionals and services, derived from the person's records.
+    // Involved professionals and services, worked out from the person's records.
     const involved = new Map();
     for (const r of records) {
         for (const e of edgesFrom(r.id)) {
             const t = rec(e.to);
             if (!t || !["professional", "service", "organisation"].includes(t.kind)) continue;
-            if (!involved.has(t.id)) involved.set(t.id, { r: t, via: new Set() });
-            involved.get(t.id).via.add(r.kind);
+            if (!involved.has(t.id)) involved.set(t.id, { r: t });
         }
     }
 
+    const ids = asList(d.identifier).map((id, i) => h("span", i ? " " : "",
+        f.v(`/identifier/${i}/value`, id.system.includes("nhs-number") ? `NHS number ${formatNhs(id.value)}.` : `Council ID ${id.value}.`)));
+
     return frag(
         h("div.cms-head",
-            h("div.crumbs", h("a", { href: "#/front-door" }, "Front door"), " › ", isSubject ? "Subject of care" : "Connected person"),
+            h("div.crumbs", h("a", { href: "#/people" }, "People"), " › ", isSubject ? "Record" : "Connected person"),
             h("div",
-                h("h1", tag("person"), " ", f.v("/name/0", personName(d.name))),
+                h("h1", tag("person"), f.v("/name/0", personName(d.name))),
                 h("div.sub",
-                    asList(d.identifier).map((id, i) => h("span", i ? ", " : "",
-                        f.v(`/identifier/${i}/value`, id.system.includes("nhs-number") ? `NHS ${formatNhs(id.value)}` : `Council ID ${id.value}`))))),
+                    dob ? h("span", "Born ", f.v("/dateOfBirth/date", fmtDate(dob)), ` (age ${age(dob)}). `) : null,
+                    ids)),
             local.allocatedWorker || local.localStatus || local.lastViewed || asList(local.flags).length
                 ? h("div.aside", notStd(h("div",
                     local.allocatedWorker ? h("div", h("strong", "Allocated: "), `${local.allocatedWorker}, ${local.team}`) : null,
@@ -155,29 +194,27 @@ export function personView(p) {
                     asList(local.flags).length ? h("div", h("strong", "Flags: "), asList(local.flags).map((fl) => h(`span.flag.${fl.level || "neutral"}`, { style: "margin-right:.3rem" }, fl.text))) : null,
                     local.lastViewed ? h("div.small", `Last viewed by ${local.lastViewed}`) : null)))
                 : null),
+        isSubject ? timeline(p, records, local) : null,
         h("div.grid-2",
-            card("Personal details", fields([
+            card(isSubject ? `About ${first}` : "Personal details", fields([
                 ["Full name", f.v("/name/0", formalName(d.name))],
                 ["Date of birth", dob ? h("span", f.v("/dateOfBirth/date", fmtDate(dob)), " ",
                     f.v("/dateOfBirth/accuracyIndicator", h("span.small.muted", accuracy(d.dateOfBirth.accuracyIndicator)), { code: true })) : null],
-                ["Age", dob ? `${age(dob)}` : null],
                 ["Gender", d.genderCode ? f.v("/genderCode", enumLabel("GenderCode", d.genderCode), { code: true }) : null],
                 ["Ethnicity", d.ethnicityCode ? f.v("/ethnicityCode", enumLabel("EthnicityCode", d.ethnicityCode), { code: true }) : null],
                 ["Address", asList(d.address).map((a, i) => f.v(`/address/${i}`, [a.line1, a.line2, a.city, a.postcode].filter(Boolean).join(", "), { block: true }))],
                 ["Contact", asList(d.contact).map((c, i) => f.v(`/contact/${i}`, [c.name, ...asList(c.telephone), ...asList(c.email)].filter(Boolean).join(", "), { block: true }))],
                 ["Communication needs", asList(d.communication).map((c, i) => f.v(`/communication/${i}/specialCommunicationNeeds`, c.specialCommunicationNeeds, { block: true }))],
                 ["Deceased", d.isDeceased !== undefined ? f.v("/isDeceased", d.isDeceased ? "Yes" : "No") : null],
-            ]), isSubject ? null : h("p.small.muted", "A connected person: the standard requires only a name.")),
+            ]), isSubject ? null : h("p.small.muted", "A connected person: the standard needs only a name.")),
             h("div",
-                card("Relationships", rels.length ? h("ul.links-list", rels) : h("p.muted", "None recorded.")),
-                isSubject ? card("Involved professionals and services",
-                    involved.size ? h("ul.links-list", [...involved.values()].map((x) => h("li", recLink(x.r),
-                        h("span.small.muted", ` via ${[...x.via].map((k) => KIND_LABEL[k].toLowerCase()).join(", ")}`))))
+                card("Family and relationships", rels.length ? h("ul.links-list", rels) : h("p.muted", "None recorded.")),
+                isSubject ? card("Professionals and services involved",
+                    involved.size ? h("ul.links-list", [...involved.values()].map((x) => h("li", recLink(x.r))))
                         : h("p.muted", "None."),
-                    h("p.small.muted", "Worked out from the records below, not stored on the person.")) : null,
+                    h("p.small.muted", "Worked out from the records in the timeline, not stored on the person.")) : null,
                 asList(local.tasks).length ? card("Tasks", notStd(h("ul", asList(local.tasks).map((t) =>
-                    h("li", h("strong", fmtDate(String(t.due))), ` ${t.text} (${t.owner})`))))) : null)),
-        isSubject ? chronology(p, records, local) : null);
+                    h("li", h("strong", fmtDate(String(t.due))), ` ${t.text} (${t.owner})`))))) : null)));
 }
 
 function accuracy(code) {
@@ -187,27 +224,55 @@ function accuracy(code) {
 }
 
 const FILTER_KINDS = ["referral", "qoc", "response", "request", "episode", "life-event", "assessment", "plan", "local"];
+const MONTH = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric", timeZone: "Europe/London" });
+const DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "Europe/London" });
 
-function chronology(p, records, local) {
+/** A flag beside referrals and concerns that still need something doing. */
+function intakeStatus(r) {
+    if (r.kind !== "referral" && r.kind !== "qoc" && r.kind !== "request") return null;
+    if (asList(r.data.concern).some((c) => c.concernType === "UNASSIGNED")) return h("span.flag.warn", "Concern type unassigned: awaiting triage");
+    if (!responsesTo(r).length) return h("span.flag.neutral", "No response yet");
+    return null;
+}
+
+function timeline(p, records, local) {
     const rows = records.map((r) => ({ date: recDate(r), kind: r.kind, r }));
     for (const n of asList(local.notes)) rows.push({ date: String(n.date), kind: "local", note: n });
     rows.sort((a, b) => (a.date || "").localeCompare(b.date || ""));
     const present = FILTER_KINDS.filter((k) => rows.some((x) => x.kind === k));
     const active = new Set(present);
 
-    const tbody = h("tbody");
+    const list = h("div.timeline");
     function draw() {
-        tbody.replaceChildren(...rows.filter((x) => active.has(x.kind)).map((x) => x.note
-            ? h("tr.not-std-row",
-                h("td", fmtDate(x.date)), h("td", tag("local", x.note.type)),
-                h("td", h("strong", `${x.note.type} (${x.note.by}): `), x.note.text, h("span.not-std-label", "Local to your system, not in the standard")))
-            : h("tr",
-                h("td", fmtDate(x.date)), h("td", tag(x.kind)),
-                h("td", h("a", { href: route(x.r) }, summary(x.r)),
-                    annotations().filter((a) => asList(a.views).includes("chronology") && asList(a.records).includes(x.r.id))
-                        .map((a) => gapMarker(a, { inline: true }))))));
+        const out = [];
+        let month = null;
+        for (const x of rows.filter((y) => active.has(y.kind))) {
+            const d = x.date && x.date.length === 10 ? new Date(`${x.date}T12:00:00Z`) : new Date(x.date);
+            const m = MONTH.format(d);
+            if (m !== month) {
+                out.push(h("h3.t-month", m));
+                month = m;
+            }
+            if (x.note) {
+                out.push(h("div.t-item.local",
+                    h("div.t-date", DAY.format(d)),
+                    h("div.t-body",
+                        h("div", tag("local", x.note.type), " ", h("span", x.note.text)),
+                        h("div.t-meta", `${x.note.by}. Local to your system, not in the standard.`))));
+            } else {
+                const status = intakeStatus(x.r);
+                const gaps = annotations().filter((a) => asList(a.views).includes("chronology") && asList(a.records).includes(x.r.id));
+                out.push(h(`div.t-item.k-${x.kind}`,
+                    h("div.t-date", DAY.format(d)),
+                    h("div.t-body",
+                        h("div", tag(x.kind), " ", h("a", { href: route(x.r) }, summary(x.r))),
+                        status ? h("div.t-meta", status) : null,
+                        gaps.map((a) => gapMarker(a, { inline: true })))));
+            }
+        }
+        list.replaceChildren(...out);
     }
-    const filters = h("div.filters", { role: "group", "aria-label": "Filter the chronology by kind" },
+    const filters = h("div.filters", { role: "group", "aria-label": "Show in the timeline" },
         present.map((k) => h("button", {
             "aria-pressed": "true",
             onclick: (ev) => {
@@ -218,11 +283,13 @@ function chronology(p, records, local) {
             },
         }, KIND_LABEL[k])));
     draw();
-    return card("Chronology",
-        h("p.small.muted", "Every record concerning this person, oldest first. Greyed rows are local case notes the standards don't cover."),
-        filters,
-        h("div.table-wrap", h("table.list", h("thead", h("tr", h("th", "Date"), h("th", "Kind"), h("th", "Summary"))), tbody)),
-        annotations().filter((a) => asList(a.views).includes("chronology") && !asList(a.records).length).map((a) => gapMarker(a)));
+    return h("section.sec.timeline-sec",
+        h("h2", "Timeline"),
+        h("div.body",
+            h("p.muted", "Everything that has happened, oldest first. Each entry is a record, from the council or a partner, that points to this person: open one to see how it was recorded. Grey entries are the council's own notes, which the standards don't cover."),
+            filters,
+            list,
+            annotations().filter((a) => asList(a.views).includes("chronology") && !asList(a.records).length).map((a) => gapMarker(a))));
 }
 
 // ------------------------------------------------------------------ second system: Anytown CAMHS
@@ -417,7 +484,8 @@ export function welcomeView() {
                         h("span.count", j.minutes ? `${j.steps.length} steps, about ${j.minutes} minutes` : `${j.steps.length} steps`)))),
                 h("p.explore",
                     h("span.muted", "Or look around:"),
-                    h("a", { href: "#/front-door" }, "the front door"),
+                    h("a", { href: "#/people" }, "the people"),
+                    h("a", { href: "#/directory" }, "the directory"),
                     h("a", { href: "#/map" }, "the map of every record"),
                     h("a", { href: "#/gaps" }, "the open questions"),
                     h("a", { href: "#/about" }, "about this demo"))),

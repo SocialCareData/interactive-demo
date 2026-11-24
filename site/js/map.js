@@ -1,4 +1,4 @@
-// The galaxy map (PLAN.md §5.7): records as stars, resolved identifier references as lanes.
+// The map (PLAN.md §5.7): records as points, resolved identifier references as lines.
 // d3 v7 is vendored in lib/ and loaded as a global. The layout is settled before it is drawn,
 // so there's no animation (and nothing to switch off for prefers-reduced-motion).
 
@@ -127,10 +127,10 @@ export function renderMap(container, opts = {}) {
         });
         const ref = h("input", { type: "checkbox", checked: showRef });
         ref.addEventListener("change", () => { showRef = ref.checked; draw(); });
-        controls.replaceChildren(
+        controls.replaceChildren(...[
             h("label", "Show ", sel),
             h("label", ref, "Directory (organisations, services, professionals)"),
-            opts.full ? null : h("a", { href: "#/map" }, "Open the full map"));
+            opts.full ? null : h("a", { href: "#/map" }, "Open the full map")].filter(Boolean));
     }
 
     function draw() {
@@ -155,10 +155,6 @@ export function renderMap(container, opts = {}) {
 
         const svg = d3.create("svg").attr("viewBox", [-width / 2, -height / 2, width, height]).attr("role", "img")
             .attr("aria-label", `Map of ${nodes.length} records and ${links.length} links between them`);
-        const stars = seeded(3);
-        svg.append("g").selectAll("circle").data(d3.range(140)).join("circle")
-            .attr("cx", () => (stars() - 0.5) * width * 2).attr("cy", () => (stars() - 0.5) * height * 2)
-            .attr("r", () => stars() * 0.9 + 0.2).attr("fill", "rgba(255,255,255,0.35)");
         const g = svg.append("g");
 
         const link = g.append("g").selectAll("line").data(links).join("line")
@@ -183,10 +179,10 @@ export function renderMap(container, opts = {}) {
         node.append("path")
             .attr("d", symbolPath)
             .attr("fill", (n) => MODULE_COLOUR[n.module] || "#999")
-            .attr("fill-opacity", (n) => (n.kind === "external" ? 0.35 : REFERENCE_KINDS.has(n.kind) ? 0.6 : 0.95))
-            .attr("stroke", (n) => (n.id === focusId ? "#fff" : n.kind === "external" ? "rgba(255,255,255,.5)" : "rgba(0,0,0,.4)"))
+            .attr("fill-opacity", (n) => (n.kind === "external" ? 0.4 : REFERENCE_KINDS.has(n.kind) ? 0.55 : 1))
+            .attr("stroke", (n) => (n.id === focusId ? "#152336" : n.kind === "external" ? "#6b7480" : "#ffffff"))
             .attr("stroke-dasharray", (n) => (n.kind === "external" ? "2 2" : null))
-            .attr("stroke-width", (n) => (n.id === focusId ? 3 : 1));
+            .attr("stroke-width", (n) => (n.id === focusId ? 2.5 : 1.2));
         node.filter((n) => n.kind === "person" || n.kind === "external" || n.id === focusId)
             .append("text").attr("class", "map-label").attr("x", (n) => radius(n) + 4).attr("y", 3)
             .text((n) => (n.kind === "external" ? `Held elsewhere: ${n.label.length > 26 ? `${n.label.slice(0, 25)}…` : n.label}` : n.label));

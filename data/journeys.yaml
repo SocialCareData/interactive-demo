@@ -13,25 +13,34 @@
 - id: tour
   title: Guided tour
   start: Take the guided tour
-  minutes: 10
+  minutes: 12
   summary: The walkthrough from the session. Three people, two systems, and the questions the standards haven't settled yet.
   steps:
-    - title: The front door
-      route: "#/front-door"
-      tab: map
+    - title: Three people
+      route: "#/people"
       text: >
-        The council's front door: referrals and concerns coming in, newest first. On the right is the same
-        data as the standards see it, here as a map of every record and how they link. The concern at the top
-        hasn't been triaged yet. We'll come back to it.
+        Example CMS holds the records of Riley, who is 9, Jordan, 15, and Margaret, 82, and the people around
+        them. Each person's record brings together everything that has happened to them, from every
+        organisation involved. We'll start with Riley.
+
+    - title: Riley's record and timeline
+      route: "#/person/P-100231"
+      trace: /identifier/1/value
+      gap: G4
+      text: >
+        On the left is Riley's record as the council's system shows it; on the right, the same record as the
+        standard defines it. Below it is his timeline: every record that points to Riley, from an A&E visit in
+        July to a reply from CAMHS in November. Those records find Riley by identifiers like his NHS number,
+        highlighted. The grey entries are the council's own notes.
 
     - title: A school's referral about Riley
       route: "#/record/referral/REF-2026-0412"
       xray: true
       trace: /concern/0/concernType
       text: >
-        Riley's school is worried he is hungry, unwashed and often absent. With Show the standard switched on,
-        each value on the screen is labelled with its field in the record. The concern is marked on both sides:
-        the screen says Neglect, the record says child.neglect.
+        The first entry from social care is a referral from Riley's school, worried he is hungry, unwashed and
+        often absent. With Show the standard on, each value is labelled with its field in the record. The
+        concern is marked on both sides: the screen says Neglect, the record says child.neglect.
 
     - title: Matched at triage
       route: "#/record/referral/REF-2026-0412"
@@ -42,15 +51,6 @@
         The school gave Riley's name, date of birth and address, but no NHS number. The front door matched
         those details to Riley's existing record and added a reference to it. The Explained tab says what each
         field means, in the order the screen shows them.
-
-    - title: Riley's chronology
-      route: "#/person/P-100231"
-      view: screen
-      gap: G4
-      text: >
-        Everything the council holds about Riley, oldest first: the A&E visit, the referral, responses,
-        requests and episodes. Each line comes from a record that points to Riley by an identifier. The grey
-        rows are case notes and visits, which the standards don't cover.
 
     - title: A Child in Need plan
       route: "#/record/episode/EP-2026-0117"
@@ -83,7 +83,7 @@
       text: >
         CAMHS decides the School Mental Health Support Team is the right service, and says so in a response.
         Its link to the new referral points at a record held by the NHS trust, not the council. On the map
-        it's the dim star at the edge: held elsewhere.
+        it's the faint point at the edge: held elsewhere.
 
     - title: "Jordan: a police referral"
       route: "#/record/referral/REF-2026-0518"
@@ -102,14 +102,22 @@
         It should also say this escalates Jordan's Early Help plan, but a linked record can't point to an
         episode. The council's own note of it is shown in grey.
 
+    - title: "Margaret: an adult's timeline"
+      route: "#/person/P-100457"
+      view: screen
+      text: >
+        Margaret, 82, lives alone with Parkinson's disease. Her timeline runs from a fall in July, through an
+        assessment and a care plan, to a safeguarding referral this week. The concern at the end is flagged:
+        nobody has triaged it yet.
+
     - title: Margaret's Care Act assessment
       route: "#/record/assessment/CNA-2026-0031"
       xray: true
       trace: /assessmentQuestion/7/questionText
       text: >
-        Margaret, 82, lives alone with Parkinson's disease. Most questions in her assessment carry a national
-        question ID, so any system reads the answers the same way. The pen picture is the council's own
-        question, with no ID: shared, but understood locally.
+        Most questions in Margaret's assessment carry a national question ID, so any system reads the answers
+        the same way. The pen picture is the council's own question, with no ID: shared, but understood
+        locally.
 
     - title: Who does what, and when
       route: "#/record/plan/PLAN-2026-0027"
@@ -140,8 +148,8 @@
     - title: Every record, linked
       route: "#/map"
       text: >
-        Each star is a record. Each line is an identifier in one record pointing at another, across the
-        council, the NHS trust and the police. The dim stars at the edge are held elsewhere. Select any star to
+        Each point is a record. Each line is an identifier in one record pointing at another, across the
+        council, the NHS trust and the police. The faint points at the edge are held elsewhere. Select any point to
         open its record.
 
     - title: What we'd like your help with
@@ -155,6 +163,13 @@
   start: Riley Hart, 9
   summary: A school worries about neglect. A Child in Need plan follows, and a request to CAMHS is redirected.
   steps:
+    - title: Riley's record
+      route: "#/person/P-100231"
+      view: screen
+      text: >
+        Riley lives with his mum, Dawn, and his sister, Mia, who is 4. His timeline shows everything that has
+        happened since the summer. We'll open the entries one at a time, in order.
+
     - title: Before anything else
       route: "#/record/life-event/LE-2026-0101"
       trace: /type/0
@@ -195,13 +210,6 @@
       text: >
         The assessment leads to a Child in Need plan, still open today. The council's own case status is shown
         in grey beside the standard's episode.
-
-    - title: Riley's chronology
-      route: "#/person/P-100231"
-      view: screen
-      text: >
-        Everything so far, in date order. Each line is a record pointing at Riley. The grey rows are case notes
-        that stay in the council's system.
 
     - title: A request to CAMHS
       route: "#/record/request/REQ-2026-0301"
@@ -287,12 +295,18 @@
   start: Margaret Ellis, 82
   summary: A Care Act assessment and care plan at home, then a safeguarding referral and a concern about her care.
   steps:
+    - title: Margaret's record
+      route: "#/person/P-100457"
+      view: screen
+      text: >
+        Margaret lives alone and has Parkinson's disease. Her daughter Sarah lives 40 minutes away. Her
+        timeline runs from a fall in July to a safeguarding enquiry opened today.
+
     - title: A fall at home
       route: "#/record/life-event/LE-2026-0098"
       trace: /type/0
       text: >
-        In July, Margaret falls at home and goes to A&E. She lives alone and has Parkinson's disease. Her
-        daughter Sarah lives 40 minutes away.
+        In July, Margaret falls at home and goes to A&E. The hospital shares it as a life event.
 
     - title: Sarah asks for help
       route: "#/record/referral/REF-2026-0365"
@@ -352,9 +366,9 @@
         Sarah raises a concern about the care provider with the council and the regulator. It's linked to the
         nurse's referral as concurrent, and its type is still to be assigned at triage.
 
-    - title: Margaret's chronology
-      route: "#/person/P-100457"
-      view: screen
+    - title: The enquiry opens
+      route: "#/record/episode/EP-2026-0136"
+      trace: /type/0
       text: >
-        Everything in order, from the fall in July to the safeguarding enquiry opened today. The grey rows are
-        the council's own notes and calls.
+        Today, the adult safeguarding team opens a section 42 enquiry. It's the last entry in Margaret's
+        timeline, and it links back to the front door's request for the enquiry.

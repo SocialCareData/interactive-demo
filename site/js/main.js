@@ -1,6 +1,7 @@
 // Example CMS: entry point and hash router.
 //   #/                       welcome: where to start
-//   #/front-door             the council's front door and caseload
+//   #/people                 the people the council supports (the CMS home)
+//   #/directory              services, professionals and organisations
 //   #/person/<council id>    person record and chronology
 //   #/record/<kind>/<id>     any record
 //   #/system/camhs[/<id>]    the second system: Anytown CAMHS
@@ -11,7 +12,7 @@ import { loadBundle, recByLocal, store } from "./store.js";
 import { h } from "./ui.js";
 import { renderRecord } from "./records.js";
 import {
-    frontDoorView, personView, camhsListView, camhsDetailView, gapsView, aboutView, welcomeView,
+    peopleView, directoryView, personView, camhsListView, camhsDetailView, gapsView, aboutView, welcomeView,
 } from "./views.js";
 import { setBack, render as renderBack } from "./back/pane.js";
 import { renderMap } from "./map.js";
@@ -31,7 +32,7 @@ function renderPage(path) {
     document.body.classList.remove("page-full");
     clearTrace();
     let view;
-    let nav = "home";
+    let nav = "people";
     let full = false;
 
     if (!section) {
@@ -39,8 +40,15 @@ function renderPage(path) {
         full = true;
         nav = "welcome";
         setBack(null);
-    } else if (section === "front-door") {
-        view = frontDoorView();
+    } else if (section === "people" || section === "front-door") {
+        view = peopleView();
+        full = true;
+        nav = "people";
+        setBack(null);
+    } else if (section === "directory") {
+        view = directoryView();
+        full = true;
+        nav = "directory";
         setBack(null);
     } else if (section === "person") {
         const p = recByLocal("person", a);
@@ -72,7 +80,7 @@ function renderPage(path) {
         setBack(null);
         view = h("div",
             h("div.page-head", h("h1", "Every record, and how they link"),
-                h("p", "Each star is a record. Each line is an identifier in one record pointing at another, across organisations. Select a star to open its record.")),
+                h("p", "Each point is a record. Each line is an identifier in one record pointing at another, across organisations. Select a point to open its record.")),
             h("div#fullmap"));
     } else if (section === "gaps") {
         view = gapsView();
