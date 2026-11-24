@@ -1,0 +1,24 @@
+{
+  "@context": "https://ns.socialcaredata.io/referrals/context.jsonld",
+  "@id": "https://anytown.example/records/response/RES-2026-0870",
+  "@type": "Response",
+  "identifier": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/response",
+    "value": "RES-2026-0870"
+  },
+  "respondsTo": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/referral",
+    "value": "REF-2026-0412"
+  },
+  "respondsToType": "referral",
+  "responder": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/service",
+    "value": "SVC-CFD"
+  },
+  "dateTimeReceived": "2026-09-16T09:05:00+01:00",
+  "status": "acknowledged",
+  "description": "Referral received by the Children's Front Door and passed to the MASH for review. We will contact you within 3 working days."
+}

@@ -1,0 +1,53 @@
+{
+  "@context": "https://ns.socialcaredata.io/referrals/context.jsonld",
+  "@id": "https://anytown.example/records/request/REQ-2026-0233",
+  "@type": "Request",
+  "identifier": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/request",
+    "value": "REQ-2026-0233"
+  },
+  "subject": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/person",
+    "value": "P-100231"
+  },
+  "referrer": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/professional",
+    "value": "PRF-002"
+  },
+  "recipient": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-AIT"
+    }
+  ],
+  "purpose": "child.CIN",
+  "dateCompleted": "2026-09-18T16:35:00+01:00",
+  "assessmentQuestion": [
+    {
+      "@type": "ReferralAssessmentQuestion",
+      "category": "CONCERN",
+      "questionText": "Reason for request",
+      "answer": [
+        "School referral for neglect: hunger, poor hygiene, absences and a late collection. MASH checks show an A&E attendance for a burn in July and maternal low mood. Please complete a child and family assessment (s17) for Riley and consider Mia."
+      ],
+      "answerType": "String",
+      "required": true
+    }
+  ],
+  "linkedRecord": [
+    {
+      "@type": "LinkedRecord",
+      "recordId": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/referral",
+        "value": "REF-2026-0412"
+      },
+      "recordType": "referral",
+      "recordRelationship": "followupTo"
+    }
+  ]
+}

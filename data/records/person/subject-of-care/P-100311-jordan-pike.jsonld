@@ -1,0 +1,70 @@
+{
+  "@context": "https://ns.socialcaredata.io/person/context.jsonld",
+  "@id": "https://anytown.example/records/person/P-100311",
+  "@type": "Person",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/person",
+      "value": "P-100311"
+    },
+    {
+      "@type": "Identifier",
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "9990000034"
+    }
+  ],
+  "name": [
+    {
+      "@type": "Name",
+      "familyName": [
+        "Pike"
+      ],
+      "givenName": [
+        "Jordan",
+        "Lee"
+      ],
+      "preferredName": "Jordan",
+      "use": "official"
+    }
+  ],
+  "dateOfBirth": {
+    "@type": "PartialDate",
+    "date": "2011-05-20",
+    "accuracyIndicator": "AAA"
+  },
+  "isDeceased": false,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "7 Ferry Row",
+      "city": "Anytown",
+      "postcode": "AT3 8FR",
+      "use": "home"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Mobile",
+      "telephone": [
+        "07700 900417"
+      ]
+    }
+  ],
+  "genderCode": "1",
+  "ethnicityCode": "14",
+  "relatedPerson": [
+    {
+      "@type": "PersonRelationship",
+      "identifier": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100312"
+      },
+      "relationship": [
+        "MTH"
+      ]
+    }
+  ]
+}

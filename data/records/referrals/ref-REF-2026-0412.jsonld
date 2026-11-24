@@ -1,0 +1,175 @@
+{
+  "@context": "https://ns.socialcaredata.io/referrals/context.jsonld",
+  "@id": "https://anytown.example/records/referral/REF-2026-0412",
+  "@type": "Referral",
+  "identifier": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/referral",
+    "value": "REF-2026-0412"
+  },
+  "type": "child.safeguarding",
+  "dateCompleted": "2026-09-15T15:48:00+01:00",
+  "subject": [
+    {
+      "@type": "IntakePerson",
+      "isAwareOfReferral": true,
+      "name": [
+        {
+          "@type": "Name",
+          "givenName": [
+            "Riley"
+          ],
+          "familyName": [
+            "Hart"
+          ]
+        }
+      ],
+      "dateOfBirth": {
+        "@type": "PartialDate",
+        "date": "2017-03-14",
+        "accuracyIndicator": "AAA"
+      },
+      "address": [
+        {
+          "@type": "Address",
+          "line1": "14 Larch Close",
+          "line2": "Rowan Estate",
+          "city": "Anytown",
+          "postcode": "AT3 5LC",
+          "use": "home"
+        }
+      ],
+      "matchedPersonRef": [
+        {
+          "@type": "Identifier",
+          "system": "https://anytown.example/id/person",
+          "value": "P-100231"
+        }
+      ],
+      "notes": "Year 5, Class 5B. Told him I would be talking to people who can help at home."
+    }
+  ],
+  "personalNetwork": [
+    {
+      "@type": "PersonalNetworkMember",
+      "networkPerson": {
+        "@type": "IntakePerson",
+        "isAwareOfReferral": true,
+        "name": [
+          {
+            "@type": "Name",
+            "givenName": [
+              "Dawn"
+            ],
+            "familyName": [
+              "Hart"
+            ]
+          }
+        ],
+        "contact": [
+          {
+            "@type": "Contact",
+            "name": "Mobile",
+            "telephone": [
+              "07700 900233"
+            ]
+          }
+        ],
+        "notes": "Spoke to Mum at pick-up on 15 Sept and told her we were making this referral. She was upset but did not object."
+      },
+      "networkRelationship": "MTH"
+    },
+    {
+      "@type": "PersonalNetworkMember",
+      "networkPerson": {
+        "@type": "IntakePerson",
+        "isAwareOfReferral": false,
+        "name": [
+          {
+            "@type": "Name",
+            "givenName": [
+              "Mia"
+            ],
+            "familyName": [
+              "Hart"
+            ]
+          }
+        ],
+        "notes": "Four years old; attends the school nursery."
+      },
+      "networkRelationship": "SIS"
+    }
+  ],
+  "referrer": {
+    "@type": "ReferrerDetails",
+    "referrerType": "Professional",
+    "professional": {
+      "@type": "Professional",
+      "identifier": [
+        {
+          "@type": "Identifier",
+          "system": "https://anytown.example/id/professional",
+          "value": "PRF-001"
+        }
+      ],
+      "name": {
+        "@type": "Name",
+        "familyName": [
+          "Osei"
+        ],
+        "givenName": [
+          "Kemi"
+        ],
+        "use": "official"
+      },
+      "role": [
+        "Designated Safeguarding Lead",
+        "Deputy Headteacher"
+      ],
+      "workingStatus": true,
+      "contact": {
+        "@type": "Contact",
+        "name": "Work",
+        "email": [
+          "k.osei@anytown-primary.example"
+        ],
+        "telephone": [
+          "01632 960301"
+        ]
+      },
+      "relatedService": [
+        {
+          "@type": "Identifier",
+          "system": "https://anytown.example/id/service",
+          "value": "SVC-APS"
+        }
+      ]
+    }
+  },
+  "concern": [
+    {
+      "@type": "ConcernDetail",
+      "concernType": "child.neglect",
+      "description": "Riley has come into school hungry most mornings since the start of term. He has asked staff for food at breakfast club on 8 of the last 10 days and has been seen taking leftover toast in his bag. His uniform is often unwashed and he has worn the same jumper all week. He has missed 6 days since 3 September with no reason given. On Friday 11 September nobody collected him or his sister from nursery until 5.15pm; we could not reach Mum by phone. Riley said Mum was 'asleep'."
+    }
+  ],
+  "recipient": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-CFD"
+    }
+  ],
+  "assessmentQuestion": [
+    {
+      "@type": "ReferralAssessmentQuestion",
+      "category": "SUBJECT.VOICE_WISHES",
+      "questionText": "What has the child said about what is happening, and what they would like to happen?",
+      "answer": [
+        "Riley told his teacher he is 'always hungry in the mornings' and asked if he could take toast home for Mia. He said Mum is 'tired a lot' and he gets Mia ready for nursery. He said he likes school and does not want to get Mum in trouble."
+      ],
+      "answerType": "String",
+      "required": false
+    }
+  ]
+}

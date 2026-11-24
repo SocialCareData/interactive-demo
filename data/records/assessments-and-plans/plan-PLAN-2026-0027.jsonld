@@ -1,0 +1,221 @@
+{
+  "@context": "https://ns.socialcaredata.io/assessments-and-plans/context.jsonld",
+  "@id": "https://anytown.example/records/plan/PLAN-2026-0027",
+  "@type": "CarePlan",
+  "identifier": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/plan",
+    "value": "PLAN-2026-0027"
+  },
+  "personId": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/person",
+    "value": "P-100457"
+  },
+  "professionalId": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/professional",
+    "value": "PRF-008"
+  },
+  "capacityToCompleteAssessment": true,
+  "advocateRequired": false,
+  "consentToInformationSharing": true,
+  "review": [
+    {
+      "@type": "Review",
+      "isReview": false
+    }
+  ],
+  "dateCompleted": "2026-09-01T11:00:00+01:00",
+  "serviceEpisodeId": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/episode",
+      "value": "EP-2026-0080"
+    }
+  ],
+  "assessmentId": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/assessment",
+    "value": "CNA-2026-0031"
+  },
+  "status": "active",
+  "careComponent": [
+    {
+      "@type": "CareComponent",
+      "actor": [
+        {
+          "@type": "CareActor",
+          "actorType": "Professional services",
+          "actorId": {
+            "@type": "Identifier",
+            "system": "https://anytown.example/id/service",
+            "value": "SVC-BHC"
+          }
+        }
+      ],
+      "time": {
+        "@type": "Timing",
+        "startDateTime": "2026-09-03T08:00:00+01:00",
+        "frequency": {
+          "repeat": {
+            "frequency": 4,
+            "period": 1,
+            "periodUnit": "d",
+            "timeOfDay": [
+              "08:00:00",
+              "12:30:00",
+              "17:00:00",
+              "20:30:00"
+            ]
+          }
+        }
+      },
+      "activity": {
+        "@type": "CareActivity",
+        "activityDescription": "Help to wash and dress in the morning and get ready for bed in the evening. Prompt and help Margaret to take her Parkinson's medication at every visit.",
+        "outcome": "CA-HYGIENE",
+        "directPayment": false
+      }
+    },
+    {
+      "@type": "CareComponent",
+      "actor": [
+        {
+          "@type": "CareActor",
+          "actorType": "Professional services",
+          "actorId": {
+            "@type": "Identifier",
+            "system": "https://anytown.example/id/service",
+            "value": "SVC-BHC"
+          }
+        }
+      ],
+      "time": {
+        "@type": "Timing",
+        "startDateTime": "2026-09-03T08:00:00+01:00",
+        "frequency": {
+          "repeat": {
+            "frequency": 4,
+            "period": 1,
+            "periodUnit": "d",
+            "timeOfDay": [
+              "08:00:00",
+              "12:30:00",
+              "17:00:00",
+              "20:30:00"
+            ]
+          }
+        }
+      },
+      "activity": {
+        "@type": "CareActivity",
+        "activityDescription": "Help to the toilet at each visit and leave the commode by her chair overnight.",
+        "outcome": "CA-TOILET",
+        "directPayment": false
+      }
+    },
+    {
+      "@type": "CareComponent",
+      "actor": [
+        {
+          "@type": "CareActor",
+          "actorType": "Professional services",
+          "actorId": {
+            "@type": "Identifier",
+            "system": "https://anytown.example/id/service",
+            "value": "SVC-BHC"
+          }
+        }
+      ],
+      "time": {
+        "@type": "Timing",
+        "startDateTime": "2026-09-03T08:00:00+01:00",
+        "frequency": {
+          "repeat": {
+            "frequency": 4,
+            "period": 1,
+            "periodUnit": "d",
+            "timeOfDay": [
+              "08:00:00",
+              "12:30:00",
+              "17:00:00",
+              "20:30:00"
+            ]
+          }
+        }
+      },
+      "activity": {
+        "@type": "CareActivity",
+        "activityDescription": "Prepare breakfast, a hot lunch and a teatime meal, and leave a drink and a snack within reach at the evening call.",
+        "outcome": "CA-NUTRITION",
+        "directPayment": false
+      }
+    },
+    {
+      "@type": "CareComponent",
+      "actor": [
+        {
+          "@type": "CareActor",
+          "actorType": "Family",
+          "actorId": {
+            "@type": "Identifier",
+            "system": "https://anytown.example/id/person",
+            "value": "P-100458"
+          }
+        }
+      ],
+      "time": {
+        "@type": "Timing",
+        "startDateTime": "2026-09-06T11:00:00+01:00",
+        "frequency": {
+          "repeat": {
+            "dayOfWeek": [
+              "sun"
+            ],
+            "frequency": 1,
+            "period": 1,
+            "periodUnit": "wk"
+          }
+        }
+      },
+      "activity": {
+        "@type": "CareActivity",
+        "activityDescription": "Sarah visits every Sunday for lunch with the family, does the weekly shop and sorts the post.",
+        "outcome": "CA-RELATIONSHIPS",
+        "directPayment": false
+      }
+    },
+    {
+      "@type": "CareComponent",
+      "actor": [
+        {
+          "@type": "CareActor",
+          "actorType": "Professional services",
+          "actorId": {
+            "@type": "Identifier",
+            "system": "https://anytown.example/id/service",
+            "value": "SVC-TEL"
+          }
+        }
+      ],
+      "time": {
+        "@type": "Timing",
+        "startDateTime": "2026-09-04T00:00:00+01:00",
+        "frequency": {
+          "repeat": {
+            "frequency": 1,
+            "period": 1,
+            "periodUnit": "d"
+          }
+        }
+      },
+      "activity": {
+        "@type": "CareActivity",
+        "activityDescription": "Pendant alarm with 24-hour monitoring by Careline, and a falls detector. Sarah is the first responder.",
+        "outcome": "CA-HOMESAFETY",
+        "directPayment": false
+      }
+    }
+  ]
+}

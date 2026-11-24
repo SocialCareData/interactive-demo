@@ -1,0 +1,106 @@
+{
+  "@context": "https://ns.socialcaredata.io/referrals/context.jsonld",
+  "@id": "https://anytown.example/records/referral/REF-2026-0518",
+  "@type": "Referral",
+  "identifier": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/referral",
+    "value": "REF-2026-0518"
+  },
+  "type": "child.safeguarding",
+  "dateCompleted": "2026-11-08T11:20:00Z",
+  "subject": [
+    {
+      "@type": "IntakePerson",
+      "isAwareOfReferral": true,
+      "identifier": [
+        {
+          "@type": "Identifier",
+          "system": "https://fhir.nhs.uk/Id/nhs-number",
+          "value": "9990000034"
+        }
+      ],
+      "name": [
+        {
+          "@type": "Name",
+          "givenName": [
+            "Jordan"
+          ],
+          "familyName": [
+            "Pike"
+          ]
+        }
+      ],
+      "dateOfBirth": {
+        "@type": "PartialDate",
+        "date": "2011-05-20"
+      },
+      "notes": "Told at the return interview that police would be contacting children's services. Said he 'doesn't need a social worker' but agreed to talk to one."
+    }
+  ],
+  "personalNetwork": [
+    {
+      "@type": "PersonalNetworkMember",
+      "networkPerson": {
+        "@type": "IntakePerson",
+        "isAwareOfReferral": true,
+        "name": [
+          {
+            "@type": "Name",
+            "givenName": [
+              "Carla"
+            ],
+            "familyName": [
+              "Pike"
+            ]
+          }
+        ],
+        "contact": [
+          {
+            "@type": "Contact",
+            "telephone": [
+              "07700 900312"
+            ]
+          }
+        ]
+      },
+      "networkRelationship": "MTH",
+      "networkDescription": "Mother. Reported Jordan missing on all three occasions."
+    }
+  ],
+  "referrer": {
+    "@type": "ReferrerDetails",
+    "referrerType": "Professional",
+    "professionalId": {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/professional",
+      "value": "PRF-005"
+    }
+  },
+  "concern": [
+    {
+      "@type": "ConcernDetail",
+      "concernType": "child.extrafamilialHarm",
+      "description": "Third missing episode since September. Reported missing by mum at 20:15 on 7 Nov. Found at 07:40 on 8 Nov in a flat in Seaholme with two males aged around 19 and 22, not known to the family. Jordan had a new phone that mum did not buy him and £140 in cash. He would not say how he got to Seaholme or who paid. Both males are known to Seaholme police for supplying drugs. Concerned Jordan is being groomed for county lines activity."
+    }
+  ],
+  "recipient": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-CFD"
+    }
+  ],
+  "assessmentQuestion": [
+    {
+      "@type": "ReferralAssessmentQuestion",
+      "category": "RISK_HARM_SAFETY",
+      "questionText": "Is the child at immediate risk of significant harm?",
+      "answer": [
+        "Not immediate. Jordan is home with mum. Risk of further missing episodes and exploitation is high."
+      ],
+      "answerType": "String",
+      "required": true
+    }
+  ]
+}

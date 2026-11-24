@@ -1,0 +1,84 @@
+{
+  "@context": "https://ns.socialcaredata.io/person/context.jsonld",
+  "@id": "https://anytown.example/records/person/P-100457",
+  "@type": "Person",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/person",
+      "value": "P-100457"
+    },
+    {
+      "@type": "Identifier",
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "9990000042"
+    }
+  ],
+  "name": [
+    {
+      "@type": "Name",
+      "familyName": [
+        "Ellis"
+      ],
+      "givenName": [
+        "Margaret",
+        "Rose"
+      ],
+      "preferredName": "Margaret",
+      "use": "official"
+    }
+  ],
+  "dateOfBirth": {
+    "@type": "PartialDate",
+    "date": "1944-02-11",
+    "accuracyIndicator": "AAA"
+  },
+  "isDeceased": false,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "3 Orchard Cottages",
+      "line2": "Eastfield",
+      "city": "Anytown",
+      "postcode": "AT4 6OC",
+      "use": "home"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Home",
+      "telephone": [
+        "01632 960871"
+      ]
+    }
+  ],
+  "genderCode": "2",
+  "ethnicityCode": "13",
+  "relatedPerson": [
+    {
+      "@type": "PersonRelationship",
+      "identifier": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100458"
+      },
+      "relationship": [
+        "DAU"
+      ]
+    }
+  ],
+  "communication": [
+    {
+      "@type": "Communication",
+      "specialCommunicationNeeds": "Speech can be quiet and slow because of Parkinson's disease. Allow time, face her when speaking and check understanding. Prefers her daughter to be present for big decisions.",
+      "language": [
+        {
+          "@type": "Language",
+          "languageCode": "en",
+          "proficiencyLevel": "native"
+        }
+      ]
+    }
+  ]
+}

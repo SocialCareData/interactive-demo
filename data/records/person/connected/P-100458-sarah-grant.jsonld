@@ -1,0 +1,63 @@
+{
+  "@context": "https://ns.socialcaredata.io/person/context.jsonld",
+  "@id": "https://anytown.example/records/person/P-100458",
+  "@type": "Person",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/person",
+      "value": "P-100458"
+    }
+  ],
+  "name": [
+    {
+      "@type": "Name",
+      "familyName": [
+        "Grant"
+      ],
+      "givenName": [
+        "Sarah"
+      ],
+      "use": "official"
+    }
+  ],
+  "dateOfBirth": {
+    "@type": "PartialDate",
+    "date": "1971-09-23",
+    "accuracyIndicator": "AAA"
+  },
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "22 Mill View",
+      "city": "Anytown",
+      "postcode": "AT5 2MV",
+      "use": "home"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Mobile",
+      "email": [
+        "sarah.grant@mail.example"
+      ],
+      "telephone": [
+        "07700 900458"
+      ]
+    }
+  ],
+  "relatedPerson": [
+    {
+      "@type": "PersonRelationship",
+      "identifier": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100457"
+      },
+      "relationship": [
+        "MTH"
+      ]
+    }
+  ]
+}

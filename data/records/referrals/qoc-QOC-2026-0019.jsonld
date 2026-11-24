@@ -1,0 +1,108 @@
+{
+  "@context": "https://ns.socialcaredata.io/referrals/context.jsonld",
+  "@id": "https://anytown.example/records/qoc/QOC-2026-0019",
+  "@type": "QualityOfCareConcern",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/qoc",
+      "value": "QOC-2026-0019"
+    }
+  ],
+  "dateCompleted": "2026-11-25T21:14:00Z",
+  "subject": [
+    {
+      "@type": "IntakePerson",
+      "isAwareOfReferral": true,
+      "name": [
+        {
+          "@type": "Name",
+          "familyName": [
+            "Ellis"
+          ],
+          "givenName": [
+            "Margaret"
+          ]
+        }
+      ],
+      "matchedPersonRef": [
+        {
+          "@type": "Identifier",
+          "system": "https://anytown.example/id/person",
+          "value": "P-100457"
+        }
+      ]
+    }
+  ],
+  "referrer": {
+    "@type": "ReferrerDetails",
+    "referrerType": "FamilyMember",
+    "person": {
+      "@type": "Person",
+      "name": [
+        {
+          "@type": "Name",
+          "familyName": [
+            "Grant"
+          ],
+          "givenName": [
+            "Sarah"
+          ]
+        }
+      ],
+      "contact": [
+        {
+          "@type": "Contact",
+          "name": "Mobile",
+          "email": [
+            "sarah.grant@mail.example"
+          ],
+          "telephone": [
+            "07700 900458"
+          ]
+        }
+      ]
+    },
+    "relationship": "DAU"
+  },
+  "recipient": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ABC"
+    },
+    {
+      "@type": "Identifier",
+      "system": "https://cqc.example/organisation",
+      "value": "CQC"
+    }
+  ],
+  "service": {
+    "@type": "QocService",
+    "identifier": {
+      "@type": "Identifier",
+      "system": "https://cqc.example/location",
+      "value": "1-000000001"
+    },
+    "name": "Brightwater Home Care"
+  },
+  "concern": [
+    {
+      "@type": "QocConcernDetail",
+      "concernType": "UNASSIGNED",
+      "description": "I'm writing about the care my mum gets from Brightwater. Since about October the teatime visit keeps being missed or turns up at 7 or 8 at night. Twice this month I've found Mum's evening tablets still in the blister pack the next morning. When the carers do come they're in and out in ten minutes and say they've got six more calls to do. It's a different face nearly every day, so nobody knows her or notices when she's not right. She's had another fall and now a pressure sore. I don't blame the girls, but someone needs to look at this."
+    }
+  ],
+  "linkedRecord": [
+    {
+      "@type": "LinkedRecord",
+      "recordId": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/referral",
+        "value": "REF-2026-0561"
+      },
+      "recordType": "referral",
+      "recordRelationship": "concurrentWith"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "@context": "https://ns.socialcaredata.io/referrals/context.jsonld",
+  "@id": "https://anytown.example/records/request/REQ-2026-0341",
+  "@type": "Request",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/request",
+      "value": "REQ-2026-0341"
+    }
+  ],
+  "subject": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/person",
+    "value": "P-100457"
+  },
+  "referrer": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/professional",
+    "value": "PRF-010"
+  },
+  "recipient": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-ASG"
+    }
+  ],
+  "purpose": "adult.s42Enquiry",
+  "dateCompleted": "2026-11-25T14:30:00Z",
+  "assessmentQuestion": [
+    {
+      "@type": "ReferralAssessmentQuestion",
+      "category": "CONCERN",
+      "questionText": "Reason for request",
+      "answer": [
+        "Section 42 duty met: Margaret has care and support needs, is experiencing possible neglect (missed medication and missed or late evening calls, now a pressure ulcer and a further fall), and cannot protect herself from it. A quality of care concern about the same provider was received from her daughter the same day."
+      ],
+      "answerType": "String",
+      "required": true
+    }
+  ],
+  "linkedRecord": [
+    {
+      "@type": "LinkedRecord",
+      "recordId": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/referral",
+        "value": "REF-2026-0561"
+      },
+      "recordType": "referral",
+      "recordRelationship": "followupTo"
+    }
+  ]
+}

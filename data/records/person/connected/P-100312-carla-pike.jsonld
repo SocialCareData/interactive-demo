@@ -1,0 +1,55 @@
+{
+  "@context": "https://ns.socialcaredata.io/person/context.jsonld",
+  "@id": "https://anytown.example/records/person/P-100312",
+  "@type": "Person",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/person",
+      "value": "P-100312"
+    }
+  ],
+  "name": [
+    {
+      "@type": "Name",
+      "familyName": [
+        "Pike"
+      ],
+      "givenName": [
+        "Carla"
+      ],
+      "use": "official"
+    }
+  ],
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "7 Ferry Row",
+      "city": "Anytown",
+      "postcode": "AT3 8FR",
+      "use": "home"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Mobile",
+      "telephone": [
+        "07700 900312"
+      ]
+    }
+  ],
+  "relatedPerson": [
+    {
+      "@type": "PersonRelationship",
+      "identifier": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100311"
+      },
+      "relationship": [
+        "SON"
+      ]
+    }
+  ]
+}

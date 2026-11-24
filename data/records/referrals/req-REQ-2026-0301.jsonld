@@ -1,0 +1,51 @@
+{
+  "@context": "https://ns.socialcaredata.io/referrals/context.jsonld",
+  "@id": "https://anytown.example/records/request/REQ-2026-0301",
+  "@type": "Request",
+  "identifier": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/request",
+    "value": "REQ-2026-0301"
+  },
+  "subject": {
+    "@type": "Identifier",
+    "system": "https://fhir.nhs.uk/Id/nhs-number",
+    "value": "9990000018"
+  },
+  "referrer": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/professional",
+    "value": "PRF-003"
+  },
+  "recipient": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-CAMHS"
+    }
+  ],
+  "purpose": "child.statutoryServices",
+  "dateCompleted": "2026-11-03T14:20:00Z",
+  "assessmentQuestion": [
+    {
+      "@type": "ReferralAssessmentQuestion",
+      "category": "CONCERN",
+      "questionText": "Reason for request",
+      "answer": [
+        "Riley (9) is on a child in need plan. Since half term he has been very anxious about leaving Mum, has trouble getting to sleep and wakes most nights. He has refused to go into school on 4 mornings in the last 2 weeks and gets stomach aches on school days. Requesting an assessment for anxiety."
+      ],
+      "answerType": "String",
+      "required": true
+    },
+    {
+      "@type": "ReferralAssessmentQuestion",
+      "category": "SUBJECT.VOICE_WISHES",
+      "questionText": "What does the child want?",
+      "answer": [
+        "Riley says he worries 'something bad will happen to Mum' when he is at school. He would like someone to talk to who is not his teacher."
+      ],
+      "answerType": "String",
+      "required": false
+    }
+  ]
+}

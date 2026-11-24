@@ -1,0 +1,112 @@
+{
+  "@context": "https://ns.socialcaredata.io/referrals/context.jsonld",
+  "@id": "https://anytown.example/records/referral/REF-2026-0561",
+  "@type": "Referral",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/referral",
+      "value": "REF-2026-0561"
+    }
+  ],
+  "type": "adult.safeguarding",
+  "dateCompleted": "2026-11-24T16:05:00Z",
+  "subject": [
+    {
+      "@type": "IntakePerson",
+      "isAwareOfReferral": true,
+      "identifier": [
+        {
+          "@type": "Identifier",
+          "system": "https://fhir.nhs.uk/Id/nhs-number",
+          "value": "9990000042"
+        }
+      ],
+      "name": [
+        {
+          "@type": "Name",
+          "familyName": [
+            "Ellis"
+          ],
+          "givenName": [
+            "Margaret"
+          ]
+        }
+      ],
+      "notes": "Margaret agreed to this referral. She said, 'I don't want to get the girls into trouble, they're rushed off their feet.'"
+    }
+  ],
+  "personalNetwork": [
+    {
+      "@type": "PersonalNetworkMember",
+      "networkPerson": {
+        "@type": "IntakePerson",
+        "isAwareOfReferral": true,
+        "name": [
+          {
+            "@type": "Name",
+            "familyName": [
+              "Grant"
+            ],
+            "givenName": [
+              "Sarah"
+            ]
+          }
+        ],
+        "contact": [
+          {
+            "@type": "Contact",
+            "telephone": [
+              "07700 900458"
+            ]
+          }
+        ]
+      },
+      "networkRelationship": "DAU",
+      "networkDescription": "Daughter and unpaid carer. Visits on Sundays. Spoken to by phone today."
+    }
+  ],
+  "referrer": {
+    "@type": "ReferrerDetails",
+    "referrerType": "Professional",
+    "professionalId": {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/professional",
+      "value": "PRF-009"
+    }
+  },
+  "concern": [
+    {
+      "@type": "ConcernDetail",
+      "concernType": "adult.neglect",
+      "description": "Visited today to dress a grade 2 pressure ulcer on Margaret's sacrum, first noted on 17 Nov. The medication record in the house shows her evening Parkinson's medication was not given on 6 of the last 14 days. The carers' visit log shows the evening call late by over an hour on several days and no evening call at all on 3 days. Margaret had another fall on Saturday night trying to get to the toilet on her own. No injury, but she was on the floor for about 40 minutes before the pendant alarm was answered. I think she is being left too long without help."
+    }
+  ],
+  "involvement": {
+    "@type": "ReferralInvolvement",
+    "actorType": "Professional",
+    "actorId": [
+      {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/service",
+        "value": "SVC-BHC"
+      }
+    ],
+    "description": "Brightwater Home Care provide four calls a day under her care plan. They have not been told about this referral."
+  },
+  "recipient": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-AFD"
+    }
+  ],
+  "attachment": [
+    {
+      "@type": "DocumentReference",
+      "title": "Wound assessment and body map, 24 November 2026",
+      "url": "https://anytown-nhs.example/documents/DN-WA-2026-11-24-0042.pdf",
+      "mimeType": "application/pdf"
+    }
+  ]
+}

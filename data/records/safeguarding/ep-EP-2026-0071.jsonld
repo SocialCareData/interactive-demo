@@ -1,0 +1,92 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/episode/EP-2026-0071",
+  "@type": "ServiceEpisode",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/episode",
+      "value": "EP-2026-0071"
+    }
+  ],
+  "type": [
+    "assessment.care-act-assessment"
+  ],
+  "subjectPerson": [
+    {
+      "@type": "SubjectPerson",
+      "person": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100457"
+      },
+      "involvement": "SBJ"
+    }
+  ],
+  "relatedProfessional": [
+    {
+      "@type": "RelatedProfessional",
+      "professional": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/professional",
+        "value": "PRF-008"
+      },
+      "involvement": "PPRF"
+    }
+  ],
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-ALT"
+    }
+  ],
+  "timeInformation": [
+    {
+      "@type": "Timing",
+      "startDateTime": "2026-08-11T10:00:00+01:00",
+      "endDateTime": "2026-08-25T16:00:00+01:00"
+    }
+  ],
+  "location": [
+    "Home visits, 3 Orchard Cottages"
+  ],
+  "finding": [
+    {
+      "@type": "Finding",
+      "observation": [
+        {
+          "@type": "Observation",
+          "type": "has-unpaid-carer",
+          "startDate": "2026-08-11T10:00:00+01:00"
+        },
+        {
+          "@type": "Observation",
+          "type": "risk.falling",
+          "startDate": "2026-08-11T10:00:00+01:00"
+        },
+        {
+          "@type": "Observation",
+          "type": "support-reason.physical-personal-care",
+          "startDate": "2026-08-11T10:00:00+01:00"
+        }
+      ],
+      "text": [
+        "Two falls since July. Daughter provides weekly support and daily phone calls."
+      ]
+    }
+  ],
+  "outcome": "planning",
+  "linkedRecord": [
+    {
+      "@type": "LinkedRecord",
+      "recordId": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/referral",
+        "value": "REF-2026-0365"
+      },
+      "recordType": "referral",
+      "recordRelationship": "followupTo"
+    }
+  ]
+}

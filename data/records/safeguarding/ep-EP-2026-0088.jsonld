@@ -1,0 +1,74 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/episode/EP-2026-0088",
+  "@type": "ServiceEpisode",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/episode",
+      "value": "EP-2026-0088"
+    }
+  ],
+  "type": [
+    "assessment.MASH-review"
+  ],
+  "subjectPerson": [
+    {
+      "@type": "SubjectPerson",
+      "person": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100231"
+      },
+      "involvement": "SBJ"
+    }
+  ],
+  "relatedProfessional": [
+    {
+      "@type": "RelatedProfessional",
+      "professional": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/professional",
+        "value": "PRF-002"
+      },
+      "involvement": "PPRF"
+    }
+  ],
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-CFD"
+    }
+  ],
+  "timeInformation": [
+    {
+      "@type": "Timing",
+      "startDateTime": "2026-09-16T09:05:00+01:00",
+      "endDateTime": "2026-09-18T16:30:00+01:00"
+    }
+  ],
+  "location": [
+    "Children's Front Door, Civic Centre"
+  ],
+  "finding": [
+    {
+      "@type": "Finding",
+      "text": [
+        "Checks with health, police and school completed. Health visitor records a burn to Riley's hand treated at A&E in July. No police involvement. Mother known to GP for low mood. Threshold for a child and family assessment met."
+      ]
+    }
+  ],
+  "linkedRecord": [
+    {
+      "@type": "LinkedRecord",
+      "recordId": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/referral",
+        "value": "REF-2026-0412"
+      },
+      "recordType": "referral",
+      "recordRelationship": "followupTo"
+    }
+  ]
+}

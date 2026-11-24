@@ -1,0 +1,67 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/episode/EP-2026-0083",
+  "@type": "ServiceEpisode",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/episode",
+      "value": "EP-2026-0083"
+    }
+  ],
+  "type": [
+    "provision.direct-provision"
+  ],
+  "subjectPerson": [
+    {
+      "@type": "SubjectPerson",
+      "person": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100457"
+      },
+      "involvement": "SBJ"
+    }
+  ],
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-BHC"
+    }
+  ],
+  "timeInformation": [
+    {
+      "@type": "Timing",
+      "startDateTime": "2026-09-03T08:00:00+01:00",
+      "frequency": {
+        "repeat": {
+          "frequency": 4,
+          "period": 1,
+          "periodUnit": "d",
+          "timeOfDay": [
+            "08:00:00",
+            "12:30:00",
+            "17:00:00",
+            "20:30:00"
+          ]
+        }
+      }
+    }
+  ],
+  "location": [
+    "3 Orchard Cottages"
+  ],
+  "linkedRecord": [
+    {
+      "@type": "LinkedRecord",
+      "recordId": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/plan",
+        "value": "PLAN-2026-0027"
+      },
+      "recordType": "plan",
+      "recordRelationship": "followupTo"
+    }
+  ]
+}

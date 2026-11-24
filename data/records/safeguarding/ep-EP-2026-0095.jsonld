@@ -1,0 +1,94 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/episode/EP-2026-0095",
+  "@type": "ServiceEpisode",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/episode",
+      "value": "EP-2026-0095"
+    }
+  ],
+  "type": [
+    "assessment.other-assessment"
+  ],
+  "subjectPerson": [
+    {
+      "@type": "SubjectPerson",
+      "person": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100231"
+      },
+      "involvement": "SBJ"
+    }
+  ],
+  "relatedProfessional": [
+    {
+      "@type": "RelatedProfessional",
+      "professional": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/professional",
+        "value": "PRF-003"
+      },
+      "involvement": "PPRF"
+    }
+  ],
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-AIT"
+    }
+  ],
+  "timeInformation": [
+    {
+      "@type": "Timing",
+      "startDateTime": "2026-09-21T10:00:00+01:00",
+      "endDateTime": "2026-10-20T17:00:00+01:00"
+    }
+  ],
+  "location": [
+    "Family home and Anytown Primary School"
+  ],
+  "finding": [
+    {
+      "@type": "Finding",
+      "observation": [
+        {
+          "@type": "Observation",
+          "type": "persistent-school-absences",
+          "startDate": "2026-09-03T00:00:00+01:00"
+        },
+        {
+          "@type": "Observation",
+          "type": "free-school-meals",
+          "startDate": "2025-09-01T00:00:00+01:00"
+        }
+      ],
+      "measurement": [
+        {
+          "@type": "Measurement",
+          "value": "84.5",
+          "unit": "pct",
+          "type": "Attendance"
+        }
+      ],
+      "text": [
+        "Mum is struggling with low mood and has had little support since Mia's father left. Food in the home was limited on two visits. Riley takes on a lot of care for Mia. Mum engaged well and agreed to a child in need plan."
+      ]
+    }
+  ],
+  "linkedRecord": [
+    {
+      "@type": "LinkedRecord",
+      "recordId": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/request",
+        "value": "REQ-2026-0233"
+      },
+      "recordType": "request",
+      "recordRelationship": "followupTo"
+    }
+  ]
+}

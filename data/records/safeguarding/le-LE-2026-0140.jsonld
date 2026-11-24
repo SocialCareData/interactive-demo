@@ -1,0 +1,54 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/life-event/LE-2026-0140",
+  "@type": "LifeEvent",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/life-event",
+      "value": "LE-2026-0140"
+    }
+  ],
+  "type": [
+    "missing-person"
+  ],
+  "subjectPerson": [
+    {
+      "@type": "SubjectPerson",
+      "person": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100311"
+      },
+      "involvement": "SBJ"
+    }
+  ],
+  "relatedProfessional": [
+    {
+      "@type": "RelatedProfessional",
+      "professional": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/professional",
+        "value": "PRF-005"
+      },
+      "involvement": "PPRF"
+    }
+  ],
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-PPU"
+    }
+  ],
+  "timeInformation": [
+    {
+      "@type": "Timing",
+      "startDateTime": "2026-09-02T19:30:00+01:00",
+      "endDateTime": "2026-09-03T01:15:00+01:00"
+    }
+  ],
+  "location": [
+    "Anytown bus station"
+  ]
+}

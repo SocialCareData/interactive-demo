@@ -1,0 +1,132 @@
+{
+  "@context": "https://ns.socialcaredata.io/assessments-and-plans/context.jsonld",
+  "@id": "https://anytown.example/records/assessment/CNA-2026-0031",
+  "@type": "CareNeedsAssessment",
+  "identifier": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/assessment",
+    "value": "CNA-2026-0031"
+  },
+  "personId": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/person",
+    "value": "P-100457"
+  },
+  "professionalId": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/professional",
+    "value": "PRF-008"
+  },
+  "capacityToCompleteAssessment": true,
+  "advocateRequired": false,
+  "consentToInformationSharing": true,
+  "review": [
+    {
+      "@type": "Review",
+      "isReview": false
+    }
+  ],
+  "dateCompleted": "2026-08-25T15:30:00+01:00",
+  "serviceEpisodeId": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/episode",
+      "value": "EP-2026-0071"
+    }
+  ],
+  "planId": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/plan",
+    "value": "PLAN-2026-0027"
+  },
+  "status": "completed",
+  "assessmentQuestion": [
+    {
+      "@type": "CareAssessmentQuestion",
+      "questionId": "STAT-HOUSING-01",
+      "category": "Housing",
+      "questionText": "Does the person live alone?",
+      "answer": [
+        "Yes"
+      ],
+      "answerType": "Boolean",
+      "required": true
+    },
+    {
+      "@type": "CareAssessmentQuestion",
+      "questionId": "STAT-HEALTH-01",
+      "category": "Health",
+      "questionText": "Does the person have previous or ongoing health conditions that may affect their day-to-day life?",
+      "answer": [
+        "Yes"
+      ],
+      "answerType": "Boolean",
+      "required": true
+    },
+    {
+      "@type": "CareAssessmentQuestion",
+      "questionId": "CA-NUTRITION-01",
+      "category": "CA.nutrition",
+      "questionText": "Care act: Managing and maintaining nutrition. Does the person currently achieve this outcome?",
+      "answer": [
+        "No. Margaret can make a hot drink and a sandwich but cannot safely use the hob or carry hot food. She has lost weight since July and often skips her evening meal."
+      ],
+      "answerType": "String",
+      "required": true
+    },
+    {
+      "@type": "CareAssessmentQuestion",
+      "questionId": "CA-HYGIENE-01",
+      "category": "CA.hygiene",
+      "questionText": "Care act: Maintaining personal hygiene. Does the person currently achieve this outcome?",
+      "answer": [
+        "No. She cannot get in or out of the bath and has been strip-washing at the sink. Needs help to wash and dress, especially in the mornings when her stiffness is worst."
+      ],
+      "answerType": "String",
+      "required": true
+    },
+    {
+      "@type": "CareAssessmentQuestion",
+      "questionId": "CA-TOILET-01",
+      "category": "CA.toilet",
+      "questionText": "Care act: Managing toilet needs Does the person currently achieve this outcome?",
+      "answer": [
+        "Partly. Manages in the day with a raised seat and frame, but has had accidents in the evening when slow to get up from her chair."
+      ],
+      "answerType": "String",
+      "required": true
+    },
+    {
+      "@type": "CareAssessmentQuestion",
+      "questionId": "CA-HOMESAFETY-01",
+      "category": "CA.homeSafety",
+      "questionText": "Care act: Being able to make use of the home safely. Does the person currently achieve this outcome?",
+      "answer": [
+        "No. Two falls since July, one with a long lie on the kitchen floor before she was found. Agrees to a pendant alarm."
+      ],
+      "answerType": "String",
+      "required": true
+    },
+    {
+      "@type": "CareAssessmentQuestion",
+      "questionId": "CA-ELIGIBILITY-01",
+      "category": "Eligibility",
+      "questionText": "Have eligible needs been identified, according to the Care Act 2014?",
+      "answer": [
+        "Eligible needs identified"
+      ],
+      "answerType": "Enum",
+      "required": true
+    },
+    {
+      "@type": "CareAssessmentQuestion",
+      "category": "PersonalContext",
+      "questionText": "Pen picture: what matters to Margaret",
+      "answer": [
+        "Margaret has lived in Orchard Cottages for 51 years and wants to stay there. She was a primary school secretary and still knows half of Eastfield by name. She loves her garden, Radio 4 and her cat, Biscuit. Her Sunday lunches with Sarah and the grandchildren matter more to her than anything. She hates fuss and would rather 'manage with a bit of help' than go into a home."
+      ],
+      "answerType": "String",
+      "required": false
+    }
+  ]
+}

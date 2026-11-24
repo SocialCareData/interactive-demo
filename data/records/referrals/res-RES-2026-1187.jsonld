@@ -1,0 +1,26 @@
+{
+  "@context": "https://ns.socialcaredata.io/referrals/context.jsonld",
+  "@id": "https://anytown.example/records/response/RES-2026-1187",
+  "@type": "Response",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/response",
+      "value": "RES-2026-1187"
+    }
+  ],
+  "respondsTo": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/referral",
+    "value": "REF-2026-0561"
+  },
+  "respondsToType": "referral",
+  "responder": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/service",
+    "value": "SVC-AFD"
+  },
+  "dateTimeReceived": "2026-11-25T09:10:00Z",
+  "status": "acknowledged",
+  "description": "Received by the Adult Social Care Front Door. Passed to the Adult Safeguarding Team today."
+}

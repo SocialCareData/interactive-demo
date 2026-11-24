@@ -1,0 +1,80 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/episode/EP-2026-0129",
+  "@type": "ServiceEpisode",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/episode",
+      "value": "EP-2026-0129"
+    }
+  ],
+  "type": [
+    "assessment.section-47"
+  ],
+  "subjectPerson": [
+    {
+      "@type": "SubjectPerson",
+      "person": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100311"
+      },
+      "involvement": "SBJ"
+    }
+  ],
+  "relatedProfessional": [
+    {
+      "@type": "RelatedProfessional",
+      "professional": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/professional",
+        "value": "PRF-006"
+      },
+      "involvement": "PPRF"
+    }
+  ],
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-AIT"
+    }
+  ],
+  "timeInformation": [
+    {
+      "@type": "Timing",
+      "startDateTime": "2026-11-11T09:00:00Z"
+    }
+  ],
+  "location": [
+    "Home visit, 7 Ferry Row"
+  ],
+  "finding": [
+    {
+      "@type": "Finding",
+      "observation": [
+        {
+          "@type": "Observation",
+          "type": "persistent-school-absences",
+          "startDate": "2026-09-01T00:00:00+01:00"
+        }
+      ],
+      "text": [
+        "Northgate Academy reports Jordan has missed 31 sessions this term, mostly afternoons, and has been seen leaving the site at lunchtime with older young people."
+      ]
+    }
+  ],
+  "linkedRecord": [
+    {
+      "@type": "LinkedRecord",
+      "recordId": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/request",
+        "value": "REQ-2026-0322"
+      },
+      "recordType": "request",
+      "recordRelationship": "followupTo"
+    }
+  ]
+}

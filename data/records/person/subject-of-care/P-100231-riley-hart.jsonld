@@ -1,0 +1,73 @@
+{
+  "@context": "https://ns.socialcaredata.io/person/context.jsonld",
+  "@id": "https://anytown.example/records/person/P-100231",
+  "@type": "Person",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/person",
+      "value": "P-100231"
+    },
+    {
+      "@type": "Identifier",
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "9990000018"
+    }
+  ],
+  "name": [
+    {
+      "@type": "Name",
+      "familyName": [
+        "Hart"
+      ],
+      "givenName": [
+        "Riley",
+        "James"
+      ],
+      "preferredName": "Riley",
+      "use": "official"
+    }
+  ],
+  "dateOfBirth": {
+    "@type": "PartialDate",
+    "date": "2017-03-14",
+    "accuracyIndicator": "AAA"
+  },
+  "isDeceased": false,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "14 Larch Close",
+      "line2": "Rowan Estate",
+      "city": "Anytown",
+      "postcode": "AT3 5LC",
+      "use": "home"
+    }
+  ],
+  "genderCode": "1",
+  "ethnicityCode": "13",
+  "relatedPerson": [
+    {
+      "@type": "PersonRelationship",
+      "identifier": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100233"
+      },
+      "relationship": [
+        "MTH"
+      ]
+    },
+    {
+      "@type": "PersonRelationship",
+      "identifier": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100232"
+      },
+      "relationship": [
+        "SIS"
+      ]
+    }
+  ]
+}

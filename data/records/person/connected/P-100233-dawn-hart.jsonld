@@ -1,0 +1,61 @@
+{
+  "@context": "https://ns.socialcaredata.io/person/context.jsonld",
+  "@id": "https://anytown.example/records/person/P-100233",
+  "@type": "Person",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/person",
+      "value": "P-100233"
+    }
+  ],
+  "name": [
+    {
+      "@type": "Name",
+      "familyName": [
+        "Hart"
+      ],
+      "givenName": [
+        "Dawn"
+      ],
+      "use": "official"
+    }
+  ],
+  "dateOfBirth": {
+    "@type": "PartialDate",
+    "date": "1995-10-08",
+    "accuracyIndicator": "AAA"
+  },
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "14 Larch Close",
+      "line2": "Rowan Estate",
+      "city": "Anytown",
+      "postcode": "AT3 5LC",
+      "use": "home"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Mobile",
+      "telephone": [
+        "07700 900233"
+      ]
+    }
+  ],
+  "relatedPerson": [
+    {
+      "@type": "PersonRelationship",
+      "identifier": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100231"
+      },
+      "relationship": [
+        "SON"
+      ]
+    }
+  ]
+}

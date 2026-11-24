@@ -1,0 +1,53 @@
+{
+  "@context": "https://ns.socialcaredata.io/referrals/context.jsonld",
+  "@id": "https://anytown.example/records/request/REQ-2026-0322",
+  "@type": "Request",
+  "identifier": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/request",
+    "value": "REQ-2026-0322"
+  },
+  "subject": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/person",
+    "value": "P-100311"
+  },
+  "referrer": {
+    "@type": "Identifier",
+    "system": "https://anytown.example/id/professional",
+    "value": "PRF-002"
+  },
+  "recipient": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-AIT"
+    }
+  ],
+  "purpose": "child.s47",
+  "dateCompleted": "2026-11-10T15:30:00Z",
+  "assessmentQuestion": [
+    {
+      "@type": "ReferralAssessmentQuestion",
+      "category": "CONCERN",
+      "questionText": "Reason for request",
+      "answer": [
+        "Strategy discussion on 10 Nov agreed the threshold for section 47 enquiries is met. Three missing episodes since September, the latest found in Seaholme with older males linked to drug supply, with an unexplained phone and cash. Jordan is already open to Early Help, but the risk of criminal exploitation is now too high for that plan alone."
+      ],
+      "answerType": "String",
+      "required": true
+    }
+  ],
+  "linkedRecord": [
+    {
+      "@type": "LinkedRecord",
+      "recordId": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/referral",
+        "value": "REF-2026-0518"
+      },
+      "recordType": "referral",
+      "recordRelationship": "followupTo"
+    }
+  ]
+}

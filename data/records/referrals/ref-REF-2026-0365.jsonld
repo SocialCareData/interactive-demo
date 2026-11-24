@@ -1,0 +1,99 @@
+{
+  "@context": "https://ns.socialcaredata.io/referrals/context.jsonld",
+  "@id": "https://anytown.example/records/referral/REF-2026-0365",
+  "@type": "Referral",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/referral",
+      "value": "REF-2026-0365"
+    }
+  ],
+  "type": "adult.careActAssessment",
+  "dateCompleted": "2026-08-04T19:52:00+01:00",
+  "subject": [
+    {
+      "@type": "IntakePerson",
+      "isAwareOfReferral": true,
+      "name": [
+        {
+          "@type": "Name",
+          "familyName": [
+            "Ellis"
+          ],
+          "givenName": [
+            "Margaret"
+          ]
+        }
+      ],
+      "dateOfBirth": {
+        "@type": "PartialDate",
+        "date": "1944-02-11",
+        "accuracyIndicator": "AAA"
+      },
+      "address": [
+        {
+          "@type": "Address",
+          "line1": "3 Orchard Cottages",
+          "line2": "Eastfield",
+          "city": "Anytown",
+          "postcode": "AT4 6OC",
+          "use": "home"
+        }
+      ],
+      "matchedPersonRef": [
+        {
+          "@type": "Identifier",
+          "system": "https://anytown.example/id/person",
+          "value": "P-100457"
+        }
+      ],
+      "notes": "Mum knows I am filling this in and wants help, but she does not want to move out of her cottage."
+    }
+  ],
+  "referrer": {
+    "@type": "ReferrerDetails",
+    "referrerType": "FamilyMember",
+    "person": {
+      "@type": "Person",
+      "name": [
+        {
+          "@type": "Name",
+          "familyName": [
+            "Grant"
+          ],
+          "givenName": [
+            "Sarah"
+          ]
+        }
+      ],
+      "contact": [
+        {
+          "@type": "Contact",
+          "name": "Mobile",
+          "email": [
+            "sarah.grant@mail.example"
+          ],
+          "telephone": [
+            "07700 900458"
+          ]
+        }
+      ]
+    },
+    "relationship": "DAU"
+  },
+  "concern": [
+    {
+      "@type": "ConcernDetail",
+      "concernType": "adult.other",
+      "description": "Mum has been struggling to manage at home since her fall on 20 July. She has Parkinson's and is much stiffer and slower in the mornings. She can't get in and out of the bath, she's stopped cooking proper meals, and some days she can't get to the toilet in time. I live 40 minutes away and work full time. I go every Sunday and phone every evening, but I can't do more than that."
+    }
+  ],
+  "recipient": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-AFD"
+    }
+  ]
+}
