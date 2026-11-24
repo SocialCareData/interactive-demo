@@ -29,11 +29,10 @@
 
 - id: G2
   title: Records can't link to episodes or life events
-  where: Jordan's section 47 request, and Riley's CAMHS request
+  where: Jordan's section 47 request
   route: "#/record/request/REQ-2026-0322"
   records:
     - https://anytown.example/records/request/REQ-2026-0322
-    - https://anytown.example/records/request/REQ-2026-0301
   field: linkedRecord
   body: >
     A linked record can point to a referral, request, quality-of-care concern, response,

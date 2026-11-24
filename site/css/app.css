@@ -399,31 +399,40 @@ table.explained .code-label { display: block; color: var(--ink-2); }
     background: var(--paper); border-top: 3px solid var(--teal);
     box-shadow: 0 -6px 24px rgba(21, 35, 54, .12);
 }
-.story-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2) var(--space-5); align-items: start; padding: var(--space-3) var(--gutter) var(--space-3); max-width: 100rem; }
-.story-meta { font-size: .82rem; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: .2rem 1rem; align-items: baseline; }
+.story-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .2rem var(--space-5); align-items: start; padding: .6rem var(--gutter) .5rem; }
+.story-meta { font-size: .8rem; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: .2rem 1rem; align-items: baseline; }
 .story-meta strong { color: var(--teal); font-weight: 650; }
-.story-title { font-size: 1.12rem; margin: .15rem 0 .25rem; }
-.story-text { margin: 0; max-width: 52rem; }
-.story-controls { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.story-title { font-size: 1.02rem; margin: .05rem 0 .1rem; }
+.story-text { margin: 0; max-width: 78rem; font-size: .95rem; line-height: 1.45; }
+.story-controls { display: flex; gap: .45rem; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
 .story-controls button, .story-controls a {
-    font: inherit; font-size: .9rem; cursor: pointer; text-decoration: none;
-    border: 1px solid var(--rule-2); background: var(--paper); color: var(--ink); border-radius: 6px; padding: .35rem .85rem;
+    font: inherit; font-size: .88rem; cursor: pointer; text-decoration: none;
+    border: 1px solid var(--rule-2); background: var(--paper); color: var(--ink); border-radius: 6px; padding: .3rem .8rem;
 }
 .story-controls .next { background: var(--teal); color: #fff; border-color: var(--teal); }
 .story-controls button[disabled] { opacity: .4; cursor: default; }
-.story-dots { display: flex; gap: 4px; flex-wrap: wrap; margin-top: .45rem; }
-.story-dots a { width: 18px; height: 6px; border-radius: 3px; background: var(--rule); }
-.story-dots a[aria-current="step"] { background: var(--teal); }
-.story-dots a.done { background: #9bb8c7; }
-#story.collapsed .story-text, #story.collapsed .story-dots { display: none; }
+
+/* The person's timeline, along the foot of the bar: one segment per step. */
+.story-line { grid-column: 1 / -1; display: flex; list-style: none; margin: .35rem 0 0; padding: 0; gap: 3px; }
+.story-line li { flex: 1 1 0; min-width: 0; }
+.story-line a {
+    display: flex; flex-direction: column; text-decoration: none; color: var(--ink-3);
+    border-top: 4px solid var(--rule); padding-top: .2rem; font-size: .74rem; line-height: 1.25;
+}
+.story-line a:hover { color: var(--ink); border-top-color: var(--rule-2); }
+.story-line .sl-date, .story-line .sl-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.story-line .sl-label { font-weight: 600; }
+.story-line li.done a { border-top-color: #9bb8c7; }
+.story-line li.current a { border-top-color: var(--teal); color: var(--teal); }
+#story.collapsed .story-text, #story.collapsed .story-line .sl-date { display: none; }
 #story.offroute .story-text { color: var(--ink-2); }
 @media (max-width: 700px) {
     .story-inner { grid-template-columns: minmax(0, 1fr); }
-    .story-inner { padding-top: var(--space-2); padding-bottom: var(--space-2); }
     .story-controls { justify-content: flex-start; gap: .35rem; }
     .story-controls button, .story-controls a { font-size: .82rem; padding: .25rem .6rem; }
-    .story-title { font-size: 1rem; }
-    .story-text { font-size: .92rem; max-height: 7.5em; overflow-y: auto; }
+    .story-text { font-size: .92rem; max-height: 6em; overflow-y: auto; }
+    .story-line .sl-date, .story-line .sl-label { display: none; }
+    .story-line a { padding-top: 0; min-height: 12px; }
 }
 
 /* ------------------------------------------------------------------ second system: Anytown CAMHS */
@@ -495,14 +504,19 @@ a.story-target:not(.tl-dot)::after {
     text-decoration: none;
 }
 a.tl-dot.story-target { outline-offset: 2px; border-radius: 50%; }
-.story-text { min-height: calc(3 * 1.55em); }
-.story-extra { min-height: 2rem; display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; align-items: center; margin: .3rem 0 .1rem; font-size: .92rem; }
+.story-extra { display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; align-items: center; margin: .25rem 0 0; font-size: .9rem; }
+.story-extra:empty { display: none; }
+body.in-story .tl-strip { display: none; }
+
+/* A record named inside a value: selecting the name highlights it, "Open" goes to the record. */
+.v .reclink { margin-right: .3rem; }
+span.reclink span:last-child { text-decoration: none; }
+a.open-link { font-size: .8rem; margin-right: .6rem; color: var(--link); text-underline-offset: .18em; }
 .story-task { font-weight: 650; color: var(--teal-2); }
 .story-task.done { color: #1c6a2a; }
 button.linklike { font: inherit; font-weight: 400; background: none; border: 0; padding: 0; color: var(--link); text-decoration: underline; text-underline-offset: .18em; cursor: pointer; }
 button.story-gap { font: inherit; font-size: .88rem; font-weight: 600; color: var(--gap); background: var(--gap-tint); border: 0; border-radius: 999px; padding: .1rem .7rem; cursor: pointer; }
 #story.collapsed .story-extra { display: none; }
-@media (max-width: 700px) { .story-text { min-height: 0; } }
 
 /* ------------------------------------------------------------------ Explained tab: readable at half width */
 #back { container-type: inline-size; }

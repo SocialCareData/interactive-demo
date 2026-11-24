@@ -28,7 +28,7 @@ Then open <http://localhost:8000>. The first `validate.py` run builds the SHACL 
 | `data/records/` | The synthetic dataset: one JSON-LD record per file. The folder decides which SHACL shape it must satisfy. |
 | `data/external-refs.yaml` | Identifiers that deliberately point at records held elsewhere. |
 | `data/annotations.yaml` | Open questions (gaps) shown with ◆ on screens and on the Open questions page. |
-| `data/journeys.yaml` | The guided tour and the three person stories. Each step opens a page and sets it up (view, tab, highlighted value, open question). `validate.py` checks every route, record, path and question it names. |
+| `data/journeys.yaml` | The three person stories (Riley's is the one to present). Each step opens a page and sets it up (view, tab, highlighted value, open question). `validate.py` checks every route, record, path and question it names. |
 | `data/ui.yaml` | Front-end-only content (allocations, case notes, tasks, workflow states). Shown greyed out, never in the JSON-LD. |
 | `data/anchors.json` | Anchor ids on the published standard pages, used for field deep links. Refresh with `tools/sync_anchors.py`. |
 | `tools/validate.py` | SHACL validation, plus: every JSON key is defined by the module context, every identifier resolves (or is listed as external), no date after the snapshot, and only the expected concern is still unassigned. |
@@ -41,6 +41,7 @@ Add a step to `data/journeys.yaml`:
 
 ```yaml
 - title: A request to CAMHS
+  label: To CAMHS                           # a word or two for the timeline in the story bar
   route: "#/record/request/REQ-2026-0301"   # any page in the demo
   view: split                               # screen | split | data
   tab: data                                 # data | explained | map
@@ -52,11 +53,13 @@ Add a step to `data/journeys.yaml`:
     Two or three plain sentences on what to notice.
 ```
 
-Then run `python tools/validate.py && python tools/build.py`. Steps are shared as links like `#/story/tour/6`.
+Then run `python tools/validate.py && python tools/build.py`. Steps are shared as links like `#/story/riley/6`.
 
-Stories follow a person's timeline. On each step, the link to the next step (a timeline entry, a point in
-the timeline strip at the top of a record, or the other system's view) is marked "Next". A step with a
-`task` asks the viewer to select a value; "Show me", or the → key, does it for them.
+Each story walks one person's whole timeline, one step per entry, and the story bar shows that timeline.
+Most steps ask the viewer to select the link back to the record before (`linkedRecord`, `respondsTo`), so the
+chain from record to record is something they do. If the page has a link to the next step (a "Followed up by"
+link, the other system's view), it's marked "Next". "Show me", or the → key, does a step's task for the
+viewer. Steps open pages at the top and never scroll the screen by themselves.
 
 ## Updating the standard
 

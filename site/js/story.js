@@ -1,15 +1,17 @@
-// Guided journeys: the tour and one story per person (data/journeys.yaml, via the bundle).
+// Guided journeys: one story per person (data/journeys.yaml, via the bundle).
 //
-// A step opens an ordinary page and sets it up. Then, rather than doing everything itself:
-//  - a step with a task asks the viewer to do something ("Select the concern type"). The value is
-//    outlined until they do. "Show me", or the → key, does it for them, so a presenter can still
-//    just press →.
-//  - the link to the next step is marked on the page (an entry in the timeline, the next entry in
-//    the timeline strip, the other system's view), so following the story means using the page.
+// Each story walks one person's timeline, and the bar shows that timeline: one point per step.
+// A step opens an ordinary page at the top, and sets it up. Then, rather than doing everything itself:
+//  - a step with a task asks the viewer to do something ("Select the referral this follows up").
+//    The value is outlined until they do. "Show me", or the → key, does it for them, so a presenter
+//    can still just press →.
+//  - if the page has a link to the next step (a "Followed up by" link, the other system's view), it's
+//    marked "Next", so following the story can mean using the page.
 //  - open questions are linked from the bar, and stay closed until the viewer opens them.
+// A step never scrolls the page by itself: only "Show me" and the viewer's own choices do.
 
 import { h } from "./ui.js";
-import { store } from "./store.js";
+import { store, recByLocal, recDate } from "./store.js";
 import { setView, isTyping } from "./view.js";
 import { setXray, selectPath } from "./trace.js";
 import { backState, setTab } from "./back/pane.js";
@@ -42,6 +44,7 @@ export function exitStory() {
     if (!active) return;
     const step = currentStep();
     active = null;
+    document.body.classList.remove("in-story");
     hideBar();
     if (location.hash.startsWith("#/story/")) location.hash = step.route;
 }
@@ -65,7 +68,7 @@ export function applyStep(step) {
     setView(step.view || "split", { persist: false });
     setXray(!!step.xray, { persist: false });
     if (backState().recordId) setTab(step.tab || "data");
-    if (step.trace && !step.task) selectPath(taskRecord(step), step.trace);
+    if (step.trace && !step.task) selectPath(taskRecord(step), step.trace, { scroll: false });
     if (step.task) promptFor(step);
     markNext();
 }
@@ -76,11 +79,6 @@ function promptFor(step) {
     const els = [...document.querySelectorAll(`#front .v[data-rec="${CSS.escape(rec)}"]`)]
         .filter((e) => related(e.getAttribute("data-path"), step.trace));
     els.forEach((e) => e.classList.add("story-prompt"));
-    const first = els[0];
-    if (first) {
-        const r = first.getBoundingClientRect();
-        if (r.top < 90 || r.bottom > window.innerHeight * 0.6) first.scrollIntoView({ block: "center" });
-    }
 }
 
 function clearPrompts() {
@@ -102,8 +100,9 @@ function markNext() {
     const next = journey.steps[n];
     if (!next) return;
     const want = normRoute(next.route);
-    const links = [...document.querySelectorAll("#front a[href]")].filter((a) => normRoute(a.getAttribute("href")) === want);
-    const order = [".tl-strip", ".timeline", ".system-switch", ".people-list", ""];
+    const links = [...document.querySelectorAll("#front a[href]")]
+        .filter((a) => normRoute(a.getAttribute("href")) === want && a.getClientRects().length);
+    const order = [".links-list", ".system-switch", ".timeline", ".people-list", ""];
     const target = order.map((sel) => links.find((a) => !sel || a.closest(sel))).find(Boolean);
     if (!target) return;
     target.classList.add("story-target");
@@ -129,10 +128,9 @@ function hideBar() {
     document.documentElement.style.setProperty("--story-h", "0px");
 }
 
-/** The tour ends where it ends. Each person's story leads on to the next person's. */
+/** Each person's story leads on to the next person's. */
 function nextJourney(journey) {
-    if (journey.id === "tour") return null;
-    const stories = journeys().filter((j) => j.id !== "tour");
+    const stories = journeys();
     return stories[stories.indexOf(journey) + 1] || null;
 }
 
@@ -158,14 +156,21 @@ function render(onRoute) {
         if (saved !== null) collapsed = saved === "1";
     } catch { /* storage unavailable */ }
 
-    const dots = h("div.story-dots", { "aria-label": "Steps" },
-        journey.steps.map((s, i) => h("a", {
-            href: stepHref(journey.id, i + 1),
-            class: i + 1 < n ? "done" : undefined,
-            "aria-current": i + 1 === n ? "step" : undefined,
-            "aria-label": `Step ${i + 1}: ${s.title}`,
-            title: `Step ${i + 1}: ${s.title}`,
-        })));
+    // The person's timeline, one point per step: date above, a word or two below.
+    const line = h("ol.story-line", { "aria-label": `${journey.title}, step by step` },
+        journey.steps.map((s, i) => {
+            const r = stepRecord(s);
+            const d = r && recDate(r);
+            return h("li", {
+                class: i + 1 < n ? "done" : i + 1 === n ? "current" : undefined,
+            }, h("a", {
+                href: stepHref(journey.id, i + 1),
+                "aria-current": i + 1 === n ? "step" : undefined,
+                title: `Step ${i + 1}: ${s.title}`,
+            },
+            h("span.sl-date", d ? shortDate(d) : " "),
+            h("span.sl-label", s.label || s.title)));
+        }));
 
     const gap = step.gap ? store.bundle.annotations.find((a) => a.id === step.gap) : null;
     const extra = h("div.story-extra",
@@ -178,7 +183,7 @@ function render(onRoute) {
         gap ? h("button.story-gap", { type: "button", onclick: () => openGap(gap.id) }, `◆ ${gap.id} ${gap.title}`) : null);
 
     const after = nextJourney(journey);
-    const nextLabel = n < total ? "Next" : after ? `Next: ${after.title}` : journey.id === "tour" ? "Finish the tour" : "Back to the start";
+    const nextLabel = n < total ? "Next" : after ? `Next: ${after.title}` : "Back to the start";
     const controls = onRoute
         ? h("div.story-controls",
             n > 1 ? h("a", { href: stepHref(journey.id, n - 1) }, "Previous") : h("button", { type: "button", disabled: true }, "Previous"),
@@ -199,14 +204,30 @@ function render(onRoute) {
         h("div",
             h("div.story-meta", h("strong", journey.title), h("span", `Step ${n} of ${total}`)),
             onRoute
-                ? [h("h2.story-title", step.title), h("p.story-text", step.text.trim()), extra, dots]
+                ? [h("h2.story-title", step.title), h("p.story-text", step.text.trim()), extra]
                 : [h("h2.story-title", "You're exploring on your own"),
                     h("p.story-text", `The story is paused at step ${n}, “${step.title}”. Go back to it, or leave the story and keep exploring.`)]),
-        controls));
+        controls,
+        line));
     bar.classList.toggle("collapsed", onRoute && collapsed);
+    // While following a story, the bar is the timeline, so the strip on each record steps aside.
+    document.body.classList.toggle("in-story", onRoute);
     bar.classList.toggle("offroute", !onRoute);
     bar.hidden = false;
     sizeBar();
+}
+
+/** The record a step opens, for its date on the timeline. */
+function stepRecord(step) {
+    const [section, a, b] = step.route.replace(/^#\/?/, "").split("/");
+    if (section === "record") return recByLocal(a, b);
+    if (section === "system" && b) return recByLocal("request", b);
+    return null;
+}
+
+function shortDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "Europe/London" });
 }
 
 function sizeBar() {

@@ -222,7 +222,8 @@ function linksCard(r, f) {
     }
     const local = uiRecord(r.id);
     return card("Linked records",
-        out.length ? h("ul.links-list", out) : h("p.muted", "No linked records."),
+        out.length ? h("ul.links-list", out) : local && local.plan ? null : h("p.muted", "No linked records."),
+        local && local.plan ? notStd(local.plan) : null,
         local && local.escalation ? notStd(local.escalation) : null,
         gaps(r, "linkedRecord"));
 }

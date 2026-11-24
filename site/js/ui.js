@@ -129,7 +129,7 @@ export function fielder(r) {
             }
         }
         const tag = opts.block ? "div" : "span";
-        return h(`${tag}.v`, {
+        const node = h(`${tag}.v`, {
             class: opts.block ? "block" : undefined,
             "data-rec": r.id,
             "data-path": path,
@@ -138,6 +138,7 @@ export function fielder(r) {
             role: "button",
             title: "Select to see this value in the standard",
         }, content === undefined ? (raw === undefined ? "" : String(raw)) : content);
+        return openLinks(node);
     }
     function codeLabel(path, cls, key) {
         const raw = get(path);
@@ -145,6 +146,23 @@ export function fielder(r) {
         return doc && doc.enum ? enumLabel(doc.enum, raw) : raw;
     }
     return { v, get, codeLabel, data };
+}
+
+/**
+ * A value that names another record (a person, a referral) is selected like any other value. So the
+ * name itself isn't a link: a small "Open" beside it goes to the record.
+ */
+function openLinks(node) {
+    for (const a of node.querySelectorAll("a.reclink")) {
+        const name = h("span.reclink", ...a.childNodes);
+        const open = h("a.open-link", {
+            href: a.getAttribute("href"),
+            "aria-label": `Open ${name.textContent.trim()}`,
+            title: "Open this record",
+        }, "Open");
+        a.replaceWith(name, open);
+    }
+    return node;
 }
 
 // ------------------------------------------------------------------ shared bits

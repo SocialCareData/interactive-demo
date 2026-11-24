@@ -81,3 +81,5 @@ records:
     escalation: "Escalation of: Jordan's Early Help plan (EP-2026-0061, from 8 Jun 2026)"
   https://anytown.example/records/request/REQ-2026-0301:
     escalation: "Made as part of: Riley's Child in Need plan (EP-2026-0117)"
+  https://anytown.example/records/episode/EP-2026-0117:
+    plan: "In Anytown's system, this is where Riley's plan itself lives: what needs to change, who will do what, and when it's reviewed. Children's plans aren't in the standards yet, so only the episode is shared."

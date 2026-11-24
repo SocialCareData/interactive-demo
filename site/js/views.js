@@ -427,9 +427,7 @@ export function journeys() {
 }
 
 export function welcomeView() {
-    const list = journeys();
-    const tour = list.find((j) => j.id === "tour");
-    const stories = list.filter((j) => j.id !== "tour");
+    const stories = journeys();
     const startLink = (j) => `#/story/${j.id}/1`;
     return h("div.welcome",
         h("h1", "Same data, different screens"),
@@ -441,7 +439,7 @@ export function welcomeView() {
             h("div",
                 h("h2", "Where to start"),
                 h("ul.route-list",
-                    [tour, ...stories].filter(Boolean).map((j) => h("li",
+                    stories.map((j) => h("li",
                         h("div.what", h("a", { href: startLink(j) }, j.start || j.title), h("p", j.summary)),
                         h("span.count", j.minutes ? `${j.steps.length} steps, about ${j.minutes} minutes` : `${j.steps.length} steps`)))),
                 h("p.explore",

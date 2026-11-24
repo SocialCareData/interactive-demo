@@ -69,7 +69,7 @@ export function setXray(on, { persist = true } = {}) {
 }
 
 /** Highlight one value programmatically (used by stories), on the screen and in the record. */
-export function selectPath(recId, path) {
+export function selectPath(recId, path, { scroll = true } = {}) {
     if (!recId || !path) return;
     selected = { rec: recId, path, from: "story" };
     announce();
@@ -77,7 +77,7 @@ export function selectPath(recId, path) {
     if (st.recordId !== recId) setBack(recId);
     else apply(true);
     const el = document.querySelector("#front .v.traced");
-    if (el) {
+    if (el && scroll) {
         const r = el.getBoundingClientRect();
         if (r.top < 80 || r.bottom > window.innerHeight * 0.6) el.scrollIntoView({ block: "center" });
     }
@@ -114,6 +114,19 @@ function related(a, b) {
     return a === b || a.startsWith(`${b}/`) || b.startsWith(`${a}/`);
 }
 
+/** Bring el to the middle of a scrolling container, without scrolling anything else. */
+function scrollWithin(box, el) {
+    let pane = el.parentElement;
+    while (pane && pane !== box.parentElement) {
+        const o = getComputedStyle(pane).overflowY;
+        if ((o === "auto" || o === "scroll") && pane.scrollHeight > pane.clientHeight) break;
+        pane = pane.parentElement;
+    }
+    if (!pane || pane === box.parentElement) return;
+    const top = el.getBoundingClientRect().top - pane.getBoundingClientRect().top;
+    pane.scrollTop += top - pane.clientHeight / 2 + el.offsetHeight / 2;
+}
+
 function apply(scrollBack, quiet = false) {
     document.querySelectorAll(".traced").forEach((e) => e.classList.remove("traced"));
     const jump = document.getElementById("jump-data");
@@ -144,7 +157,8 @@ function apply(scrollBack, quiet = false) {
     const narrow = window.matchMedia("(max-width: 999px)").matches;
     jump.hidden = !(narrow && selected.from !== "back" && target && getView() === "split");
     if (target && !narrow && (scrollBack || (quiet && selected.from !== "back"))) {
-        target.scrollIntoView({ block: "center", behavior: "auto" });
+        // Scroll the record within its own pane, never the page.
+        scrollWithin(document.getElementById("back"), target);
     }
     if (selected.from === "back" && fronts[0]) {
         fronts[0].scrollIntoView({ block: "center", behavior: "auto" });
