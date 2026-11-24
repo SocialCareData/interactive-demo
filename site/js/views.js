@@ -97,7 +97,6 @@ export function peopleView() {
                 return res && res.record ? h("span", recLink(res.record, null, { noTag: true }),
                     h("span.muted", `(${asList(rp.relationship).map((c) => enumLabel("PersonRelationshipCode", c).toLowerCase()).join(", ")})`)) : null;
             }).filter(Boolean);
-            const local = uiPerson(councilId(p));
             return h("li",
                 h("h2", h("a", { href: route(p) }, title(p)), h("span.age", `age ${age(dob)}`)),
                 h("p.facts",
@@ -108,7 +107,7 @@ export function peopleView() {
                         ` since ${fmtDate(recDate(e))}`))) : null,
                 family.length ? h("p", h("span.muted", "Family: "), family) : null,
                 latest ? h("p", h("span.muted", "Latest: "), h("a", { href: route(latest) }, summary(latest)), `, ${fmtDate(recDate(latest))}`) : null,
-                local && local.allocatedWorker ? notStd(`Allocated to ${local.allocatedWorker}, ${local.team}`, { inline: true }) : null);
+                null);
         })),
         h("section.sec",
             h("h2", "Family and other connected people"),
@@ -186,15 +185,7 @@ export function personView(p) {
                 h("h1", tag("person"), f.v("/name/0", personName(d.name))),
                 h("div.sub",
                     dob ? h("span", "Born ", f.v("/dateOfBirth/date", fmtDate(dob)), ` (age ${age(dob)}). `) : null,
-                    ids)),
-            local.allocatedWorker || local.localStatus || local.lastViewed || asList(local.flags).length
-                ? h("div.aside", notStd(h("div",
-                    local.allocatedWorker ? h("div", h("strong", "Allocated: "), `${local.allocatedWorker}, ${local.team}`) : null,
-                    local.localStatus ? h("div", h("strong", "Case status: "), local.localStatus) : null,
-                    asList(local.flags).length ? h("div", h("strong", "Flags: "), asList(local.flags).map((fl) => h(`span.flag.${fl.level || "neutral"}`, { style: "margin-right:.3rem" }, fl.text))) : null,
-                    local.lastViewed ? h("div.small", `Last viewed by ${local.lastViewed}`) : null)))
-                : null),
-        isSubject ? timeline(p, records, local) : null,
+                    ids))),
         h("div.grid-2",
             card(isSubject ? `About ${first}` : "Personal details", fields([
                 ["Full name", f.v("/name/0", formalName(d.name))],
@@ -214,7 +205,8 @@ export function personView(p) {
                         : h("p.muted", "None."),
                     h("p.small.muted", "Worked out from the records in the timeline, not stored on the person.")) : null,
                 asList(local.tasks).length ? card("Tasks", notStd(h("ul", asList(local.tasks).map((t) =>
-                    h("li", h("strong", fmtDate(String(t.due))), ` ${t.text} (${t.owner})`))))) : null)));
+                    h("li", h("strong", fmtDate(String(t.due))), ` ${t.text} (${t.owner})`))))) : null)),
+        isSubject ? timeline(p, records, local) : null);
 }
 
 function accuracy(code) {
@@ -412,7 +404,7 @@ export function aboutView() {
                 h("li", h("strong", "Show the standard "), "(top right, or press ", h("kbd", "S"), ") labels each value on the screen with its field name in the standard."),
                 h("li", h("strong", "Stories "), "step through with Next and Previous, or the ", h("kbd", "←"), " ", h("kbd", "→"), " keys. ", h("kbd", "Esc"), " leaves a story."),
                 h("li", h("strong", "Select any value "), "on the left to highlight it in the data on the right, or select a line on the right to find it on the left."),
-                h("li", notStd("Grey italic text with a dashed line shows things a real system holds that the standards don't cover, such as allocated workers, case notes and tasks.", { inline: true })),
+                h("li", notStd("Grey italic text with a dashed line shows things a real system holds that the standards don't cover, such as case notes and tasks.", { inline: true })),
                 h("li", h("span", { style: "color:var(--gap);font-weight:600" }, "◆ Open questions "), "mark where the standards are still open. ", h("a", { href: "#/gaps" }, "See them all.")),
                 h("li", h("strong", "Anytown CAMHS "), "is a second fictional system. It shows the same request as the council's system, with a different screen. ", h("a", { href: "#/system/camhs" }, "Open it."))),
             h("h2", "Data and validation"),

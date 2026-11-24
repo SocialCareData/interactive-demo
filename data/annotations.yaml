@@ -22,8 +22,8 @@
     In social work, and in most case management systems, a "service episode" usually means the
     overarching period someone has a status, such as "Child in Need from 27 October". In the
     standard, a ServiceEpisode is broader: its types (assessment, plan, provision, request)
-    describe the activities that happen within that period. This screen shows both readings: the
-    greyed local status, and the standard's episode of type "Child in Need plan".
+    describe the activities that happen within that period. Here, Riley's plan is an episode of
+    type "Child in Need plan".
   question: Which of these matches how you record it? Would you expect to share the overall status period, the activities within it, or both?
   issue: https://github.com/SocialCareData/standard/issues/115
 

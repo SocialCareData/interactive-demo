@@ -25,13 +25,11 @@
 
     - title: Riley's record and timeline
       route: "#/person/P-100231"
-      trace: /identifier/1/value
       gap: G4
       text: >
         On the left is Riley's record as the council's system shows it; on the right, the same record as the
         standard defines it. Below it is his timeline: every record that points to Riley, from an A&E visit in
-        July to a reply from CAMHS in November. Those records find Riley by identifiers like his NHS number,
-        highlighted. The grey entries are the council's own notes.
+        July to a reply from CAMHS in November. The grey entries are the council's own notes.
 
     - title: A school's referral about Riley
       route: "#/record/referral/REF-2026-0412"
@@ -208,8 +206,8 @@
       trace: /type/0
       gap: G1
       text: >
-        The assessment leads to a Child in Need plan, still open today. The council's own case status is shown
-        in grey beside the standard's episode.
+        The assessment leads to a Child in Need plan, still open today. In the standard, it's an episode of
+        type "Child in Need plan".
 
     - title: A request to CAMHS
       route: "#/record/request/REQ-2026-0301"
@@ -287,8 +285,8 @@
       route: "#/record/episode/EP-2026-0129"
       trace: /finding/0/observation/0/type
       text: >
-        Jordan's social worker opens the enquiry. Persistent school absence is recorded as an observation. The
-        council's own case status and sign-off step stay local.
+        Jordan's social worker opens the enquiry. Persistent school absence is recorded as an observation, in
+        a form any system can read.
 
 - id: margaret
   title: Margaret's story

@@ -30,16 +30,14 @@ function header(r, f, opts = {}) {
             h("div",
                 h("h1", tag(r.kind), h("span", opts.title || title(r))),
                 opts.sub ? h("div.sub", opts.sub) : null),
-            h("div.aside", opts.right || null,
-                local && local.rag ? h("div", notStd(`RAG rating: ${local.rag}`, { inline: true })) : null)),
-        local && local.workflow ? notStd(h("span", "Workflow: ", local.workflow)) : null,
+            opts.right ? h("div.aside", opts.right) : null),
         gaps(r));
 }
 
+/** A response status, as plain text: styled tags are kept for kinds of record. */
 function statusFlag(status, f, path) {
-    const cls = { accepted: "ok", acknowledged: "neutral", redirected: "warn", declined: "bad" }[String(status).split(".")[0]] || "neutral";
     const label = enumLabel("ResponseStatusCode", status);
-    return h(`span.flag.${cls}`, f ? f.v(path, label, { code: true }) : label);
+    return h("span.status", f ? f.v(path, label, { code: true }) : label);
 }
 
 function derivedStatus(r) {
@@ -139,17 +137,14 @@ function concernsCard(r, f, qoc = false) {
             const enumName = qoc ? "QocConcernCode" : "ConcernCode";
             const unassigned = c.concernType === "UNASSIGNED";
             return h("div", i ? h("hr") : null,
+                c.description || c.concernDescription
+                    ? f.v(`/concern/${i}/${c.description ? "description" : "concernDescription"}`, h("div.quote", c.description || c.concernDescription), { block: true })
+                    : null,
                 h("p", h("strong", "Concern type: "),
                     unassigned
                         ? h("span.flag.warn", f.v(`/concern/${i}/concernType`, "Unassigned: awaiting triage", { code: true }))
                         : f.v(`/concern/${i}/concernType`, enumLabel(enumName, c.concernType), { code: true })),
-                local && local.originalConcernType && !unassigned
-                    ? notStd(h("span", h("strong", "Referrer's original: "), local.originalConcernType,
-                        ` → ${enumLabel(enumName, c.concernType)}, assigned at triage${local.triage ? ` ${local.triage}` : ""}.`))
-                    : null,
-                c.description || c.concernDescription
-                    ? f.v(`/concern/${i}/${c.description ? "description" : "concernDescription"}`, h("div.quote", c.description || c.concernDescription), { block: true })
-                    : null);
+                local && local.triageNote && !unassigned ? notStd(local.triageNote) : null);
         }));
 }
 
@@ -392,7 +387,6 @@ function episode(r) {
             title: h("span", asList(d.type).map((t, i) => f.v(`/type/${i}`, enumLabel("EpisodeCode", t), { code: true }))),
             sub: h("span", "Episode ", f.v("/identifier/0/value", r.localId), ": ", period(f, asList(d.timeInformation)[0], "/timeInformation/0")),
         }),
-        local && local.localStatus ? notStd(h("span", h("strong", "Case status: "), local.localStatus)) : null,
         gaps(r, "type"),
         card("Episode", whoAndWhere(r, f)),
         findings.length ? card("Findings", findings.map((fd, i) => h("div",

@@ -56,10 +56,8 @@ export function applyStep(step) {
     if (step.trace) selectPath(step.record || recordId, step.trace);
     if (step.gap) {
         const gap = document.querySelector(`#front details.gap[data-gap="${CSS.escape(step.gap)}"]`);
-        if (gap) {
-            gap.open = true;
-            if (!step.trace) gap.scrollIntoView({ block: "center" });
-        }
+        // Open questions stay closed: the step brings the marker into view, and the viewer opens it.
+        if (gap && !step.trace) gap.scrollIntoView({ block: "center" });
     }
 }
 

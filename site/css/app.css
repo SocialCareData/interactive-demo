@@ -173,7 +173,8 @@ body.page-full[data-view="data"] #front { display: block; }
     padding: var(--space-4) var(--gutter) var(--space-4);
     display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: var(--space-3) var(--space-5);
 }
-.cms-head .crumbs { flex-basis: 100%; margin: 0; }
+/* The breadcrumbs always take a whole line, even where the head's children are width-capped. */
+.cms-head .crumbs { flex-basis: 100%; margin: 0; max-width: none !important; }
 .cms-head h1 { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .6rem; }
 .cms-head .sub { color: var(--ink-2); margin-top: .35rem; }
 .cms-head .aside { max-width: 28rem; }

@@ -1,19 +1,13 @@
 # Front-end-only content: things a real case management system shows that the standards
-# don't define (PLAN.md §5.8). It's rendered greyed out, labelled "Not part of the standard:
-# local to your system", and never appears in the JSON-LD.
+# don't define (PLAN.md §5.8): case notes, tasks, and notes on matching, triage and links
+# the standard can't express. It's shown in grey, labelled as local, and never appears in
+# the JSON-LD.
 #
 # people:  keyed by council person ID
 # records: keyed by record @id
 
 people:
   P-100231:
-    allocatedWorker: Aisha Begum
-    team: Children's Assessment and Intervention Team
-    localStatus: Child in Need (section 17) since 27 Oct 2026
-    lastViewed: Aisha Begum, 25 Nov 2026 at 16:42
-    flags:
-      - text: Young carer for younger sister
-        level: warn
     tasks:
       - due: 2026-11-27
         text: Child in Need statutory visit (fortnightly)
@@ -43,22 +37,7 @@ people:
         by: Aisha Begum
         text: CAMHS letter received. Spoke to Mum about the school Mental Health Support Team; she's happy for them to see Riley.
 
-  P-100232:
-    allocatedWorker: Aisha Begum
-    team: Children's Assessment and Intervention Team
-    localStatus: Sibling linked to Riley's Child in Need plan
-    lastViewed: Aisha Begum, 18 Nov 2026 at 10:05
-
   P-100311:
-    allocatedWorker: Grace Adeyemi
-    team: Children's Assessment and Intervention Team
-    localStatus: Section 47 enquiry in progress
-    lastViewed: Grace Adeyemi, 26 Nov 2026 at 09:12
-    flags:
-      - text: "Risk: child criminal exploitation"
-        level: bad
-      - text: Missing from home ×3 since September
-        level: warn
     tasks:
       - due: 2026-11-26
         text: Strategy meeting (police, school, Early Help)
@@ -85,15 +64,6 @@ people:
         text: Saw Jordan and Carla together. Jordan says he wants "to be left alone". Carla wants help to keep him safe.
 
   P-100457:
-    allocatedWorker: Hannah Lowe
-    team: Adult Social Care East Locality Team
-    localStatus: "Long-term support: home care package; section 42 enquiry open"
-    lastViewed: Samir Chaudhry, 26 Nov 2026 at 08:47
-    flags:
-      - text: "Key safe: code held by Brightwater and daughter"
-        level: neutral
-      - text: Falls risk
-        level: warn
     tasks:
       - due: 2026-11-27
         text: Section 42 enquiry visit with daughter present
@@ -122,45 +92,16 @@ people:
         by: Samir Chaudhry
         text: Strategy discussion with the district nurse. Agreed section 42 enquiry; quality-of-care concern to be considered alongside.
 
-  P-100233:
-    lastViewed: Aisha Begum, 18 Nov 2026 at 10:02
-  P-100312:
-    lastViewed: Grace Adeyemi, 12 Nov 2026 at 14:30
-  P-100458:
-    lastViewed: Samir Chaudhry, 25 Nov 2026 at 11:15
 
 records:
   https://anytown.example/records/referral/REF-2026-0412:
-    workflow: Triage complete. Proceed to child and family assessment. Signed off by Team Manager on 18 Sep 2026.
-    originalConcernType: Unassigned (the school didn't choose a concern type)
-    triage: by Tom Riordan on 16 Sep 2026
+    triageNote: The school didn't choose a concern type, so it arrived as Unassigned. Tom Riordan chose Neglect when he triaged the referral on 16 Sep 2026. Only the chosen type is shared; who chose it, and when, stays in the council's system.
     matched: Matched to Riley Hart (P-100231) by Tom Riordan on 15 Sep 2026
-    rag: Amber
-  https://anytown.example/records/referral/REF-2026-0518:
-    workflow: Strategy discussion held on 8 Nov 2026. Proceed to section 47 enquiry.
-    rag: Red
   https://anytown.example/records/referral/REF-2026-0365:
-    workflow: Accepted for Care Act assessment. Allocated to East Locality Team.
     matched: Matched to Margaret Ellis (P-100457) by the Adult Contact Centre on 4 Aug 2026
-    rag: Green
-  https://anytown.example/records/referral/REF-2026-0561:
-    workflow: Strategy discussion held on 25 Nov 2026. Section 42 enquiry opened.
-    rag: Red
   https://anytown.example/records/qoc/QOC-2026-0019:
-    workflow: Awaiting triage by the quality assurance team
     matched: Matched to Margaret Ellis (P-100457) on 25 Nov 2026
-    rag: Not yet rated
   https://anytown.example/records/request/REQ-2026-0322:
     escalation: "Escalation of: Jordan's Early Help plan (EP-2026-0061, from 8 Jun 2026)"
   https://anytown.example/records/request/REQ-2026-0301:
     escalation: "Made as part of: Riley's Child in Need plan (EP-2026-0117)"
-  https://anytown.example/records/episode/EP-2026-0117:
-    localStatus: Child in Need (section 17) from 27 Oct 2026
-    workflow: Next review due 8 Dec 2026
-  https://anytown.example/records/episode/EP-2026-0129:
-    localStatus: Child protection enquiry (section 47)
-    workflow: "Awaiting manager sign-off: outcome of enquiry"
-  https://anytown.example/records/episode/EP-2026-0136:
-    workflow: Enquiry opened today. First visit booked for 27 Nov.
-  https://anytown.example/records/plan/PLAN-2026-0027:
-    workflow: Early review requested after the safeguarding concern on 24 Nov
