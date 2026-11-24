@@ -1,0 +1,43 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/service/SVC-BHC",
+  "@type": "Service",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-BHC"
+    }
+  ],
+  "name": "Brightwater Home Care",
+  "alias": [
+    "Brightwater Home Care Ltd"
+  ],
+  "type": [
+    "home-support-domiciliary"
+  ],
+  "active": true,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "Unit 4, Riverside Business Park",
+      "line2": "Mill Lane",
+      "city": "Anytown",
+      "postcode": "AT5 3BW",
+      "use": "work"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Office",
+      "email": [
+        "office@brightwater-care.example"
+      ],
+      "telephone": [
+        "01632 960400"
+      ]
+    }
+  ],
+  "costFrequency": "hourly"
+}

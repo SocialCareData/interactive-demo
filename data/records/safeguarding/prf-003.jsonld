@@ -1,0 +1,50 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/professional/PRF-003",
+  "@type": "Professional",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/professional",
+      "value": "PRF-003"
+    }
+  ],
+  "name": {
+    "@type": "Name",
+    "familyName": [
+      "Begum"
+    ],
+    "givenName": [
+      "Aisha"
+    ],
+    "use": "official"
+  },
+  "role": [
+    "Social Worker"
+  ],
+  "workingStatus": true,
+  "contact": {
+    "@type": "Contact",
+    "name": "Work",
+    "email": [
+      "aisha.begum@anytown.example"
+    ],
+    "telephone": [
+      "01632 960014"
+    ]
+  },
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-AIT"
+    }
+  ],
+  "relatedOrganisation": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ABC"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/professional/PRF-005",
+  "@type": "Professional",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/professional",
+      "value": "PRF-005"
+    }
+  ],
+  "name": {
+    "@type": "Name",
+    "familyName": [
+      "Marsh"
+    ],
+    "givenName": [
+      "Daniel"
+    ],
+    "use": "official"
+  },
+  "role": [
+    "Police Constable",
+    "Missing Persons Coordinator"
+  ],
+  "workingStatus": true,
+  "contact": {
+    "@type": "Contact",
+    "name": "Work",
+    "email": [
+      "daniel.marsh@anytown-police.example"
+    ],
+    "telephone": [
+      "01632 960211"
+    ]
+  },
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-PPU"
+    }
+  ],
+  "relatedOrganisation": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ACON"
+    }
+  ]
+}

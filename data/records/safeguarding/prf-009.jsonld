@@ -1,0 +1,50 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/professional/PRF-009",
+  "@type": "Professional",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/professional",
+      "value": "PRF-009"
+    }
+  ],
+  "name": {
+    "@type": "Name",
+    "familyName": [
+      "Quinn"
+    ],
+    "givenName": [
+      "Bernadette"
+    ],
+    "use": "official"
+  },
+  "role": [
+    "District Nurse"
+  ],
+  "workingStatus": true,
+  "contact": {
+    "@type": "Contact",
+    "name": "Work",
+    "email": [
+      "bernadette.quinn@anytown-nhs.example"
+    ],
+    "telephone": [
+      "01632 960115"
+    ]
+  },
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-DN"
+    }
+  ],
+  "relatedOrganisation": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ANFT"
+    }
+  ]
+}

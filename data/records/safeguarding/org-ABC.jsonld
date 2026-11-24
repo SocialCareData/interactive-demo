@@ -1,0 +1,79 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/organisation/ORG-ABC",
+  "@type": "Organisation",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ABC"
+    }
+  ],
+  "name": "Anytown Borough Council",
+  "alias": [
+    "Anytown Council"
+  ],
+  "type": [
+    "local-authority"
+  ],
+  "active": true,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "Civic Centre",
+      "line2": "Market Square",
+      "city": "Anytown",
+      "postcode": "AT1 1AA",
+      "use": "work"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Main switchboard",
+      "email": [
+        "contact@anytown.example"
+      ],
+      "telephone": [
+        "01632 960000"
+      ]
+    }
+  ],
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-CFD"
+    },
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-AIT"
+    },
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-EH"
+    },
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-AFD"
+    },
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-ALT"
+    },
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-ASG"
+    },
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-TEL"
+    }
+  ]
+}

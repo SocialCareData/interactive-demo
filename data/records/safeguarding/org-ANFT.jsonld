@@ -1,0 +1,64 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/organisation/ORG-ANFT",
+  "@type": "Organisation",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ANFT"
+    }
+  ],
+  "name": "Anytown NHS Foundation Trust",
+  "alias": [
+    "Anytown General Hospital"
+  ],
+  "type": [
+    "nhs-trust"
+  ],
+  "active": true,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "Anytown General Hospital",
+      "line2": "Infirmary Road",
+      "city": "Anytown",
+      "postcode": "AT2 7HP",
+      "use": "work"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Switchboard",
+      "email": [
+        "enquiries@anytown-nhs.example"
+      ],
+      "telephone": [
+        "01632 960100"
+      ]
+    }
+  ],
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-CAMHS"
+    },
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-MHST"
+    },
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-DN"
+    },
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-ED"
+    }
+  ]
+}

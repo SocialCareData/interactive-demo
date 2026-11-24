@@ -1,0 +1,50 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/service/SVC-MHST",
+  "@type": "Service",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-MHST"
+    }
+  ],
+  "name": "School Mental Health Support Team",
+  "alias": [
+    "MHST"
+  ],
+  "type": [
+    "other-professional-support"
+  ],
+  "active": true,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "Willow Lodge",
+      "line2": "Infirmary Road",
+      "city": "Anytown",
+      "postcode": "AT2 7HQ",
+      "use": "work"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Team office",
+      "email": [
+        "mhst@anytown-nhs.example"
+      ],
+      "telephone": [
+        "01632 960111"
+      ]
+    }
+  ],
+  "costFrequency": "none",
+  "relatedOrganisation": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ANFT"
+    }
+  ]
+}

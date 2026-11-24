@@ -1,0 +1,50 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/service/SVC-TEL",
+  "@type": "Service",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-TEL"
+    }
+  ],
+  "name": "Anytown Telecare",
+  "alias": [
+    "Careline"
+  ],
+  "type": [
+    "telecare"
+  ],
+  "active": true,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "Eastfield House",
+      "line2": "3 Orchard Way",
+      "city": "Anytown",
+      "postcode": "AT4 6EL",
+      "use": "work"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Careline monitoring centre",
+      "email": [
+        "careline@anytown.example"
+      ],
+      "telephone": [
+        "01632 960023"
+      ]
+    }
+  ],
+  "costFrequency": "weekly",
+  "relatedOrganisation": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ABC"
+    }
+  ]
+}

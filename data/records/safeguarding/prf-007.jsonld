@@ -1,0 +1,51 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/professional/PRF-007",
+  "@type": "Professional",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/professional",
+      "value": "PRF-007"
+    }
+  ],
+  "name": {
+    "@type": "Name",
+    "familyName": [
+      "Nair"
+    ],
+    "givenName": [
+      "Priya"
+    ],
+    "use": "official"
+  },
+  "role": [
+    "Clinical Psychologist",
+    "CAMHS Intake Clinician"
+  ],
+  "workingStatus": true,
+  "contact": {
+    "@type": "Contact",
+    "name": "Work",
+    "email": [
+      "priya.nair@anytown-nhs.example"
+    ],
+    "telephone": [
+      "01632 960114"
+    ]
+  },
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-CAMHS"
+    }
+  ],
+  "relatedOrganisation": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ANFT"
+    }
+  ]
+}

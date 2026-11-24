@@ -1,0 +1,50 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/service/SVC-CAMHS",
+  "@type": "Service",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-CAMHS"
+    }
+  ],
+  "name": "Anytown CAMHS",
+  "alias": [
+    "Child and Adolescent Mental Health Service"
+  ],
+  "type": [
+    "CAMHS"
+  ],
+  "active": true,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "Willow Lodge",
+      "line2": "Infirmary Road",
+      "city": "Anytown",
+      "postcode": "AT2 7HQ",
+      "use": "work"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Referrals",
+      "email": [
+        "camhs.referrals@anytown-nhs.example"
+      ],
+      "telephone": [
+        "01632 960110"
+      ]
+    }
+  ],
+  "costFrequency": "none",
+  "relatedOrganisation": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ANFT"
+    }
+  ]
+}

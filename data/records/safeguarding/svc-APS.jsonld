@@ -1,0 +1,40 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/service/SVC-APS",
+  "@type": "Service",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-APS"
+    }
+  ],
+  "name": "Anytown Primary School",
+  "type": [
+    "primary-school"
+  ],
+  "active": true,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "Anytown Primary School",
+      "line2": "Rowan Avenue",
+      "city": "Anytown",
+      "postcode": "AT3 5PS",
+      "use": "work"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "School office",
+      "email": [
+        "office@anytown-primary.example"
+      ],
+      "telephone": [
+        "01632 960300"
+      ]
+    }
+  ],
+  "costFrequency": "none"
+}

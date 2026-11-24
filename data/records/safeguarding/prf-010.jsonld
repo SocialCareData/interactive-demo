@@ -1,0 +1,50 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/professional/PRF-010",
+  "@type": "Professional",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/professional",
+      "value": "PRF-010"
+    }
+  ],
+  "name": {
+    "@type": "Name",
+    "familyName": [
+      "Chaudhry"
+    ],
+    "givenName": [
+      "Samir"
+    ],
+    "use": "official"
+  },
+  "role": [
+    "Adult Safeguarding Practitioner"
+  ],
+  "workingStatus": true,
+  "contact": {
+    "@type": "Contact",
+    "name": "Work",
+    "email": [
+      "samir.chaudhry@anytown.example"
+    ],
+    "telephone": [
+      "01632 960025"
+    ]
+  },
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-ASG"
+    }
+  ],
+  "relatedOrganisation": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ABC"
+    }
+  ]
+}

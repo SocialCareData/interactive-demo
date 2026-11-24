@@ -5,3 +5,4 @@ site/data/bundle.json
 site/data/validation.json
 .DS_Store
 Thumbs.db
+.cache/

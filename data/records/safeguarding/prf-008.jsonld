@@ -1,0 +1,51 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/professional/PRF-008",
+  "@type": "Professional",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/professional",
+      "value": "PRF-008"
+    }
+  ],
+  "name": {
+    "@type": "Name",
+    "familyName": [
+      "Lowe"
+    ],
+    "givenName": [
+      "Hannah"
+    ],
+    "use": "official"
+  },
+  "role": [
+    "Social Worker",
+    "Care Act Assessor"
+  ],
+  "workingStatus": true,
+  "contact": {
+    "@type": "Contact",
+    "name": "Work",
+    "email": [
+      "hannah.lowe@anytown.example"
+    ],
+    "telephone": [
+      "01632 960024"
+    ]
+  },
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-ALT"
+    }
+  ],
+  "relatedOrganisation": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ABC"
+    }
+  ]
+}

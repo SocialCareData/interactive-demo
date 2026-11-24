@@ -1,0 +1,50 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/service/SVC-EH",
+  "@type": "Service",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-EH"
+    }
+  ],
+  "name": "Anytown Early Help",
+  "alias": [
+    "Family Hub"
+  ],
+  "type": [
+    "early-help"
+  ],
+  "active": true,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "Northgate Family Hub",
+      "line2": "12 Canal Street",
+      "city": "Anytown",
+      "postcode": "AT3 2FH",
+      "use": "work"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Family Hub reception",
+      "email": [
+        "earlyhelp@anytown.example"
+      ],
+      "telephone": [
+        "01632 960012"
+      ]
+    }
+  ],
+  "costFrequency": "none",
+  "relatedOrganisation": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ABC"
+    }
+  ]
+}

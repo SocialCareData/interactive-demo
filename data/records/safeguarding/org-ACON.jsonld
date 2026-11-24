@@ -1,0 +1,46 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/organisation/ORG-ACON",
+  "@type": "Organisation",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ACON"
+    }
+  ],
+  "name": "Anytown Constabulary",
+  "type": [
+    "police-force"
+  ],
+  "active": true,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "Police Headquarters",
+      "line2": "Station Road",
+      "city": "Anytown",
+      "postcode": "AT1 9PQ",
+      "use": "work"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Non-emergency",
+      "email": [
+        "contact@anytown-police.example"
+      ],
+      "telephone": [
+        "01632 960200"
+      ]
+    }
+  ],
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-PPU"
+    }
+  ]
+}

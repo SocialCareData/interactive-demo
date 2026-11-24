@@ -1,0 +1,50 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/service/SVC-ED",
+  "@type": "Service",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-ED"
+    }
+  ],
+  "name": "Emergency Department, Anytown General Hospital",
+  "alias": [
+    "A&E"
+  ],
+  "type": [
+    "emergency-support"
+  ],
+  "active": true,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "Anytown General Hospital",
+      "line2": "Infirmary Road",
+      "city": "Anytown",
+      "postcode": "AT2 7HP",
+      "use": "work"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "ED reception",
+      "email": [
+        "ed@anytown-nhs.example"
+      ],
+      "telephone": [
+        "01632 960113"
+      ]
+    }
+  ],
+  "costFrequency": "none",
+  "relatedOrganisation": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ANFT"
+    }
+  ]
+}

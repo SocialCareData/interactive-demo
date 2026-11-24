@@ -1,0 +1,44 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/professional/PRF-001",
+  "@type": "Professional",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/professional",
+      "value": "PRF-001"
+    }
+  ],
+  "name": {
+    "@type": "Name",
+    "familyName": [
+      "Osei"
+    ],
+    "givenName": [
+      "Kemi"
+    ],
+    "use": "official"
+  },
+  "role": [
+    "Designated Safeguarding Lead",
+    "Deputy Headteacher"
+  ],
+  "workingStatus": true,
+  "contact": {
+    "@type": "Contact",
+    "name": "Work",
+    "email": [
+      "k.osei@anytown-primary.example"
+    ],
+    "telephone": [
+      "01632 960301"
+    ]
+  },
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-APS"
+    }
+  ]
+}

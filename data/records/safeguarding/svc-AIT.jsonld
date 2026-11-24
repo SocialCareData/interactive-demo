@@ -1,0 +1,47 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/service/SVC-AIT",
+  "@type": "Service",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-AIT"
+    }
+  ],
+  "name": "Children's Assessment and Intervention Team",
+  "type": [
+    "social-worker-support"
+  ],
+  "active": true,
+  "address": [
+    {
+      "@type": "Address",
+      "line1": "Civic Centre",
+      "line2": "Market Square",
+      "city": "Anytown",
+      "postcode": "AT1 1AA",
+      "use": "work"
+    }
+  ],
+  "contact": [
+    {
+      "@type": "Contact",
+      "name": "Team duty",
+      "email": [
+        "ait@anytown.example"
+      ],
+      "telephone": [
+        "01632 960011"
+      ]
+    }
+  ],
+  "costFrequency": "none",
+  "relatedOrganisation": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ABC"
+    }
+  ]
+}

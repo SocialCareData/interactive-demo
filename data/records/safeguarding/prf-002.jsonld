@@ -1,0 +1,51 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/professional/PRF-002",
+  "@type": "Professional",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/professional",
+      "value": "PRF-002"
+    }
+  ],
+  "name": {
+    "@type": "Name",
+    "familyName": [
+      "Riordan"
+    ],
+    "givenName": [
+      "Tom"
+    ],
+    "use": "official"
+  },
+  "role": [
+    "Social Worker",
+    "Front Door Duty Social Worker"
+  ],
+  "workingStatus": true,
+  "contact": {
+    "@type": "Contact",
+    "name": "Work",
+    "email": [
+      "tom.riordan@anytown.example"
+    ],
+    "telephone": [
+      "01632 960013"
+    ]
+  },
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-CFD"
+    }
+  ],
+  "relatedOrganisation": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/organisation",
+      "value": "ORG-ABC"
+    }
+  ]
+}
