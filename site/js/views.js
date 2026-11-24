@@ -430,9 +430,9 @@ export function welcomeView() {
     const stories = journeys();
     const startLink = (j) => `#/story/${j.id}/1`;
     return h("div.welcome",
-        h("h1", "Same data, different screens"),
+        h("h1", "[PLACEHOLDER TITLE]"),
         h("p.lede",
-            "Example CMS is a made-up case management system for a made-up council, Anytown. ",
+            "[PLACEHOLDER LEDE] Example CMS is a made-up case management system for a made-up council, Anytown. ",
             "It holds the records of three people, written to the Social Care Interoperability Standards. ",
             "Wherever you go, you can see a system's screen and the record underneath it."),
         h("div.starts",
