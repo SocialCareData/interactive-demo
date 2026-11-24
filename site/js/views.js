@@ -96,7 +96,7 @@ export function peopleView() {
                 const res = resolve(rp.identifier);
                 return res && res.record ? h("span", recLink(res.record, null, { noTag: true }),
                     h("span.muted", `(${asList(rp.relationship).map((c) => enumLabel("PersonRelationshipCode", c).toLowerCase()).join(", ")})`)) : null;
-            }).filter(Boolean);
+            }).filter(Boolean).flatMap((x, i) => (i ? ["; ", x] : [x]));
             return h("li",
                 h("h2", h("a", { href: route(p) }, title(p)), h("span.age", `age ${age(dob)}`)),
                 h("p.facts",

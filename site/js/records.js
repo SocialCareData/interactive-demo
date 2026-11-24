@@ -277,8 +277,7 @@ function request(r) {
         card("Request details", fields([
             ["To", asList(d.recipient).map((x, i) => f.v(`/recipient/${i}`, identLink(x), { key: "recipient" }))],
             ["From", f.v("/referrer", identLink(d.referrer), { key: "referrer" })],
-            ["About", h("span", f.v("/subject", identLink(d.subject), { key: "subject" }), " ",
-                h("span.small.muted", identLabel(d.subject)))],
+            ["About", f.v("/subject", h("span", identLink(d.subject), " ", h("span.small.muted", identLabel(d.subject))), { key: "subject" })],
             ["Purpose", f.v("/purpose", enumLabel("RequestPurposeCode", d.purpose), { code: true })],
         ])),
         questionsCard(r, f, "Reason and supporting information", "ReferralQuestionCategory"),
