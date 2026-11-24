@@ -204,8 +204,7 @@ export function personView(p) {
                     involved.size ? h("ul.links-list", [...involved.values()].map((x) => h("li", recLink(x.r))))
                         : h("p.muted", "None."),
                     h("p.small.muted", "Worked out from the records in the timeline, not stored on the person.")) : null,
-                asList(local.tasks).length ? card("Tasks", notStd(h("ul", asList(local.tasks).map((t) =>
-                    h("li", h("strong", fmtDate(String(t.due))), ` ${t.text} (${t.owner})`))))) : null)),
+                null)),
         isSubject ? timeline(p, records, local) : null);
 }
 
@@ -404,7 +403,7 @@ export function aboutView() {
                 h("li", h("strong", "Show the standard "), "(top right, or press ", h("kbd", "S"), ") labels each value on the screen with its field name in the standard."),
                 h("li", h("strong", "Stories "), "step through with Next and Previous, or the ", h("kbd", "←"), " ", h("kbd", "→"), " keys. ", h("kbd", "Esc"), " leaves a story."),
                 h("li", h("strong", "Select any value "), "on the left to highlight it in the data on the right, or select a line on the right to find it on the left."),
-                h("li", notStd("Grey italic text with a dashed line shows things a real system holds that the standards don't cover, such as case notes and tasks.", { inline: true })),
+                h("li", notStd("Grey italic text with a dashed line shows things a real system holds that the standards don't cover, such as case notes.", { inline: true })),
                 h("li", h("span", { style: "color:var(--gap);font-weight:600" }, "◆ Open questions "), "mark where the standards are still open. ", h("a", { href: "#/gaps" }, "See them all.")),
                 h("li", h("strong", "Anytown CAMHS "), "is a second fictional system. It shows the same request as the council's system, with a different screen. ", h("a", { href: "#/system/camhs" }, "Open it."))),
             h("h2", "Data and validation"),
@@ -491,7 +490,7 @@ export function welcomeView() {
                     h("dt", "Select a value"),
                     h("dd", "Marks it, and the same value in the record, like a highlighter. It works the other way too."),
                     h("dt", notStd("Grey italic with a dashed line", { inline: true })),
-                    h("dd", "Things a real system holds that the standards don't cover, such as case notes and tasks."),
+                    h("dd", "Things a real system holds that the standards don't cover, such as case notes."),
                     h("dt", h("span", { style: "color:var(--gap)" }, "◆ Open questions")),
                     h("dd", "Places where the standards are still undecided. We'd like your view on them.")))));
 }

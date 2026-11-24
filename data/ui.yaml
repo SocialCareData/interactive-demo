@@ -1,5 +1,5 @@
 # Front-end-only content: things a real case management system shows that the standards
-# don't define (PLAN.md §5.8): case notes, tasks, and notes on matching, triage and links
+# don't define (PLAN.md §5.8): case notes, and notes on matching, triage and links
 # the standard can't express. It's shown in grey, labelled as local, and never appears in
 # the JSON-LD.
 #
@@ -8,13 +8,6 @@
 
 people:
   P-100231:
-    tasks:
-      - due: 2026-11-27
-        text: Child in Need statutory visit (fortnightly)
-        owner: Aisha Begum
-      - due: 2026-12-08
-        text: Child in Need review meeting
-        owner: Aisha Begum
     notes:
       - date: 2026-09-22
         type: Home visit
@@ -38,13 +31,6 @@ people:
         text: CAMHS letter received. Spoke to Mum about the school Mental Health Support Team; she's happy for them to see Riley.
 
   P-100311:
-    tasks:
-      - due: 2026-11-26
-        text: Strategy meeting (police, school, Early Help)
-        owner: Grace Adeyemi
-      - due: 2026-12-01
-        text: Complete section 47 enquiry and decide on initial child protection conference
-        owner: Grace Adeyemi
     notes:
       - date: 2026-09-04
         type: Return home interview
@@ -64,16 +50,6 @@ people:
         text: Saw Jordan and Carla together. Jordan says he wants "to be left alone". Carla wants help to keep him safe.
 
   P-100457:
-    tasks:
-      - due: 2026-11-27
-        text: Section 42 enquiry visit with daughter present
-        owner: Samir Chaudhry
-      - due: 2026-11-28
-        text: Ask Brightwater for visit logs and medication records (Oct to Nov)
-        owner: Samir Chaudhry
-      - due: 2026-12-01
-        text: Review care plan (early review after safeguarding concern)
-        owner: Hannah Lowe
     notes:
       - date: 2026-08-11
         type: Home visit
