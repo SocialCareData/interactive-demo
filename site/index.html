@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Example CMS (fictional demo): Social Care Interoperability Standards</title>
+    <meta name="description" content="A fictional case management system built on synthetic data that conforms to the Social Care Interoperability Standards. Every screen sits beside the same data according to the standard.">
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="css/standard-tokens.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+    <a class="skip" href="#front">Skip to content</a>
+    <header class="banner">
+        <div class="brand">
+            <strong>Example CMS</strong>
+            <span>A fictional demonstration. All people, organisations and records are synthetic.</span>
+        </div>
+        <div class="meta">
+            <span>As at Thursday 26 November 2026</span>
+            <a id="badge" class="badge-valid" href="#/about">Checking…</a>
+            <button id="xray" class="xray-toggle" type="button" aria-pressed="false" title="Label every value with its field in the standard (S)">Show the standard <kbd>S</kbd></button>
+        </div>
+    </header>
+    <nav class="appnav" aria-label="Main">
+        <a href="#/" data-nav="home">Front door</a>
+        <a href="#/map" data-nav="map">Map</a>
+        <a href="#/gaps" data-nav="gaps">Open questions</a>
+        <a href="#/about" data-nav="about">About</a>
+        <a href="#/system/camhs" data-nav="camhs" class="sys">Switch system: Anytown CAMHS</a>
+    </nav>
+    <div class="panes">
+        <main id="front" tabindex="-1"><p>Loading…</p></main>
+        <aside id="back" aria-label="Back end: the same data according to the standard"></aside>
+    </div>
+    <button id="jump-data" class="xray-toggle jump-data" type="button" hidden
+        style="position:fixed;right:1rem;bottom:1rem;z-index:30;background:var(--background)">Show in data ↓</button>
+    <script src="lib/d3.v7.min.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

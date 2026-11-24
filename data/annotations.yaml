@@ -1,0 +1,246 @@
+# Gap annotations: where the standards are open, awkward or silent (PLAN.md §8).
+# Each entry:
+#   id, title
+#   where:    plain description of where it shows
+#   route:    the page to open from the gaps list
+#   records:  record @ids it is shown on (optional)
+#   field:    show it next to this field of those records; omit to show at the top (optional)
+#   views:    page-level placements: chronology | directory | home (optional)
+#   body:     2-4 plain-English sentences
+#   question: what we'd like feedback on
+#   issue:    GitHub link (optional)
+
+- id: G1
+  title: What does "service episode" mean?
+  where: Riley's Child in Need plan episode, and every person chronology
+  route: "#/record/episode/EP-2026-0117"
+  records:
+    - https://anytown.example/records/episode/EP-2026-0117
+  field: type
+  views: [chronology]
+  body: >
+    In social work, and in most case management systems, a "service episode" usually means the
+    overarching period someone has a status, such as "Child in Need from 27 October". In the
+    standard, a ServiceEpisode is broader: its types (assessment, plan, provision, request)
+    describe the activities that happen within that period. This screen shows both readings: the
+    greyed local status, and the standard's episode of type "Child in Need plan".
+  question: Which of these matches how you record it? Would you expect to share the overall status period, the activities within it, or both?
+  issue: https://github.com/SocialCareData/standard/issues/115
+
+- id: G2
+  title: Records can't link to episodes or life events
+  where: Jordan's section 47 request, and Riley's CAMHS request
+  route: "#/record/request/REQ-2026-0322"
+  records:
+    - https://anytown.example/records/request/REQ-2026-0322
+    - https://anytown.example/records/request/REQ-2026-0301
+  field: linkedRecord
+  body: >
+    A linked record can point to a referral, request, quality-of-care concern, response,
+    assessment or plan, but not to a ServiceEpisode or LifeEvent. So "this section 47 enquiry is
+    an escalation of the Early Help plan" can't be recorded, and nor can "this CAMHS request was
+    made as part of the Child in Need plan". The Referrals standard's own guidance also suggests a
+    Response could link to "the service episode the responder opened".
+  question: Should linked records be able to point to episodes and life events?
+
+- id: G3
+  title: A concern is required, even when nobody is worried about abuse
+  where: Margaret's referral for a Care Act assessment
+  route: "#/record/referral/REF-2026-0365"
+  records:
+    - https://anytown.example/records/referral/REF-2026-0365
+  field: concern
+  body: >
+    Every referral must have at least one concern, but the list of concern types is about abuse and
+    neglect. Sarah was asking for an assessment because her mum was struggling at home after a fall,
+    so the only fit is "Adult: other", with the reason in the description.
+  question: Should referrals that aren't about safeguarding have a different list, or no concern at all?
+
+- id: G4
+  title: There's no general "chronology entry"
+  where: Every person's chronology
+  route: "#/person/P-100231"
+  views: [chronology]
+  body: >
+    A real chronology includes case notes, home visits, phone calls and meetings. The standards have
+    no general chronology entry or contact record, so those rows (greyed here) stay local to each
+    system and aren't shared.
+  question: Is a shareable chronology entry needed, or should this stay local?
+
+- id: G5
+  title: Missing children's episode codes
+  where: Riley's child and family assessment; Jordan's Early Help plan
+  route: "#/record/episode/EP-2026-0095"
+  records:
+    - https://anytown.example/records/episode/EP-2026-0095
+    - https://anytown.example/records/episode/EP-2026-0061
+  field: type
+  body: >
+    There's no episode code for the section 17 child and family assessment, so Riley's uses "other
+    assessment". Similarly, there's a code for an early help assessment, but not for an Early Help
+    plan, so Jordan's uses "other plan".
+  question: Which children's assessment and plan types should have their own codes?
+
+- id: G6
+  title: Episode outcomes are adults-only
+  where: Children's episodes (Riley and Jordan)
+  route: "#/record/episode/EP-2026-0088"
+  records:
+    - https://anytown.example/records/episode/EP-2026-0088
+    - https://anytown.example/records/episode/EP-2026-0095
+    - https://anytown.example/records/episode/EP-2026-0117
+    - https://anytown.example/records/episode/EP-2026-0129
+    - https://anytown.example/records/episode/EP-2026-0061
+  field: outcome
+  body: >
+    An episode's outcome uses a list taken from the adult social care Client Level Data return. There
+    are no children's outcomes, so the MASH decision ("threshold met for a child and family
+    assessment") can only go in free text.
+  question: What children's outcomes would you want to record and share?
+
+- id: G7
+  title: Children's assessments and plans have no content
+  where: Riley's assessment and Child in Need plan
+  route: "#/record/episode/EP-2026-0117"
+  records:
+    - https://anytown.example/records/episode/EP-2026-0095
+    - https://anytown.example/records/episode/EP-2026-0117
+  body: >
+    The Assessments and Plans standard covers adult social care (Care Act 2014) only. Children's
+    assessments and plans (section 17, Child in Need, Child Protection) exist only as episode types,
+    with dates and people but none of the content: no questions, needs or actions.
+  question: Should children's assessments and plans be standardised, and which parts matter most to share?
+
+- id: G8
+  title: Schools, care providers and regulators have no organisation type
+  where: Anytown Primary, Northgate Academy and Brightwater Home Care directory cards
+  route: "#/record/service/SVC-BHC"
+  records:
+    - https://anytown.example/records/service/SVC-APS
+    - https://anytown.example/records/service/SVC-NGA
+    - https://anytown.example/records/service/SVC-BHC
+  views: [directory]
+  body: >
+    An Organisation must have a type, but there are only three: local authority, NHS trust and police
+    force. So schools, academies, care providers and the Care Quality Commission can't be recorded as
+    organisations. In this demo they appear only as services (with service types such as "Primary
+    School" and "Home Support / Domiciliary"), and CQC is "held elsewhere".
+  question: Which organisation types do you need? Should the list be open-ended?
+
+- id: G9
+  title: How does a referral's subject become a person record?
+  where: The subject of every referral and concern
+  route: "#/record/referral/REF-2026-0412"
+  records:
+    - https://anytown.example/records/referral/REF-2026-0412
+    - https://anytown.example/records/referral/REF-2026-0365
+    - https://anytown.example/records/referral/REF-2026-0518
+    - https://anytown.example/records/referral/REF-2026-0561
+    - https://anytown.example/records/qoc/QOC-2026-0019
+  field: subject
+  body: >
+    A referrer often gives only partial details, so the subject is an "intake person". The police and
+    the district nurse gave an NHS number, which links straight to the person. The school and Sarah
+    didn't, so the front door matched the details to an existing record during triage and added a
+    "matched person" reference. The standard doesn't describe how matching or promotion should work.
+  question: How should matching be recorded, and who should be able to see that a match was made?
+
+- id: G10
+  title: Do other professionals know about the referral?
+  where: The district nurse's safeguarding referral
+  route: "#/record/referral/REF-2026-0561"
+  records:
+    - https://anytown.example/records/referral/REF-2026-0561
+  field: involvement
+  body: >
+    A referral can say which other professionals or services are involved, but not whether they know
+    about the referral. Here, Brightwater provide the care and haven't been told. This was parked
+    during the Referrals work (restructuring "referral involvement").
+  question: Should the standard record whether each involved professional is aware of the referral?
+  issue: https://github.com/SocialCareData/standard/pull/110
+
+- id: G11
+  title: Which list does an "Enum" answer come from?
+  where: Margaret's Care Act assessment
+  route: "#/record/assessment/CNA-2026-0031"
+  records:
+    - https://anytown.example/records/assessment/CNA-2026-0031
+  field: assessmentQuestion
+  body: >
+    Some answers are codes from a list (answer type "Enum"), such as the eligibility outcome. The
+    record doesn't say which code list the answer comes from. An "answer vocabulary" field was
+    parked during the Referrals work.
+  question: Would naming the code list help your system read answers reliably?
+  issue: https://github.com/SocialCareData/standard/pull/110
+
+- id: G12
+  title: A request has nowhere to say why
+  where: Every request (for example, Riley's CAMHS request)
+  route: "#/record/request/REQ-2026-0301"
+  records:
+    - https://anytown.example/records/request/REQ-2026-0233
+    - https://anytown.example/records/request/REQ-2026-0301
+    - https://anytown.example/records/request/REQ-2026-0322
+    - https://anytown.example/records/request/REQ-2026-0341
+  field: assessmentQuestion
+  body: >
+    A Referral has concerns with descriptions, but a Request has no description or reason field. Here,
+    each request's reason is carried as a question-and-answer ("Reason for request"), which works but
+    isn't something a receiving system can rely on.
+  question: Should a Request have its own reason or description?
+
+- id: G13
+  title: No service types for police, hospitals or community health
+  where: Police, emergency department and district nursing directory cards
+  route: "#/record/service/SVC-PPU"
+  records:
+    - https://anytown.example/records/service/SVC-PPU
+    - https://anytown.example/records/service/SVC-ED
+    - https://anytown.example/records/service/SVC-DN
+  field: type
+  body: >
+    Service types cover social care, education and some health services well, but there's nothing for
+    a police team, an emergency department or a district nursing team. Here they use the nearest
+    codes: "Emergency Support" and "Other Professional Support".
+  question: Which partner services do you need to identify in shared records?
+
+- id: G14
+  title: Who reported a life event, and where was the person found?
+  where: Riley's A&E attendance; Jordan's missing episodes
+  route: "#/record/life-event/LE-2026-0231"
+  records:
+    - https://anytown.example/records/life-event/LE-2026-0101
+    - https://anytown.example/records/life-event/LE-2026-0140
+    - https://anytown.example/records/life-event/LE-2026-0187
+    - https://anytown.example/records/life-event/LE-2026-0231
+  body: >
+    A life event records what happened, when and where, but not who shared it. Riley's A&E attendance
+    was shared by the NHS trust, and that can't be said. For a missing episode, "location" is a single
+    list, so where Jordan went missing from and where he was found can't be told apart.
+  question: Should life events record their source, and should locations have roles?
+
+- id: G15
+  title: One care activity, one outcome
+  where: Margaret's care plan
+  route: "#/record/plan/PLAN-2026-0027"
+  records:
+    - https://anytown.example/records/plan/PLAN-2026-0027
+  field: careComponent
+  body: >
+    Each part of a care plan can meet only one Care Act outcome. Brightwater's four daily visits help
+    with personal hygiene, using the toilet and eating, so the plan has to split one package of care
+    into three components with the same carer and timings. It looks like three services when it's one.
+  question: Should a care activity be able to meet several outcomes?
+
+- id: G16
+  title: No outcome for help with medication
+  where: Margaret's care plan
+  route: "#/record/plan/PLAN-2026-0027"
+  records:
+    - https://anytown.example/records/plan/PLAN-2026-0027
+  field: careComponent
+  body: >
+    Help to take medication is central to Margaret's care, and missed doses are why the safeguarding
+    referral was made. There's no Care Act outcome for medication support, so it appears only in the
+    activity description and can't be coded or searched.
+  question: How do you record medication support in a care plan today?

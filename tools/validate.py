@@ -300,15 +300,19 @@ def check_targets(records) -> list[str]:
     """Annotations and UI-only content must point at things that exist."""
     problems = []
     ids = {r.get("@id") for _, r in records}
-    for name in ("annotations.yaml", "ui.yaml"):
-        data = load_yaml(name)
-        if not data:
-            continue
-        for _, node in walk(data):
-            for key in ("record", "records"):
-                for target in as_list(node.get(key)):
-                    if target not in ids:
-                        problems.append(f"data/{name}: {key} {target} is not a record @id")
+    person_ids = {i["value"] for _, r in records if r.get("@type") == "Person"
+                  for i in own_identifiers(r) if i.get("system") == "https://anytown.example/id/person"}
+    for entry in as_list(load_yaml("annotations.yaml")):
+        for target in as_list(entry.get("records")):
+            if target not in ids:
+                problems.append(f"data/annotations.yaml: {entry.get('id')}: {target} is not a record @id")
+    ui = load_yaml("ui.yaml") or {}
+    for target in (ui.get("records") or {}):
+        if target not in ids:
+            problems.append(f"data/ui.yaml: records: {target} is not a record @id")
+    for pid in (ui.get("people") or {}):
+        if pid not in person_ids:
+            problems.append(f"data/ui.yaml: people: {pid} is not a council person ID")
     return problems
 
 

@@ -35,6 +35,7 @@ body {
 a { color: var(--link-color); }
 a:hover { color: var(--link-hover-color); }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+[tabindex="-1"]:focus { outline: none; }
 h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 .5rem; }
 h1 { font-size: 1.45rem; }
 h2 { font-size: 1.15rem; }
@@ -90,12 +91,12 @@ kbd { border: 1px solid currentColor; border-radius: 3px; padding: 0 .25em; opac
     .panes { grid-template-columns: minmax(0, 1fr) minmax(380px, 44%); }
     #back {
         border-top: 0; border-left: 1px solid var(--rule-strong);
-        position: sticky; top: calc(var(--banner-h) + 2.2rem);
-        height: calc(100vh - var(--banner-h) - 2.2rem); overflow: auto;
+        position: sticky; top: var(--banner-h);
+        height: calc(100vh - var(--banner-h)); overflow: auto;
     }
-    body.map-full .panes { grid-template-columns: minmax(0, 1fr); }
 }
-body.map-full #front { display: none; }
+body.map-full #back { display: none; }
+body.map-full .panes { grid-template-columns: minmax(0, 1fr); }
 
 /* ------------------------------------------------------------------ CMS look */
 .cms-head { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; align-items: flex-start;
@@ -177,6 +178,7 @@ body.xray .v[data-key]::after {
     font-family: var(--mono); font-size: .72rem; line-height: 1.3; font-weight: 400;
     color: rgb(20, 60, 90); background: rgb(220, 238, 250); border: 1px solid rgb(140, 190, 225);
     border-radius: 3px; padding: 0 .3rem; vertical-align: middle; white-space: nowrap;
+    font-variant: normal; text-transform: none; letter-spacing: normal;
 }
 body.xray .v.block[data-key]::after { display: table; margin: .15rem 0 0; }
 body.xray .not-std::after, body.xray .not-std-inline::after, body.xray tr.not-std-row td:first-child::after {
@@ -186,6 +188,7 @@ body.xray .not-std::after, body.xray .not-std-inline::after, body.xray tr.not-st
 .trace-hint { font-size: .8rem; color: var(--muted-text-color); }
 .jump-data { display: none; }
 @media (max-width: 999px) { .jump-data { display: inline; } }
+.jump-data[hidden] { display: none !important; }
 
 /* ------------------------------------------------------------------ back pane */
 .back-head { padding: .6rem .8rem .3rem; border-bottom: 1px solid var(--rule); background: #fff; position: sticky; top: 0; z-index: 2; }

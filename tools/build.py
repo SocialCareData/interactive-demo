@@ -235,7 +235,7 @@ def main() -> int:
 
     SITE_DATA.mkdir(parents=True, exist_ok=True)
     out = SITE_DATA / "bundle.json"
-    out.write_text(json.dumps(bundle, ensure_ascii=False, separators=(",", ":")) + "\n",
+    out.write_text(json.dumps(bundle, ensure_ascii=False, separators=(",", ":"), default=str) + "\n",
                    encoding="utf-8", newline="\n")
     css = ROOT / "site" / "css" / "standard-tokens.css"
     shutil.copyfile(VENDOR / "src" / "_styles" / "_root.css", css)
