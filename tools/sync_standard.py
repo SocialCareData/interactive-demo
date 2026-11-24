@@ -51,7 +51,7 @@ def main():
         clone = Path(tmp) / "standard"
         print(f"Cloning {args.repo} @ {args.ref} (shallow, sparse)...")
         git(
-            "clone", "--depth", "1", "--filter=blob:none", "--sparse",
+            "clone", "--config", "core.autocrlf=false", "--depth", "1", "--filter=blob:none", "--sparse",
             "--branch", args.ref, args.repo, str(clone),
         )
         git("sparse-checkout", "set", *SPARSE_DIRS, cwd=clone)

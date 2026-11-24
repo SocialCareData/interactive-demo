@@ -2,5 +2,5 @@ repo: https://github.com/SocialCareData/standard.git
 ref: referrals_iteration
 commit: 428868dd38c4393d820f415cd50ce707ba2793ff
 commit_date: 2026-11-20T09:40:32+00:00
-synced: 2026-11-24T10:21:04+00:00
+synced: 2026-11-24T10:31:42+00:00
 examples_dropped: False
