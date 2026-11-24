@@ -1,0 +1,389 @@
+/* Defaults */
+body {
+  background: var(--background);
+  color: var(--color);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: normal;
+  line-height: 1.625;
+  margin: 0;
+}
+
+h1 {
+  font-weight: 800;
+  margin: var(--main-margin-narrow);
+}
+
+h2 {
+  margin: 2rem 0 1.2rem 0;
+}
+
+h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h2 > .secno, h3 > .secno, h4 > .secno, h5 > .secno, h6 > .secno {
+  font-weight: bold;
+  margin-right: 0.5em;
+}
+
+a {
+  color: var(--link-color);
+}
+
+a:hover,
+a:focus {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+  transition: var(--link-color-transition);
+}
+
+table {
+  display: block;
+  overflow-x: auto;
+}
+
+blockquote {
+  background-color: var(--highlight-3-background);
+  border-radius: .3rem;
+  margin: 0;
+  padding: .7rem 2.4rem .8rem 2.1rem;
+}
+
+dt {
+  font-weight: bold;
+}
+
+dd {
+  margin: 0 0 .6rem;
+}
+
+/* Layout */
+body > * {
+  overflow-x: auto;
+}
+
+header, footer {
+  align-items: center;
+  background: var(--background);
+  color: var(--color);
+  padding: var(--main-padding);
+  position: relative;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+header a, footer a {
+  color: #fff;
+  line-height: 1.6rem;
+  opacity: 0.95;
+  text-wrap: nowrap;
+}
+
+header a:hover, footer a:hover,
+header a:focus, footer a:focus {
+  color: var(--color);
+  transition: opacity 0.3s ease;
+  opacity: 1;
+}
+
+main {
+  background-color: var(--main-text-background);
+  color: var(--main-text-color);
+  min-height: 100%;
+  padding: var(--main-padding);
+}
+
+main * {
+  box-sizing: border-box;
+}
+
+main article img {
+  max-width: 90%;
+}
+
+main article *:is(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, blockquote), .table-small {
+  max-width: var(--max-width-text);
+}
+
+
+/** Max content width */
+@media (min-width: 1280px) {
+    header, .banner p, .breadcrumb ol, main > *, footer {
+        margin: 0 auto;
+        max-width: calc(1280px - 6.2rem);
+    }
+}
+
+
+/* Classes */
+.data-model-diagram {
+  max-width: var(--max-width-image);
+}
+
+.data-model-diagram img {
+  display: block;
+  margin: 0 auto;
+  max-width: 125%;
+}
+
+.icon-text {
+  vertical-align: top;
+  height: 1.6rem;
+  width: 1.6rem;
+}
+
+.left-block {
+  display: block;
+  max-width: 36rem;
+}
+
+.list-style-none {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.section-separated {
+  margin-top: 3rem;
+  border-top: 1px solid var(--background);
+}
+
+.main-link {
+  border-radius: 3rem;
+  font-size: 1.1rem;
+  padding: .9rem 1.6rem 1rem 1.5rem;
+}
+
+.tag {
+  border-radius: 1rem;
+  font-size: .9rem;
+  min-width: max-content;
+  padding: .1rem .7rem .2rem .6rem;
+}
+
+.main-link, .tag {
+  background: var(--main-link-background);
+  color: var(--main-link-color);
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.main-link:hover, .tag:hover {
+  background: var(--main-link-background-hover);
+  color: var(--main-link-color-hover);
+  transition: var(--main-link-transition);
+}
+
+.use-case-list, .use-case-list ol {
+  counter-reset: item;
+}
+
+.use-case-list > li, .use-case-list > li > h2 {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.use-case-list > li > ol {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.use-case-list li {
+    display: block;
+    position: relative;
+}
+
+.use-case-list li:before {
+    content: counters(item, ".")".";
+    counter-increment: item;
+    position: absolute;
+    margin-right: 100%;
+    right: 10px;
+}
+
+.content-list, .event-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.content-list > li {
+  margin-top: .6rem;
+}
+
+.content-list .heading, .event-list .heading {
+  margin-bottom: .25rem;
+}
+
+.content-list > li span, .event-list li span {
+  margin-right: .6rem;
+}
+
+.content-list > li p {
+  margin: .4rem 0;
+}
+
+.content-list-table {
+  display: table;
+}
+
+.content-list-table > li {
+  display: table-row;
+}
+
+.content-list-table > li > * {
+  display: table-cell;
+}
+
+.tag-list {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  margin: 0;
+  padding: 0;
+}
+
+/* W3C spec notes and examples style boxes */
+.example, .note {
+  padding: 0.5rem 1rem 0.6rem 1.1rem;
+  margin: 1.1rem 0 1rem;
+}
+
+.example {
+  background: var(--highlight-1-background);
+  border-left: .5rem solid var(--highlight-1-border);
+}
+
+.example h5 {
+  color: var(--highlight-1-color);
+}
+
+.note {
+  background: var(--highlight-2-background);
+  border-left: .5rem solid var(--highlight-2-border);
+}
+
+.note h5 {
+  color: var(--highlight-2-color);
+}
+
+.example h5, .note h5 {
+  display: block;
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0.5em 0 0.5em 0;
+}
+
+.example .example-title .marker {
+  text-transform: none;
+}
+
+.example .highlight, .example .highlight .w {
+  background-color: transparent;
+  margin: 0;
+  overflow-x: auto;
+}
+
+.publish-dates {
+  font-style: italic;
+  margin: var(--main-margin-narrow);
+}
+
+.table-bordered {
+  border-collapse: collapse;
+  margin: 15px 0;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid var(--highlight-3-border);
+  padding: 1rem;
+  text-align: left;
+}
+
+.table-compact {
+  font-size: 0.9rem;
+}
+
+.table-compact th,
+.table-compact td {
+  padding: 0.6rem;
+}
+
+.table-wide {
+  display: table;
+  max-width: none;
+  overflow-x: visible;
+  width: 100%;
+}
+
+.table-wide th,
+.table-wide td {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.table-bordered th {
+  background-color: var(--highlight-3-background);
+  color: var(--highlight-3-color);
+}
+
+.schema-table {
+  font-size: 0.85em;
+}
+
+.schema-table th,
+.schema-table td {
+  padding: .3rem .5rem;
+}
+
+/* Data-model diff tables emitted by {% schema_table_diff %}. */
+.diff-added {
+  color: var(--highlight-2-color);
+}
+
+.diff-removed {
+  color: var(--highlight-4-color);
+  text-decoration: line-through;
+}
+
+.diff-old {
+  color: #B8860B;
+  text-decoration: line-through;
+  opacity: .8;
+}
+
+.diff-new {
+  color: #DAA520;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* "Raise an issue" button shown under a diff table that has changes. */
+.schema-diff-issue {
+  margin: 1.6rem 0;
+}
+
+.schema-diff-issue a {
+  background-color: var(--highlight-2-color);
+  border-radius: .3rem;
+  color: #fff;
+  display: inline-block;
+  font-size: .85em;
+  padding: .4rem .9rem;
+  text-decoration: none;
+}
+
+.version-tag {
+    background-color: var(--main-tag-background);
+    color: var(--main-tag-color);
+    border-radius: 1px;
+    font-weight: normal;
+    margin: -2px 6px -3px 0;
+    padding: 2px 8px 3px;
+}
