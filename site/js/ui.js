@@ -207,7 +207,8 @@ export function gapMarker(a, opts = {}) {
 }
 
 export function card(titleText, ...body) {
-    const head = typeof titleText === "string" ? h("h2", titleText) : h("header", titleText);
+    const head = typeof titleText === "string" ? h("h2", titleText)
+        : titleText.tagName === "H2" ? titleText : h("header", titleText);
     return h("section.sec", head, h("div.body", body));
 }
 

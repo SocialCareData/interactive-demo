@@ -267,6 +267,8 @@ details.gap.inline[open] { display: block; margin: var(--space-2) 0; }
 }
 /* A highlighted block (an object or list in the JSON) gets a tint and a bar, not a slab of yellow. */
 .json .j-row.traced:has(.j-row) { background-image: none; background-color: rgba(var(--hl-rgb), .22); box-shadow: inset 3px 0 0 var(--hl); animation: none; }
+/* An object selected by its heading: the heading is marked, and its section gets the same tint and bar. */
+.sec.traced-sec { background-color: rgba(var(--hl-rgb), .1); box-shadow: inset 3px 0 0 var(--hl); }
 @keyframes highlighter { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
 
 body.xray .v[data-key]::after {
@@ -508,7 +510,6 @@ a.story-target:not(.tl-dot)::after {
 a.tl-dot.story-target { outline-offset: 2px; border-radius: 50%; }
 .story-extra { display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; align-items: center; margin: .25rem 0 0; font-size: .9rem; }
 .story-extra:empty { display: none; }
-body.in-story .tl-strip { display: none; }
 
 /* A record named inside a value: selecting the name highlights it, "Open" goes to the record. */
 .v .reclink { margin-right: .3rem; }

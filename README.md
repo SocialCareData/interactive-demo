@@ -48,7 +48,7 @@ Add a step to `data/journeys.yaml`:
   xray: false                               # label values with their field names
   task: Select who the request is about.    # optional: the viewer selects the value at `trace`
   trace: /subject                           # JSON pointer in the page's record
-  gap: G12                                  # open question to open on the page
+  gap: G1                                   # open question to link from the bar
   text: >
     Two or three plain sentences on what to notice.
 ```
@@ -59,7 +59,7 @@ Each story walks one person's whole timeline, one step per entry, and the story 
 Most steps ask the viewer to select the link back to the record before (`linkedRecord`, `respondsTo`), so the
 chain from record to record is something they do. If the page has a link to the next step (a "Followed up by"
 link, the other system's view), it's marked "Next". "Show me", or the → key, does a step's task for the
-viewer. Steps open pages at the top and never scroll the screen by themselves.
+viewer. Steps open pages at the top and never scroll the screen by themselves, and they leave "Show the standard" to the viewer.
 
 ## Updating the standard
 

@@ -32,8 +32,16 @@ function header(r, f, opts = {}) {
                 h("h1", tag(r.kind), h("span", opts.title || title(r))),
                 opts.sub ? h("div.sub", opts.sub) : null),
             opts.right ? h("div.aside", opts.right) : null,
-            timelineStrip(r)),
-        gaps(r));
+            timelineStrip(r)));
+}
+
+/**
+ * A heading for a card that shows one object or list in the record (the referrer, the concerns).
+ * It's a value like any other: "Show the standard" labels it with its key, and selecting it
+ * highlights the whole object, on the screen and in the record.
+ */
+function objTitle(f, path, text) {
+    return h("h2", f.v(path, text, { code: false }));
 }
 
 /** A response status, as plain text: styled tags are kept for kinds of record. */
@@ -100,14 +108,15 @@ function referrerBlock(r, f) {
     }
     if (ref.relationship) rows.push(["Relationship to the person", f.v(`${base}/relationship`, enumLabel("PersonRelationshipCode", ref.relationship), { code: true })]);
     if (ref.relationshipDescription) rows.push(["Relationship", f.v(`${base}/relationshipDescription`, ref.relationshipDescription)]);
-    return card("Referrer", fields(rows));
+    return card(objTitle(f, base, "Referrer"), fields(rows));
 }
 
 function subjectsCard(r, f, heading = "Who it's about") {
     const subjects = asList(r.data.subject);
     if (!subjects.length) return null;
-    return card(heading, gaps(r, "subject"),
-        subjects.map((p, i) => h("div", i ? h("hr") : null, intakePerson(r, f, `/subject/${i}`, p))));
+    return card(objTitle(f, "/subject", heading),
+        subjects.map((p, i) => h("div", i ? h("hr") : null, intakePerson(r, f, `/subject/${i}`, p))),
+        gaps(r, "subject"));
 }
 
 function networkCard(r, f) {
@@ -125,7 +134,7 @@ function networkCard(r, f) {
             h("td", asList(p.contact).map((c, j) => f.v(`${base}/${pk}/contact/${j}`, asList(c.telephone).join(", ")))),
             h("td", p.notes ? f.v(`${base}/${pk}/notes`, p.notes) : (m.networkDescription || m.description || "")));
     });
-    return card("Family and personal network",
+    return card(objTitle(f, "/personalNetwork", "Family and personal network"),
         h("div.table-wrap", h("table.list",
             h("thead", h("tr", h("th", "Name"), h("th", "Relationship"), h("th", "Knows about this"), h("th", "Phone"), h("th", "Notes"))),
             h("tbody", rows))));
@@ -134,7 +143,7 @@ function networkCard(r, f) {
 function concernsCard(r, f, qoc = false) {
     const local = uiRecord(r.id);
     const list = asList(r.data.concern);
-    return card("Concerns", gaps(r, "concern"),
+    return card(objTitle(f, "/concern", "Concerns"),
         list.map((c, i) => {
             const enumName = qoc ? "QocConcernCode" : "ConcernCode";
             const unassigned = c.concernType === "UNASSIGNED";
@@ -147,7 +156,8 @@ function concernsCard(r, f, qoc = false) {
                         ? h("span.flag.warn", f.v(`/concern/${i}/concernType`, "Unassigned: awaiting triage", { code: true }))
                         : f.v(`/concern/${i}/concernType`, enumLabel(enumName, c.concernType), { code: true })),
                 local && local.triageNote && !unassigned ? notStd(local.triageNote) : null);
-        }));
+        }),
+        gaps(r, "concern"));
 }
 
 function questionsCard(r, f, heading, enumName) {
@@ -173,13 +183,13 @@ function questionsCard(r, f, heading, enumName) {
                 h("div", asList(q.answer).map((a, j) => f.v(`${base}/answer/${j}`, h("div.quote", a), { block: true, key: `answer (${q.answerType})` })))));
         }
     }
-    return card(heading, gaps(r, "assessmentQuestion"), body);
+    return card(objTitle(f, "/assessmentQuestion", heading), body, gaps(r, "assessmentQuestion"));
 }
 
 function attachmentsCard(r, f) {
     const list = asList(r.data.attachment);
     if (!list.length) return null;
-    return card("Attachments", h("ul.links-list", list.map((d, i) => h("li",
+    return card(objTitle(f, "/attachment", "Attachments"), h("ul.links-list", list.map((d, i) => h("li",
         f.v(`/attachment/${i}`, h("span", h("strong", d.title || d.documentTitle || "Document"),
             d.mimeType ? h("span.muted", ` (${d.mimeType})`) : null,
             h("br"), h("code.small", d.url || d.documentUrl || "")), { key: "attachment" })))),
@@ -221,7 +231,7 @@ function linksCard(r, f) {
         }
     }
     const local = uiRecord(r.id);
-    return card("Linked records",
+    return card(r.data.linkedRecord ? objTitle(f, "/linkedRecord", "Linked records") : "Linked records",
         out.length ? h("ul.links-list", out) : local && local.plan ? null : h("p.muted", "No linked records."),
         local && local.plan ? notStd(local.plan) : null,
         local && local.escalation ? notStd(local.escalation) : null,
@@ -247,16 +257,16 @@ function referral(r) {
         }),
         h("div.grid-2",
             h("div", referrerBlock(r, f),
-                card("Sent to", fields([["Recipient", asList(d.recipient).map((x, i) => f.v(`/recipient/${i}`, identLink(x), { key: "recipient" }))]]))),
+                card(objTitle(f, "/recipient", "Sent to"), fields([["Recipient", asList(d.recipient).map((x, i) => f.v(`/recipient/${i}`, identLink(x), { key: "recipient" }))]]))),
             h("div", subjectsCard(r, f))),
         networkCard(r, f),
         concernsCard(r, f),
-        d.involvement ? card("Other professionals involved", gaps(r, "involvement"), fields([
+        d.involvement ? card(objTitle(f, "/involvement", "Other professionals involved"), fields([
             ["Who", f.v("/involvement/actorType", enumLabel("ReferrerTypeCode", d.involvement.actorType || d.involvement.involvementActorType), { code: true })],
             ["Service", asList(d.involvement.actorId || d.involvement.involvementActorId).map((x, i) => f.v(`/involvement/${d.involvement.actorId ? "actorId" : "involvementActorId"}/${i}`, identLink(x), { key: "actorId" }))],
             ["Details", d.involvement.description || d.involvement.involvementDescription
                 ? f.v(`/involvement/${d.involvement.description ? "description" : "involvementDescription"}`, d.involvement.description || d.involvement.involvementDescription) : null],
-        ])) : null,
+        ]), gaps(r, "involvement")) : null,
         questionsCard(r, f, "Questions on the referral form", "ReferralQuestionCategory"),
         attachmentsCard(r, f),
         responsesCard(r),
@@ -311,12 +321,12 @@ function qoc(r) {
         }),
         h("div.grid-2",
             h("div",
-                card("About the service", fields([
+                card(objTitle(f, "/service", "About the service"), fields([
                     ["Service", svc.name ? f.v("/service/name", svc.name) : null],
                     ["Registration", svc.identifier ? f.v("/service/identifier", identLink(svc.identifier), { key: "identifier" }) : null],
                     ["Description", svc.description ? f.v("/service/description", svc.description) : null],
                 ])),
-                card("Sent to", fields([["Recipients", asList(d.recipient).map((x, i) => f.v(`/recipient/${i}`, identLink(x), { key: "recipient" }))]])),
+                card(objTitle(f, "/recipient", "Sent to"), fields([["Recipients", asList(d.recipient).map((x, i) => f.v(`/recipient/${i}`, identLink(x), { key: "recipient" }))]])),
                 d.referrer ? referrerBlock(r, f) : card("Referrer", h("p.muted", "Made anonymously: no referrer details."))),
             h("div", subjectsCard(r, f, "Person affected"))),
         concernsCard(r, f, true),
@@ -389,9 +399,8 @@ function episode(r) {
             title: h("span", asList(d.type).map((t, i) => f.v(`/type/${i}`, enumLabel("EpisodeCode", t), { code: true }))),
             sub: h("span", "Episode ", f.v("/identifier/0/value", r.localId), ": ", period(f, asList(d.timeInformation)[0], "/timeInformation/0")),
         }),
-        gaps(r, "type"),
         card("Episode", whoAndWhere(r, f)),
-        findings.length ? card("Findings", findings.map((fd, i) => h("div",
+        findings.length ? card(objTitle(f, "/finding", "Findings"), findings.map((fd, i) => h("div",
             asList(fd.observation).length ? h("h3", "Observations") : null,
             h("ul", asList(fd.observation).map((o, j) => h("li",
                 f.v(`/finding/${i}/observation/${j}/type`, enumLabel("ObservationType", o.type), { code: true }),
@@ -402,12 +411,13 @@ function episode(r) {
                 f.v(`/finding/${i}/measurement/${j}/value`, String(m.value)),
                 f.v(`/finding/${i}/measurement/${j}/unit`, m.unit === "pct" ? "%" : ` ${enumLabel("MeasurementUnit", m.unit)}`, { code: true })))),
             asList(fd.text).map((t, j) => f.v(`/finding/${i}/text/${j}`, h("div.quote", t), { block: true }))))) : null,
-        card("Outcome",
+        card(d.outcome || d.episodeOutcome ? objTitle(f, `/${d.outcome ? "outcome" : "episodeOutcome"}`, "Outcome") : "Outcome",
             d.outcome || d.episodeOutcome
                 ? f.v(`/${d.outcome ? "outcome" : "episodeOutcome"}`, enumLabel("EpisodeOutcome", d.outcome || d.episodeOutcome), { code: true })
                 : h("p.muted", "No outcome recorded."),
             gaps(r, "outcome")),
-        linksCard(r, f));
+        linksCard(r, f),
+        gaps(r, "type"));
 }
 
 function lifeEvent(r) {
@@ -469,7 +479,7 @@ function carePlan(r) {
             sub: "Who does what, and when",
         }),
         h("div.grid-2", card("Plan", foundation(r, f)), card("Capacity, advocacy and consent", capacityFlags(f, d))),
-        card("Care and support", gaps(r, "careComponent"),
+        card(objTitle(f, "/careComponent", "Care and support"),
             h("div.table-wrap", h("table.list",
                 h("thead", h("tr", h("th", "Who"), h("th", "When"), h("th", "What"), h("th", "Outcome it meets"))),
                 h("tbody", comps.map((c, i) => {
@@ -484,7 +494,8 @@ function carePlan(r) {
                         h("td", c.activity ? f.v(`${base}/activity/activityDescription`, c.activity.activityDescription) : null,
                             c.activity && c.activity.directPayment ? h("div.small", "Direct payment") : null),
                         h("td", c.activity && c.activity.outcome ? f.v(`${base}/activity/outcome`, enumLabel("CareActOutcome", c.activity.outcome), { code: true }) : null));
-                }))))),
+                })))),
+            gaps(r, "careComponent")),
         linksCard(r, f));
 }
 
@@ -537,5 +548,7 @@ const RENDERERS = {
 
 export function renderRecord(r) {
     const fn = RENDERERS[r.kind];
-    return fn ? fn(r) : h("p", `No screen for ${r.kind}`);
+    if (!fn) return h("p", `No screen for ${r.kind}`);
+    // Open questions about the record as a whole go below everything else on the page.
+    return frag(fn(r), gaps(r));
 }

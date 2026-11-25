@@ -42,19 +42,6 @@
     Response could link to "the service episode the responder opened".
   question: Should linked records be able to point to episodes and life events?
 
-- id: G3
-  title: A concern is required, even when nobody is worried about abuse
-  where: Margaret's referral for a Care Act assessment
-  route: "#/record/referral/REF-2026-0365"
-  records:
-    - https://anytown.example/records/referral/REF-2026-0365
-  field: concern
-  body: >
-    Every referral must have at least one concern, but the list of concern types is about abuse and
-    neglect. Sarah was asking for an assessment because her mum was struggling at home after a fall,
-    so the only fit is "Adult: other", with the reason in the description.
-  question: Should referrals that aren't about safeguarding have a different list, or no concern at all?
-
 - id: G4
   title: There's no general "chronology entry"
   where: Every person's chronology
@@ -171,22 +158,6 @@
     parked during the Referrals work.
   question: Would naming the code list help your system read answers reliably?
   issue: https://github.com/SocialCareData/standard/pull/110
-
-- id: G12
-  title: A request has nowhere to say why
-  where: Every request (for example, Riley's CAMHS request)
-  route: "#/record/request/REQ-2026-0301"
-  records:
-    - https://anytown.example/records/request/REQ-2026-0233
-    - https://anytown.example/records/request/REQ-2026-0301
-    - https://anytown.example/records/request/REQ-2026-0322
-    - https://anytown.example/records/request/REQ-2026-0341
-  field: assessmentQuestion
-  body: >
-    A Referral has concerns with descriptions, but a Request has no description or reason field. Here,
-    each request's reason is carried as a question-and-answer ("Reason for request"), which works but
-    isn't something a receiving system can rely on.
-  question: Should a Request have its own reason or description?
 
 - id: G13
   title: No service types for police, hospitals or community health

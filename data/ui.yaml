@@ -71,7 +71,7 @@ people:
 
 records:
   https://anytown.example/records/referral/REF-2026-0412:
-    triageNote: The school didn't choose a concern type, so it arrived as Unassigned. Tom Riordan chose Neglect when he triaged the referral on 16 Sep 2026. Only the chosen type is shared; who chose it, and when, stays in the council's system.
+    triageNote: The school didn't choose a concern type, so it arrived as Unassigned. Front door team assigned `Neglect` when triaging the referral on 16 Sep 2026.
     matched: Matched to Riley Hart (P-100231) by Tom Riordan on 15 Sep 2026
   https://anytown.example/records/referral/REF-2026-0365:
     matched: Matched to Margaret Ellis (P-100457) by the Adult Contact Centre on 4 Aug 2026

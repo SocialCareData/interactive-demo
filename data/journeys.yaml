@@ -28,23 +28,12 @@
       label: Riley
       route: "#/person/P-100231"
       text: >
-        Riley is 9. He lives with his mum, Dawn, and his sister, Mia, who is 4. Below his details is his
-        timeline: everything shared about him since the summer. This story follows it, one entry at a time.
-
-    - title: A visit to A&E
-      label: A&E
-      route: "#/record/life-event/LE-2026-0101"
-      task: Select what happened.
-      trace: /type/0
-      gap: G14
-      text: >
-        In July, Riley goes to A&E with a burn to his hand. The hospital shares it as a life event: what
-        happened, when and where.
+        Riley is 9. He lives with his mum, Dawn, and his sister, Mia, who is 4. You can explore his details and his
+        timeline. This story follows it, one entry at a time.
 
     - title: The school's referral
       label: Referral
       route: "#/record/referral/REF-2026-0412"
-      xray: true
       task: Select the school's description of the concern.
       trace: /concern/0/description
       text: >
@@ -53,7 +42,7 @@
         NHS number, so the front door matched Riley to his record when it triaged the referral.
 
     - title: Acknowledged
-      label: Acknowledged
+      label: Response
       route: "#/record/response/RES-2026-0870"
       task: Select what this responds to.
       trace: /respondsTo
@@ -64,12 +53,13 @@
     - title: The front door looks into it
       label: MASH review
       route: "#/record/episode/EP-2026-0088"
-      task: Select the referral this follows up.
-      trace: /linkedRecord/0
+      task: Select the findings.
+      trace: /finding
       gap: G6
       text: >
-        The front door reviews the referral with police and health colleagues. The review is an episode,
-        linked to the referral as a follow-up. Its decision is written as text.
+        The front door reviews the referral with police and health colleagues. The checks bring to light a
+        visit to A&E in July, when Riley burnt his hand: the hospital shared it using his NHS number, so it's
+        already in his timeline. The review's findings are shared as text.
 
     - title: A request for an assessment
       label: Request
@@ -81,23 +71,31 @@
         Intervention Team for one. The request follows up the referral, so anyone reading it can see why.
 
     - title: Accepted
-      label: Accepted
+      label: Response
       route: "#/record/response/RES-2026-0871"
-      task: Select the request this links to.
-      trace: /linkedRecord/0
+      task: Select what this is responding to.
+      trace: /respondsTo
       text: >
-        The front door tells the school the referral is accepted. The response points back at the referral,
-        and also links to the request it led to.
+        The front door tells the school the referral is accepted. The response points back at the referral
+        it's responding to, and also links to the request it led to.
 
     - title: The assessment
       label: Assessment
       route: "#/record/episode/EP-2026-0095"
-      task: Select the request this follows up.
-      trace: /linkedRecord/0
+      task: Select the professional involved.
+      trace: /relatedProfessional
       gap: G5
       text: >
-        Riley's social worker assesses the family over a month. The assessment follows up the request.
-        Findings such as persistent absence and free school meals are shared as coded observations.
+        Riley's social worker assesses the family over a month. The episode names the professionals and
+        services involved, and findings such as persistent absence are shared as coded observations.
+
+    - title: Back to Riley's record
+      label: Riley
+      route: "#/person/P-100231"
+      text: >
+        It's now late October, two months after the school's referral. Riley's timeline runs from his A&E
+        visit in July, through the referral, the review and the request, to the assessment. Next comes his
+        plan.
 
     - title: A Child in Need plan
       label: CIN plan
@@ -109,14 +107,22 @@
         The assessment recommends a Child in Need plan. It starts on 27 October, with a visit every two weeks,
         and is still open. The plan itself, its goals and actions, stays in the council's system.
 
+    - title: A visit
+      label: Visit
+      route: "#/record/episode/EP-2026-0121"
+      task: Select the episode type.
+      trace: /type/0
+      text: >
+        On 3 November, Riley's social worker visits the family at home, as his plan sets out. Each visit can be
+        shared as an episode of face-to-face contact. Riley has been refusing school and can't sleep.
+
     - title: A request to CAMHS
       label: To CAMHS
       route: "#/record/request/REQ-2026-0301"
       task: Select who the request is about.
       trace: /subject
-      gap: G12
       text: >
-        In November, Riley starts refusing school and can't sleep. His social worker asks CAMHS for help. The
+        That afternoon, his social worker asks CAMHS for help. The
         request names Riley by his NHS number, so CAMHS can find him in its own system.
 
     - title: The same request at CAMHS
@@ -129,7 +135,7 @@
         screen differs.
 
     - title: CAMHS acknowledges
-      label: Acknowledged
+      label: Response
       route: "#/record/response/RES-2026-1022"
       task: Select what this responds to.
       trace: /respondsTo
@@ -138,7 +144,7 @@
         council's request, so it lands in the right place in Riley's timeline.
 
     - title: Redirected
-      label: Redirected
+      label: Response
       route: "#/record/response/RES-2026-1104"
       task: Select the link to the new referral.
       trace: /linkedRecord/0
@@ -146,6 +152,127 @@
         CAMHS decides the School Mental Health Support Team is the right service. Its response links to the
         new referral, which is held by the NHS trust rather than the council. This is the latest entry in
         Riley's timeline.
+
+- id: margaret
+  title: Margaret's story
+  start: Margaret Ellis, 82
+  summary: A Care Act assessment and care plan at home, then a safeguarding referral and a concern about her care.
+  steps:
+    - title: Meet Margaret
+      label: Margaret
+      route: "#/person/P-100457"
+      text: >
+        Margaret is 82, lives alone and has Parkinson's disease. Her daughter Sarah lives 40 minutes away.
+        Below her details is her timeline, which this story follows one entry at a time.
+
+    - title: Sarah asks for help
+      label: Referral
+      route: "#/record/referral/REF-2026-0365"
+      task: Select Sarah's description.
+      trace: /concern/0/description
+      text: >
+        In August, Sarah asks the council for a Care Act assessment. In her own words, her mum has been
+        struggling to manage at home since a fall in July.
+
+    - title: Accepted
+      label: Response
+      route: "#/record/response/RES-2026-0702"
+      task: Select what this responds to.
+      trace: /respondsTo
+      text: >
+        The adult front door accepts the referral the next day. The response points back at it by identifier.
+
+    - title: The assessment
+      label: Assessment
+      route: "#/record/episode/EP-2026-0071"
+      task: Select the referral this follows up.
+      trace: /linkedRecord/0
+      text: >
+        A social worker assesses Margaret at home over two weeks. The assessment follows up Sarah's referral.
+        Findings such as having an unpaid carer and a risk of falls are shared as coded observations.
+
+    - title: Questions with national IDs
+      label: Questions
+      route: "#/record/assessment/CNA-2026-0031"
+      task: Select a national question ID.
+      trace: /assessmentQuestion/6/questionId
+      gap: G11
+      text: >
+        The assessment's questions and answers are a record of their own. The questions carry national IDs,
+        so every system asks and reads them the same way.
+
+    - title: A care plan begins
+      label: Plan starts
+      route: "#/record/episode/EP-2026-0080"
+      task: Select the assessment this follows up.
+      trace: /linkedRecord/0
+      text: >
+        From 1 September, Margaret has a care plan. The episode marks the period of the plan, and follows up
+        the assessment.
+
+    - title: The care plan
+      label: Care plan
+      route: "#/record/plan/PLAN-2026-0027"
+      task: Select the outcome the first visit meets.
+      trace: /careComponent/0/activity/outcome
+      gap: G16
+      text: >
+        Carers four times a day, Sarah on Sundays, a pendant alarm. Each part of the plan names who does it,
+        when, and the Care Act outcome it meets.
+
+    - title: Care at home
+      label: Home care
+      route: "#/record/episode/EP-2026-0083"
+      task: Select how often the carers visit.
+      trace: /timeInformation/0/frequency
+      text: >
+        The home care itself is an episode of direct provision, following up the plan, with its frequency
+        recorded: four visits a day.
+
+    - title: A district nurse's referral
+      label: Referral
+      route: "#/record/referral/REF-2026-0561"
+      task: Select the nurse's description.
+      trace: /concern/0/description
+      gap: G10
+      text: >
+        In November, the district nurse finds a pressure ulcer, missed evening medication and late or missed
+        calls. She refers Margaret for safeguarding, giving her NHS number.
+
+    - title: Acknowledged
+      label: Response
+      route: "#/record/response/RES-2026-1187"
+      task: Select what this responds to.
+      trace: /respondsTo
+      text: >
+        The adult front door acknowledges the nurse's referral and passes it to the safeguarding team.
+
+    - title: A request for an enquiry
+      label: Request
+      route: "#/record/request/REQ-2026-0341"
+      task: Select the referral this follows up.
+      trace: /linkedRecord/0
+      text: >
+        The front door asks the Adult Safeguarding Team to make a section 42 enquiry. The request follows up
+        the nurse's referral.
+
+    - title: Sarah's concern
+      label: Sarah's concern
+      route: "#/record/qoc/QOC-2026-0019"
+      task: Select the link to the nurse's referral.
+      trace: /linkedRecord/0
+      text: >
+        The same day, Sarah raises a concern about the care provider with the council and the regulator. It's
+        linked to the nurse's referral as concurrent, and its type is still to be assigned at triage.
+
+    - title: The enquiry opens
+      label: Enquiry
+      route: "#/record/episode/EP-2026-0136"
+      task: Select the request this follows up.
+      trace: /linkedRecord/0
+      text: >
+        Today, the adult safeguarding team opens a section 42 enquiry. It follows up the front door's request,
+        and it's the last entry in Margaret's timeline.
 
 - id: jordan
   title: Jordan's story
@@ -198,7 +325,6 @@
     - title: The police refer
       label: Referral
       route: "#/record/referral/REF-2026-0518"
-      xray: true
       task: Select the concern type.
       trace: /concern/0/concernType
       text: >
@@ -206,7 +332,7 @@
         and cash. The officer chose the concern type, extra-familial harm, and gave his NHS number.
 
     - title: Acknowledged
-      label: Acknowledged
+      label: Response
       route: "#/record/response/RES-2026-1131"
       task: Select what this responds to.
       trace: /respondsTo
@@ -231,134 +357,3 @@
       text: >
         Jordan's social worker opens the enquiry, following up the request. Persistent school absence is
         recorded as a coded observation, in a form any system can read.
-
-- id: margaret
-  title: Margaret's story
-  start: Margaret Ellis, 82
-  summary: A Care Act assessment and care plan at home, then a safeguarding referral and a concern about her care.
-  steps:
-    - title: Meet Margaret
-      label: Margaret
-      route: "#/person/P-100457"
-      text: >
-        Margaret is 82, lives alone and has Parkinson's disease. Her daughter Sarah lives 40 minutes away.
-        Below her details is her timeline, which this story follows one entry at a time.
-
-    - title: A fall at home
-      label: Fall
-      route: "#/record/life-event/LE-2026-0098"
-      task: Select what happened.
-      trace: /type/0
-      text: >
-        In July, Margaret falls at home and goes to A&E. The hospital shares it as a life event.
-
-    - title: Sarah asks for help
-      label: Referral
-      route: "#/record/referral/REF-2026-0365"
-      task: Select Sarah's description.
-      trace: /concern/0/description
-      gap: G3
-      text: >
-        Sarah asks the council for a Care Act assessment. Every referral needs a concern, and the list is
-        about abuse and neglect, so this one is recorded as "other", with Sarah's reason in her own words.
-
-    - title: Accepted
-      label: Accepted
-      route: "#/record/response/RES-2026-0702"
-      task: Select what this responds to.
-      trace: /respondsTo
-      text: >
-        The adult front door accepts the referral the next day. The response points back at it by identifier.
-
-    - title: The assessment
-      label: Assessment
-      route: "#/record/episode/EP-2026-0071"
-      task: Select the referral this follows up.
-      trace: /linkedRecord/0
-      text: >
-        A social worker assesses Margaret at home over two weeks. The assessment follows up Sarah's referral.
-        Findings such as having an unpaid carer and a risk of falls are shared as coded observations.
-
-    - title: Questions with national IDs
-      label: Questions
-      route: "#/record/assessment/CNA-2026-0031"
-      xray: true
-      task: Select a national question ID.
-      trace: /assessmentQuestion/6/questionId
-      gap: G11
-      text: >
-        The assessment's questions and answers are a record of their own. The questions carry national IDs,
-        so every system asks and reads them the same way.
-
-    - title: A care plan begins
-      label: Plan starts
-      route: "#/record/episode/EP-2026-0080"
-      task: Select the assessment this follows up.
-      trace: /linkedRecord/0
-      text: >
-        From 1 September, Margaret has a care plan. The episode marks the period of the plan, and follows up
-        the assessment.
-
-    - title: The care plan
-      label: Care plan
-      route: "#/record/plan/PLAN-2026-0027"
-      task: Select the outcome the first visit meets.
-      trace: /careComponent/0/activity/outcome
-      gap: G16
-      text: >
-        Carers four times a day, Sarah on Sundays, a pendant alarm. Each part of the plan names who does it,
-        when, and the Care Act outcome it meets.
-
-    - title: Care at home
-      label: Home care
-      route: "#/record/episode/EP-2026-0083"
-      task: Select how often the carers visit.
-      trace: /timeInformation/0/frequency
-      text: >
-        The home care itself is an episode of direct provision, following up the plan, with its frequency
-        recorded: four visits a day.
-
-    - title: A district nurse's referral
-      label: Referral
-      route: "#/record/referral/REF-2026-0561"
-      task: Select the nurse's description.
-      trace: /concern/0/description
-      gap: G10
-      text: >
-        In November, the district nurse finds a pressure ulcer, missed evening medication and late or missed
-        calls. She refers Margaret for safeguarding, giving her NHS number.
-
-    - title: Acknowledged
-      label: Acknowledged
-      route: "#/record/response/RES-2026-1187"
-      task: Select what this responds to.
-      trace: /respondsTo
-      text: >
-        The adult front door acknowledges the nurse's referral and passes it to the safeguarding team.
-
-    - title: A request for an enquiry
-      label: Request
-      route: "#/record/request/REQ-2026-0341"
-      task: Select the referral this follows up.
-      trace: /linkedRecord/0
-      text: >
-        The front door asks the Adult Safeguarding Team to make a section 42 enquiry. The request follows up
-        the nurse's referral.
-
-    - title: Sarah's concern
-      label: Sarah's concern
-      route: "#/record/qoc/QOC-2026-0019"
-      task: Select the link to the nurse's referral.
-      trace: /linkedRecord/0
-      text: >
-        The same day, Sarah raises a concern about the care provider with the council and the regulator. It's
-        linked to the nurse's referral as concurrent, and its type is still to be assigned at triage.
-
-    - title: The enquiry opens
-      label: Enquiry
-      route: "#/record/episode/EP-2026-0136"
-      task: Select the request this follows up.
-      trace: /linkedRecord/0
-      text: >
-        Today, the adult safeguarding team opens a section 42 enquiry. It follows up the front door's request,
-        and it's the last entry in Margaret's timeline.

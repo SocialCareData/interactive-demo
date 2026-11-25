@@ -17,8 +17,8 @@
       "@type": "SubjectPerson",
       "person": {
         "@type": "Identifier",
-        "system": "https://anytown.example/id/person",
-        "value": "P-100457"
+        "system": "https://fhir.nhs.uk/Id/nhs-number",
+        "value": "9990000042"
       },
       "involvement": "SBJ"
     }

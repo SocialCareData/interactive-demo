@@ -44,7 +44,6 @@ export function exitStory() {
     if (!active) return;
     const step = currentStep();
     active = null;
-    document.body.classList.remove("in-story");
     hideBar();
     if (location.hash.startsWith("#/story/")) location.hash = step.route;
 }
@@ -66,7 +65,8 @@ export function applyStep(step) {
     // Draw the bar first: it changes the height of the panes, and highlights scroll within them.
     render(true);
     setView(step.view || "split", { persist: false });
-    setXray(!!step.xray, { persist: false });
+    // "Show the standard" is the viewer's choice: a step changes it only if it says so.
+    if (step.xray !== undefined) setXray(!!step.xray, { persist: false });
     if (backState().recordId) setTab(step.tab || "data");
     if (step.trace && !step.task) selectPath(taskRecord(step), step.trace, { scroll: false });
     if (step.task) promptFor(step);
@@ -102,7 +102,7 @@ function markNext() {
     const want = normRoute(next.route);
     const links = [...document.querySelectorAll("#front a[href]")]
         .filter((a) => normRoute(a.getAttribute("href")) === want && a.getClientRects().length);
-    const order = [".links-list", ".system-switch", ".timeline", ".people-list", ""];
+    const order = [".tl-strip", ".links-list", ".system-switch", ".timeline", ".people-list", ""];
     const target = order.map((sel) => links.find((a) => !sel || a.closest(sel))).find(Boolean);
     if (!target) return;
     target.classList.add("story-target");
@@ -210,8 +210,6 @@ function render(onRoute) {
         controls,
         line));
     bar.classList.toggle("collapsed", onRoute && collapsed);
-    // While following a story, the bar is the timeline, so the strip on each record steps aside.
-    document.body.classList.toggle("in-story", onRoute);
     bar.classList.toggle("offroute", !onRoute);
     bar.hidden = false;
     sizeBar();

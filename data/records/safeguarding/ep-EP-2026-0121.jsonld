@@ -1,0 +1,62 @@
+{
+  "@context": "https://ns.socialcaredata.io/safeguarding/context.jsonld",
+  "@id": "https://anytown.example/records/episode/EP-2026-0121",
+  "@type": "ServiceEpisode",
+  "identifier": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/episode",
+      "value": "EP-2026-0121"
+    }
+  ],
+  "type": [
+    "provision.face-to-face-contact"
+  ],
+  "subjectPerson": [
+    {
+      "@type": "SubjectPerson",
+      "person": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/person",
+        "value": "P-100231"
+      },
+      "involvement": "SBJ"
+    }
+  ],
+  "relatedProfessional": [
+    {
+      "@type": "RelatedProfessional",
+      "professional": {
+        "@type": "Identifier",
+        "system": "https://anytown.example/id/professional",
+        "value": "PRF-003"
+      },
+      "involvement": "PPRF"
+    }
+  ],
+  "relatedService": [
+    {
+      "@type": "Identifier",
+      "system": "https://anytown.example/id/service",
+      "value": "SVC-AIT"
+    }
+  ],
+  "timeInformation": [
+    {
+      "@type": "Timing",
+      "startDateTime": "2026-11-03T09:30:00Z",
+      "endDateTime": "2026-11-03T10:30:00Z"
+    }
+  ],
+  "location": [
+    "Family home"
+  ],
+  "finding": [
+    {
+      "@type": "Finding",
+      "text": [
+        "Child in Need visit. Riley has refused school on four days in the last two weeks and says he can't sleep. Dawn is worried and agrees to a referral to CAMHS. Social worker to make the request today."
+      ]
+    }
+  ]
+}

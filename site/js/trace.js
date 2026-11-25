@@ -129,6 +129,7 @@ function scrollWithin(box, el) {
 
 function apply(scrollBack, quiet = false) {
     document.querySelectorAll(".traced").forEach((e) => e.classList.remove("traced"));
+    document.querySelectorAll(".traced-sec").forEach((e) => e.classList.remove("traced-sec"));
     const jump = document.getElementById("jump-data");
     if (!selected || backState().recordId !== selected.rec) {
         jump.hidden = true;
@@ -136,10 +137,18 @@ function apply(scrollBack, quiet = false) {
     }
     const { rec, path } = selected;
 
-    // Front: the selected element, and anything it contains or is contained by.
-    const fronts = [...document.querySelectorAll(`#front .v[data-rec="${CSS.escape(rec)}"]`)]
-        .filter((e) => related(e.getAttribute("data-path"), path));
+    // Front: the selected element and anything containing it. Its parts too, unless the screen shows
+    // the value itself (an object's heading, say): then the heading is marked and its section tinted.
+    const all = [...document.querySelectorAll(`#front .v[data-rec="${CSS.escape(rec)}"]`)];
+    const exact = all.filter((e) => e.getAttribute("data-path") === path);
+    const fronts = exact.length
+        ? all.filter((e) => path === e.getAttribute("data-path") || path.startsWith(`${e.getAttribute("data-path")}/`))
+        : all.filter((e) => related(e.getAttribute("data-path"), path));
     fronts.forEach((e) => e.classList.add("traced"));
+    exact.filter((e) => e.parentElement.tagName === "H2").forEach((e) => {
+        const sec = e.closest("section.sec");
+        if (sec) sec.classList.add("traced-sec");
+    });
 
     // JSON: the exact row, or its nearest ancestor that exists.
     let p = path;

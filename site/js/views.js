@@ -132,8 +132,7 @@ export function directoryView() {
                 h("tbody", of("service").map((r) => h("tr",
                     h("td", h("a", { href: route(r) }, r.data.name)),
                     h("td", asList(r.data.type).map((t) => enumLabel("ServiceCode", t)).join(", ")),
-                    h("td", partOf(r).length ? partOf(r) : h("span.muted", "No organisation"))))))),
-            dirGaps.map((a) => gapMarker(a))),
+                    h("td", partOf(r).length ? partOf(r) : h("span.muted", "No organisation")))))))),
         card("Professionals",
             h("div.table-wrap", h("table.list",
                 h("thead", h("tr", h("th", "Name"), h("th", "Role"), h("th", "Service"))),
@@ -146,7 +145,8 @@ export function directoryView() {
                 h("thead", h("tr", h("th", "Organisation"), h("th", "Type"))),
                 h("tbody", of("organisation").map((r) => h("tr",
                     h("td", h("a", { href: route(r) }, r.data.name)),
-                    h("td", asList(r.data.type).map((t) => enumLabel("OrganisationCode", t)).join(", ")))))))));
+                    h("td", asList(r.data.type).map((t) => enumLabel("OrganisationCode", t)).join(", ")))))))),
+        dirGaps.map((a) => gapMarker(a)));
 }
 
 // ------------------------------------------------------------------ person
@@ -199,13 +199,14 @@ export function personView(p) {
                 ["Deceased", d.isDeceased !== undefined ? f.v("/isDeceased", d.isDeceased ? "Yes" : "No") : null],
             ]), isSubject ? null : h("p.small.muted", "A connected person: the standard needs only a name.")),
             h("div",
-                card("Family and relationships", rels.length ? h("ul.links-list", rels) : h("p.muted", "None recorded.")),
-                isSubject ? card("Professionals and services involved",
-                    involved.size ? h("ul.links-list", [...involved.values()].map((x) => h("li", recLink(x.r))))
-                        : h("p.muted", "None."),
-                    h("p.small.muted", "Worked out from the records in the timeline, not stored on the person.")) : null,
-                null)),
-        isSubject ? timeline(p, records, local) : null);
+                card(rels.length ? h("h2", f.v("/relatedPerson", "Family and relationships", { code: false })) : "Family and relationships",
+                    rels.length ? h("ul.links-list", rels) : h("p.muted", "None recorded.")))),
+        isSubject ? timeline(p, records, local) : null,
+        // Not part of the standard: worked out from the timeline, so it comes after it.
+        isSubject ? card("Professionals and services involved",
+            involved.size ? h("ul.links-list", [...involved.values()].map((x) => h("li", recLink(x.r))))
+                : h("p.muted", "None."),
+            h("p.small.muted", "Worked out from the records in the timeline, not stored on the person.")) : null);
 }
 
 function accuracy(code) {
@@ -277,7 +278,7 @@ function timeline(p, records, local) {
     return h("section.sec.timeline-sec",
         h("h2", "Timeline"),
         h("div.body",
-            h("p.muted", "Everything that has happened, oldest first. Each entry is a record, from the council or a partner, that points to this person: open one to see how it was recorded. Grey entries are the council's own notes, which the standards don't cover."),
+            h("p.muted", "Each entry is a record, from the council or a partner, that points to this person: open one to see how it was recorded. Grey entries are the council's own notes, which the standards don't cover."),
             filters,
             list,
             annotations().filter((a) => asList(a.views).includes("chronology") && !asList(a.records).length).map((a) => gapMarker(a))));
