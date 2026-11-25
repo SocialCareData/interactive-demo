@@ -431,9 +431,9 @@ export function welcomeView() {
     const stories = journeys();
     const startLink = (j) => `#/story/${j.id}/1`;
     return h("div.welcome",
-        h("h1", "[PLACEHOLDER TITLE]"),
+        h("h1", "Data Standards for Social Care | Interactive Demo"),
         h("p.lede",
-            "[PLACEHOLDER LEDE] This is a visual demonstration of the ",
+            "This is a visual demonstration of the ",
             h("a", { href: "https://standard.socialcaredata.io", target: "_blank", rel: "noopener" }, "Social Care Interoperability Standards"),
             ". It follows three people supported by Anytown Borough Council, a hypothetical local authority that provides social care for children and adults."),
         h("div.starts",
