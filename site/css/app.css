@@ -1,4 +1,4 @@
-/* Example CMS: a fictional demonstration of the Social Care Interoperability Standards.
+/* A visual demonstration of the Social Care Interoperability Standards.
    Colour tokens from the standard site live in standard-tokens.css (copied by build.py).
 
    Design notes
@@ -113,9 +113,11 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: var(--space-4) 0; }
     display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1.6rem;
     padding: .55rem var(--gutter);
 }
-.wordmark { display: flex; flex-direction: column; text-decoration: none; color: var(--teal); line-height: 1.1; }
-.wordmark strong { font-size: 1.12rem; font-weight: 750; letter-spacing: -.01em; }
-.wordmark span { font-size: .78rem; color: var(--ink-3); }
+.wordmark { display: flex; flex-direction: column; line-height: 1.15; }
+.wordmark a { text-decoration: none; }
+.wordmark a:hover { text-decoration: underline; }
+.wordmark .wm-std { font-size: 1.02rem; font-weight: 750; letter-spacing: -.01em; color: var(--teal); }
+.wordmark .wm-demo { font-size: .8rem; color: var(--ink-3); }
 .appnav { display: flex; gap: .2rem 1.1rem; flex-wrap: wrap; font-size: .95rem; }
 .appnav a { color: var(--ink-2); text-decoration: none; padding: .2rem 0; border-bottom: 2px solid transparent; }
 .appnav a:hover { color: var(--ink); }

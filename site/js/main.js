@@ -1,6 +1,6 @@
-// Example CMS: entry point and hash router.
+// Visual demonstration of the standards: entry point and hash router.
 //   #/                       welcome: where to start
-//   #/people                 the people the council supports (the CMS home)
+//   #/people                 the people the council supports
 //   #/directory              services, professionals and organisations
 //   #/person/<council id>    person record and timeline (add /timeline to open at the timeline)
 //   #/record/<kind>/<id>     any record
@@ -137,7 +137,7 @@ function afterRender({ nav, focus }) {
     const focusEl = focus && front.querySelector(focus);
     if (focusEl) focusEl.scrollIntoView({ block: "start" });
     const heading = front.querySelector("h1, h2");
-    let t = "Example CMS";
+    let t = "Visual demonstration";
     if (heading) {
         heading.setAttribute("tabindex", "-1");
         heading.focus({ preventScroll: true });
@@ -145,7 +145,7 @@ function afterRender({ nav, focus }) {
         copy.querySelectorAll(".tag").forEach((e) => e.remove());
         t = copy.textContent.replace(/\s+/g, " ").trim();
     }
-    document.title = `${t}: Example CMS (a fictional demo)`;
+    document.title = `${t}: Visual demonstration of the Social Care Interoperability Standards`;
 }
 
 function badge() {

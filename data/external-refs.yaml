@@ -1,4 +1,4 @@
-# Identifiers that deliberately point at records held outside Example CMS.
+# Identifiers that deliberately point at records held outside this demonstration.
 # They appear in the map as dim "held elsewhere" nodes (PLAN.md §4.3).
 # validate.py fails on any identifier that neither resolves nor is listed here,
 # and on any entry here that nothing references.
@@ -11,12 +11,12 @@
 
 - system: https://cqc.example/organisation
   value: CQC
-  label: Care Quality Commission (fictional identifier)
+  label: Care Quality Commission (example identifier)
   heldBy: Care Quality Commission
   kind: organisation
 
 - system: https://cqc.example/location
   value: 1-000000001
-  label: Brightwater Home Care, CQC registered location (fictional ID)
+  label: Brightwater Home Care, CQC registered location (example identifier)
   heldBy: Care Quality Commission
   kind: location

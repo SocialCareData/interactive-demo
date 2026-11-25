@@ -1,4 +1,4 @@
-// Page-level views: welcome, people (the CMS home), directory, person and timeline, CAMHS second system, gaps, about.
+// Page-level views: welcome, people, directory, person and timeline, CAMHS second system, gaps, about.
 
 import {
     h, frag, fielder, fmtDate, fmtDateTime, fmtLong, age, tag, recLink, identLink, notStd, gapMarker, card, fields,
@@ -50,7 +50,7 @@ export function summary(r) {
     }
 }
 
-// ------------------------------------------------------------------ people (the CMS home)
+// ------------------------------------------------------------------ people
 
 function openEpisodes(p) {
     return sortByDate(recordsAboutPerson(p.id).filter((r) => r.kind === "episode" && !recEnd(r)), recDate);
@@ -301,7 +301,7 @@ function camhsShell(main) {
                         h("li.muted", "Triage meeting"),
                         h("li.muted", "Waiting list"),
                         h("li.muted", "Outcome letters")),
-                    h("p.small", { style: "margin-top:1rem" }, "A second, fictional system, made by a different supplier. It reads the same standard records.")),
+                    h("p.small", { style: "margin-top:1rem" }, "A second system, from a different supplier. It reads the same standard records.")),
                 h("div.camhs-main", main))));
 }
 
@@ -364,7 +364,7 @@ export function camhsDetailView(r) {
                         fx.v(`/attachment/${i}`, `📄 ${a.title}`, { key: "attachment" }))),
                     asList(x.data.linkedRecord).map((l, i) => h("div", { style: "font-family:var(--font);font-size:.9rem" },
                         "Onward referral: ", fx.v(`/linkedRecord/${i}`, nameOf(l.recordId), { key: "linkedRecord" }))),
-                    h("div", h("a", { href: route(x), style: "font-family:var(--font);font-size:.85rem" }, "Same response in Example CMS")));
+                    h("div", h("a", { href: route(x), style: "font-family:var(--font);font-size:.85rem" }, "Same response in the council's system")));
             }) : h("p", "No outcome sent yet."))));
 }
 
@@ -391,11 +391,11 @@ export function aboutView() {
     return frag(
         h("div.page-head", h("h1", "About this demo"), h("p", `A snapshot as at ${fmtLong(SNAPSHOT)}.`)),
         h("div.prose",
-            h("p", "Example CMS is a fictional case management system, made to show what the ",
+            h("p", "This is a visual demonstration of the ",
                 h("a", { href: "https://standard.socialcaredata.io", target: "_blank", rel: "noopener" }, "Social Care Interoperability Standards"),
-                " look like in practice. The standards are developed by Social Finance, the Open Data Institute and Coram."),
-            h("p", "Everything here is fictional: Anytown Borough Council, its partners, the people, the professionals and every record. ",
-                "Example CMS doesn't resemble any real product on purpose. The standards define the data underneath; your screens, forms and workflow stay your own."),
+                ", showing what they look like in practice. The standards are developed by Social Finance, the Open Data Institute and Coram."),
+            h("p", "Anytown Borough Council, its partners, the people and their records are hypothetical. ",
+                "The screens on the left don't represent any real product: the standards define the data underneath, and your screens, forms and workflow stay your own."),
             h("h2", "How to read it"),
             h("ul",
                 h("li", h("strong", "Left: "), "what a case management system might show. ", h("strong", "Right: "), "the same record according to the standard: the data itself, an explanation of each field, and a map of how records link."),
@@ -405,7 +405,7 @@ export function aboutView() {
                 h("li", h("strong", "Select any value "), "on the left to highlight it in the data on the right, or select a line on the right to find it on the left."),
                 h("li", notStd("Grey italic text with a dashed line shows things a real system holds that the standards don't cover, such as case notes.", { inline: true })),
                 h("li", h("span", { style: "color:var(--gap);font-weight:600" }, "◆ Open questions "), "mark where the standards are still open. ", h("a", { href: "#/gaps" }, "See them all.")),
-                h("li", h("strong", "Anytown CAMHS "), "is a second fictional system. It shows the same request as the council's system, with a different screen. ", h("a", { href: "#/system/camhs" }, "Open it."))),
+                h("li", h("strong", "Anytown CAMHS "), "is a second system, from another organisation. It shows the same request as the council's system, with a different screen. ", h("a", { href: "#/system/camhs" }, "Open it."))),
             h("h2", "Data and validation"),
             v ? h("p", v.valid ? "✓ " : "✗ ", `${v.records} records, `, v.valid ? "all valid " : `${v.problems} problem(s) `,
                 "against SHACL shapes built from the standards, checked when the site was built. Every identifier in every record resolves to another record, or is listed as held elsewhere.") : null,
@@ -432,9 +432,9 @@ export function welcomeView() {
     return h("div.welcome",
         h("h1", "[PLACEHOLDER TITLE]"),
         h("p.lede",
-            "[PLACEHOLDER LEDE] Example CMS is a made-up case management system for a made-up council, Anytown. ",
-            "It holds the records of three people, written to the Social Care Interoperability Standards. ",
-            "Wherever you go, you can see a system's screen and the record underneath it."),
+            "[PLACEHOLDER LEDE] This is a visual demonstration of the ",
+            h("a", { href: "https://standard.socialcaredata.io", target: "_blank", rel: "noopener" }, "Social Care Interoperability Standards"),
+            ". It follows three people supported by Anytown Borough Council, a hypothetical local authority that provides social care for children and adults."),
         h("div.starts",
             h("div",
                 h("h2", "Where to start"),

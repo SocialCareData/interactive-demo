@@ -1,8 +1,8 @@
-# Example CMS: a social care standards demo
+# Social Care Interoperability Standards: visual demonstration
 
-A fictional case management system ("Example CMS", Anytown Borough Council), built on synthetic data that conforms to the [Social Care Interoperability Standards](https://standard.socialcaredata.io). Every screen sits beside the same data according to the standard: the raw JSON-LD, an explanation of each field, and a map of how the records link.
+A visual demonstration of the [Social Care Interoperability Standards](https://standard.socialcaredata.io), following three people supported by Anytown Borough Council, a hypothetical local authority. Every screen sits beside the same data according to the standard: the raw JSON-LD, an explanation of each field, and a map of how the records link.
 
-It's a snapshot as at **Thursday 26 November 2026**. Everything in it is fictional. See [PLAN.md](PLAN.md) for the full brief.
+It's a snapshot as at **Thursday 26 November 2026**. The people, places and records are hypothetical. See [PLAN.md](PLAN.md) for the full brief.
 
 ## Run it locally
 

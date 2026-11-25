@@ -1,4 +1,4 @@
-// One read-only "Example CMS" screen per record type (PLAN.md §5.5).
+// One read-only screen per record type, as the council's system might show it (PLAN.md §5.5).
 // Every value from the record is wrapped by fielder().v so it can be traced (§5.2).
 // Greyed content comes only from ui.yaml (via notStd), never from the JSON-LD.
 
@@ -292,7 +292,7 @@ function request(r) {
 export function systemSwitch(r, current) {
     return h("div",
         h("div.system-switch", { role: "group", "aria-label": "View this record in" },
-            h("a", { href: route(r), "aria-current": String(current === "council") }, "Example CMS (council)"),
+            h("a", { href: route(r), "aria-current": String(current === "council") }, "Anytown Borough Council"),
             h("a", { href: `#/system/camhs/${r.localId}`, "aria-current": String(current === "camhs") }, "Anytown CAMHS")),
         h("span.switch-note", "The same record in two systems."));
 }
